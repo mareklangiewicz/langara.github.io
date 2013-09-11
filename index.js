@@ -31,12 +31,12 @@ function onRtbbAuthSuccess() {
     $("#authorizeButton").attr("disabled", "true");
     
     //$.rtbb.create("blackboard.bb", onRtbbFileCreated);
-    $.rtbb.bind($.RTBB_DEF_FILE_ID, $("#blackboard"), $("#undoButton"), $("#redoButton"));
+    $.rtbb.bind($.RTBB_DEF_FILE_ID, $("#blackboard"), $("#logger"), $("#undoButton"), $("#redoButton"));
 }
 
 function onRtbbFileCreated(file) {
     console.log("created:", file)
-    $.rtbb.bind(file.id, $("#blackboard"), $("#undoButton"), $("#redoButton"));
+    $.rtbb.bind(file.id, $("#blackboard"), $("#logger"), $("#undoButton"), $("#redoButton"));
 }
 
 

@@ -61,19 +61,21 @@ $.rtbb.create = function(title, callback) {
  * Binds GUI element to given drive file (blackboard file).
  * @param {string} rtbbFileId id of a drive file to bind.
  * @param {!Object} jqText jQuery object with textArea element to bind.
+ * @param {!Object} jqLogger jQuery object with textArea element to display a logging information.
  * @param {!Object=} opt_jqUndo Optional jQuery object that holds an undo button
  * @param {!Object=} opt_jqRedo Optional jQuery object that holds a redo button
  */
-$.rtbb.bind = function(rtbbFileId, jqText, opt_jqUndo, opt_jqRedo) {
+$.rtbb.bind = function(rtbbFileId, jqText, jqLogger, opt_jqUndo, opt_jqRedo) {
     var initialize = function(model) {
         var str = model.createString('Napisz cos!');
-        var log = model.createList();
+        var rtlogger = model.createList();
         model.getRoot().set('strboard', str);
-        model.getRoot().set('strboard', str);
+        model.getRoot().set('rtlogger', rtlogger);
     };
 
     var loaded = function(doc) {
         var str = doc.getModel().getRoot().get('strboard');
+        var rtlogger = doc.getModel().getRoot().get('rtlogger');
         gapi.drive.realtime.databinding.bindString(str, jqText.get(0));
         jqText.removeAttr("disabled");
         
