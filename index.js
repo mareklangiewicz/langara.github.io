@@ -1,13 +1,12 @@
 
-$.RTBB_DEF_FILE_ID = "0B1u6KUOJMRI5YkRNNnZMOGpIOGs";
-
+$.RTBB_DEF_FILE_ID = "0B1u6KUOJMRI5XzkzQzdnUFA4cDg";
 $(document).ready(onDocumentReady);
 $(window).load(onWindowLoad);
 
 
 function onDocumentReady() {
     $("#authorizeButton")
-        .attr("disabled", "true")
+        .prop("disabled", true)
         .click(onAuthorizeButtonClick);    
 }
 
@@ -24,11 +23,11 @@ function onRtbbInitialized() {
 }
 
 function onRtbbAuthFailure() {
-    $("#authorizeButton").removeAttr("disabled");
+    $("#authorizeButton").prop("disabled", false);
 }
 
 function onRtbbAuthSuccess() {
-    $("#authorizeButton").attr("disabled", "true");
+    $("#authorizeButton").prop("disabled", true);
     
     //$.rtbb.create("blackboard.bb", onRtbbFileCreated);
     $.rtbb.bind($.RTBB_DEF_FILE_ID, $("#blackboard"), $("#logger"), $("#undoButton"), $("#redoButton"));

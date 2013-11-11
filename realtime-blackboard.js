@@ -8,9 +8,9 @@ $.rtbb.CLIENT_ID = '1068940960337.apps.googleusercontent.com';
 $.rtbb.SCOPES = [
           'https://www.googleapis.com/auth/drive.file',
           'https://www.googleapis.com/auth/userinfo.email',
-          'https://www.googleapis.com/auth/userinfo.profile',
-          'https://www.googleapis.com/auth/drive.install',
-          'openid'
+          //'https://www.googleapis.com/auth/userinfo.profile',
+          //'https://www.googleapis.com/auth/drive.install',
+          'openid' //FIXME: po co to openid????
         ];
         
 $.rtbb.MIMETYPE = 'application/vnd.google-apps.drive-sdk';        
@@ -66,18 +66,42 @@ $.rtbb.create = function(title, callback) {
  * @param {!Object=} opt_jqRedo Optional jQuery object that holds a redo button
  */
 $.rtbb.bind = function(rtbbFileId, jqText, jqLogger, opt_jqUndo, opt_jqRedo) {
+
     var initialize = function(model) {
-        var str = model.createString('Napisz cos!');
+        var strboard = model.createString('Napisz cos!');
         var rtlogger = model.createList();
-        model.getRoot().set('strboard', str);
+        model.getRoot().set('strboard', strboard);
         model.getRoot().set('rtlogger', rtlogger);
     };
 
     var loaded = function(doc) {
-        var str = doc.getModel().getRoot().get('strboard');
-        var rtlogger = doc.getModel().getRoot().get('rtlogger');
-        gapi.drive.realtime.databinding.bindString(str, jqText.get(0));
-        jqText.removeAttr("disabled");
+
+        var root = doc.getModel().getRoot();
+        var strboard = root.get('strboard');
+        var rtlogger = root.get('rtlogger');
+
+
+        var updateText = function(e) {
+            console.log("updateText:", e);
+            jqText.val(strboard);
+        };
+        strboard.addEventListener(gapi.drive.realtime.EventType.TEXT_INSERTED, updateText);
+        strboard.addEventListener(gapi.drive.realtime.EventType.TEXT_DELETED, updateText);
+        jqText.keyup(function(e) {
+            console.log("jqText.keyup:", e);
+            strboard.setText(jqText.val());
+        });
+        updateText();
+
+        jqText.prop("disabled", false);
+
+        var updateLogger = function(e) {
+            console.log("updateLogger:", e);
+        };
+
+        rtlogger.addEventListener(gapi.drive.realtime.EventType.VALUES_ADDED, updateLogger);
+        rtlogger.addEventListener(gapi.drive.realtime.EventType.VALUES_REMOVED, updateLogger);
+        rtlogger.addEventListener(gapi.drive.realtime.EventType.VALUES_SET, updateLogger);
         
         if(!opt_jqUndo && !opt_jqRedo)
             return;
@@ -88,12 +112,13 @@ $.rtbb.bind = function(rtbbFileId, jqText, jqLogger, opt_jqUndo, opt_jqRedo) {
         if(opt_jqRedo) opt_jqRedo.click(function(e) { model.redo(); });
 
         var onUndoRedoStateChanged = function(e) {
-            if(opt_jqUndo) opt_jqUndo.attr("disabled", !e.canUndo);
-            if(opt_jqRedo) opt_jqRedo.attr("disabled", !e.canRedo);
+            if(opt_jqUndo) { opt_jqUndo.prop("disabled", !e.canUndo); }
+            if(opt_jqRedo) { opt_jqRedo.prop("disabled", !e.canRedo); }
         };
         model.addEventListener(gapi.drive.realtime.EventType.UNDO_REDO_STATE_CHANGED, onUndoRedoStateChanged);
     };
 
     gapi.drive.realtime.load(rtbbFileId, loaded, initialize);
 };
+
 
