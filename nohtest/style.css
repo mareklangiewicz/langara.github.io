@@ -5,6 +5,11 @@
 .smooth.fast .noh      { transition: all 0.3s; }
 .smooth.slow .noh      { transition: all 1s; }
 .smooth.very_slow .noh { transition: all 2s; }
+.smooth.immediate .noh      { transition: all 0s; }
+
+.noh.sleepy.asleep { opacity: 0; }
+.noh.sleepy.awake  { opacity: 1; }
+
 
 .noh.element.selected  { opacity: 1; z-index:  2; }
 .noh.element.visible   { opacity: 1; z-index:  1; }
@@ -27,6 +32,36 @@
 .noh.link { color: blue; text-decoration: underline; cursor: pointer; }
 
 
+.noh.log {font-size: small; white-space: nowrap; }
+
+.noh.log .info     { color: black; }
+.noh.log .warning  { color: maroon; }
+.noh.log .error    { color: red;   }
+
+.pretty .noh.log { text-shadow: rgba(64, 64, 64, 0.5) 3px 2px 2px; }
+
+
+.noh.overlay { 
+  position: fixed;
+  z-index: 10;
+}
+
+.noh.overlay.hidden    { opacity: 0; }
+
+.noh.overlay > .pretty {
+  padding: 10px;
+  margin: 10px;
+  background-color: white;
+  border: outset 2px rgb(100,100,240);
+  border-radius: 4px;
+  opacity: 0.9;
+  box-shadow: rgba(64, 64, 64, 0.5) 6px 4px 20px;
+}
+
+.noh.overlay.left   { left:   10px; }
+.noh.overlay.right  { right:  10px; }
+.noh.overlay.top    { top:    10px; }
+.noh.overlay.bottom { bottom: 10px; }
 
 .noh.stest { margin: 30px; padding: 30px; border: double; }
 
@@ -36,13 +71,13 @@ body {
   font-size: 12pt;
 }
 
-h1, h2, h3, h4 {
-  text-shadow: rgba(64, 64, 64, 0.496094) 4px 3px 2px;
+h1.fancy, h2.fancy, h3.fancy, h4.fancy {
+  text-shadow: rgba(64, 64, 64, 0.5) 4px 3px 2px;
   transition: all 0.4s;
 }
 
-h1:hover, h2:hover, h3:hover, h4:hover {
-  text-shadow: rgba(64, 64, 64, 0.496094) 8px 6px 4px;
+h1.fancy:hover, h2.fancy:hover, h3.fancy:hover, h4.fancy:hover {
+  text-shadow: rgba(64, 64, 64, 0.5) 8px 6px 4px;
 }
 
 

@@ -15,7 +15,7 @@ function noh_doc() {
 
 function about() {
   return div({style:"margin:10px"},
-    h1("NOH"),
+    noh.fancy(h1("NOH")),
     h4("(No HTML library)"),
     p("The ", strong("NOH"), " library allows to create the HTML documents dynamicly in pure JavaScript ", 
       "(with almost no HTML code at all). "),

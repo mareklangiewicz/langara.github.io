@@ -118,7 +118,8 @@ noh.TAGS = [
   "ul", "ol", "li", 
   "dl", "dt", "dd",
   "h1", "h2", "h3", "h4", "h5", "h6",
-  "form", "fieldset", "input", "textarea", "label", "select", "option", "b", "pre", "code", "i", "button"
+  "form", "fieldset", "input", "textarea", "label", "select", "option", "b", "pre", "code", "i", "button",
+  "kbd"
 ];
 
 
@@ -184,7 +185,7 @@ noh.organize = function(args, opt_ignore, opt_result) {
     result.nodes.push(args);
   else if(typeof args === "string")
     result.nodes.push(noh.text(args));
-  else if(noh.isArrayLike(args))
+  else if(noh.arr.isArrayLike(args))
     for(var i = opt_ignore === undefined ? 0 : opt_ignore; i < args.length; ++i)
       noh.organize(args[i], 0, result);
   else if(args instanceof Object)
@@ -197,6 +198,10 @@ noh.organize = function(args, opt_ignore, opt_result) {
   return result;
 };
 
+
+noh.arr = {};
+
+
 /**
  * Inserts one array elements to the other array (at the end).
  * @param {Array} arrIn The source array.
@@ -204,7 +209,7 @@ noh.organize = function(args, opt_ignore, opt_result) {
  * @return {number} New length of the destination array.
  * TODO: do we need it now at all?
  */
-noh.pushArray = function(arrIn, arrOut) {
+noh.arr.push = function(arrIn, arrOut) {
   return arrOut.push.apply(arrOut, arrIn);
 };
 
@@ -213,9 +218,8 @@ noh.pushArray = function(arrIn, arrOut) {
  * @return {number} index of first occurrence of val in arr; or -1 if not found.
  * @param {*} val A value to find in arr.
  * @param {!Array} arr Array to find the val in.
- * TODO: do we need it now at all?
  */
-noh.indexOf = function(val, arr) {
+noh.arr.indexOf = function(val, arr) {
   for(var x = 0; x < arr.length; ++x)
     if(val == arr[x])
       return x;
@@ -232,7 +236,7 @@ noh.indexOf = function(val, arr) {
  * If arr is null, the returned object will be also null.
  * TODO: do we need it now at all?
  */
-noh.cnvArrayToObject = function(records, arr) {
+noh.arr.arr2obj = function(records, arr) {
   if(arr === null) return null;
   var obj = {};
   for(var x = 0; x < records.length; ++x)
@@ -248,7 +252,7 @@ noh.cnvArrayToObject = function(records, arr) {
  * @return {Array} An array of obj values in order defined by records parameter.
  * TODO: do we need it now at all?
  */
-noh.cnvObjectToArray = function(records, obj) {
+noh.arr.obj2arr = function(records, obj) {
   if(obj === null) return null;
   var arr = [];
   for(var x = 0; x < records.length; ++x)
@@ -261,7 +265,7 @@ noh.cnvObjectToArray = function(records, obj) {
  * @param {Object} arr An object to test.
  * @return {boolean} True if arr is an array like object
  */
-noh.isArrayLike = function(arr) {
+noh.arr.isArrayLike = function(arr) {
   var hasOwn = Object.prototype.hasOwnProperty;
   var len;
   return arr != null && ( //Here the != is intentional (we don't want to use !==)
@@ -276,6 +280,21 @@ noh.isArrayLike = function(arr) {
 };
 
 
+
+noh.str = {};
+
+/**
+ * Shorten given text to given length max.
+ * If text is too long it cuts it, and changes three last letters to "..."
+ * @param {string} text
+ * @param {number} maxlen
+ * @return {string} shortened text
+ */
+noh.str.limitlen = function(text, maxlen) {
+  if(text.length > maxlen) 
+    text = text.substr(0, maxlen-3) + "...";
+  return text;
+};
 
 /**
  * A base constructor for Node objects. This is base "class" for all UI objects created by NOH.
@@ -371,6 +390,7 @@ noh.Text = function(text) {
   this.text = text;
   noh.Node.call(this);
   this.dom = document.createTextNode(text);
+  this.dom.noh = this;
   this.$ = $(this.dom);
 };
 
@@ -391,6 +411,7 @@ noh.Element = function(tag, var_args) {
   noh.Node.call(this);
     
   this.dom = document.createElement(tag);
+  this.dom.noh = this;
   this.$ = $(this.dom);
 
   var an = noh.organize(arguments, 1);
@@ -432,11 +453,11 @@ noh.Element.prototype.css = function(name, value) {
  * Attach an event handling function for one or more events to this element.
  * (just a convenient shortcut for typical jQuery method invocation)
  * @see http://api.jquery.com/on/#on-events-selector-data-handlereventObject
- * @param {string} event One or more space separated events (usually its just one word like: "click")
+ * @param {string} events One or more space separated events (usually its just one word like: "click")
  * @param {string} handler A function to execute when the event is triggered.
  * @return {!noh.Element} this (for chaining)
  */
-noh.Element.prototype.on = function(event, handler) {
+noh.Element.prototype.on = function(events, handler) {
   this.$.on(events, handler);
   return this;
 };
@@ -474,12 +495,36 @@ noh.Element.prototype.remclass = function(aclass) {
 }
 
 
+
+
+/**
+ * Scrolls the page to given position (in pixels)
+ * @param {number} offset Position to which to scroll. (in pixels; from the top of the page)
+ * @param {number=} opt_duration Time in miliseconds determining how long the scrolling will run. Default is 1000
+ */
+noh.scroll = function(offset, opt_duration) {
+  $('html,body').animate( {scrollTop: offset }, opt_duration ? opt_duration : 1000); 
+};
+
+
+/**
+ * Scrolls the page, so the element is on the top
+ * @param {number=} opt_duration Time in miliseconds determining how long the scrolling will run. Default is 1000
+ * @return {!noh.Element} this (for chaining)
+ */
+noh.Element.prototype.scroll = function(opt_duration) {
+  noh.scroll(this.$.offset().top, opt_duration);
+  return this;
+}
+
+
 /* 
  * *************************************************************
  * Core code ends here.
  * The rest of this file contains some basic but useful examples
  * *************************************************************
  */
+
 
 
 
@@ -543,6 +588,98 @@ noh.syntaxhl = function(brush, code) {
 noh.srccode = function(afunction) {
   return noh.syntaxhl("js", afunction.toString());
 };
+
+
+
+
+/**
+ * This Element will fly over the page (position:fixed). User should some CSS classes to it:
+ * "left" or "right" and "top" or "bottom" (but never: "left" and "right" or "top" and "bottom")
+ * It will stick to given screen side automaticly (with some little margin)
+ * and it can be swept away to nearest side using .hide() method; and brought back using the .show() method().
+ * It should be under element with "smooth" class so it moves smoothly.
+ * If user fails to add some position related classes to it, he can still manage the overlay position by hand.
+ * Note: it is a good idea for overlay's children to have CSS class "pretty" so it will get some pretty default styles
+ * @param {...noh.AttrsAndNodes} var_args Attributes and children nodes.
+ * @return {!noh.Element} A new overlay.
+ */
+noh.overlay = function(var_args) {
+
+  var overlay = noh.div(arguments).addclass("noh overlay");
+  
+  overlay.show = function() {
+    if(this.hasclass("left"))
+      this.css("left", ""); // determined by the CSS rule
+    if(this.hasclass("right"))
+      this.css("right", ""); // determined by the CSS rule
+    if(this.hasclass("top"))
+      this.css("top", ""); // determined by the CSS rule
+    if(this.hasclass("bottom"))
+      this.css("bottom", ""); // determined by the CSS rule
+    this.remclass("hidden").addclass("visible");
+    return this;
+  };
+
+  overlay.hide = function() {
+    var w = this.$.width();
+    var h = this.$.height();
+    if(this.hasclass("left"))
+      this.css("left", "" + (-w-50) + "px");
+    else if(this.hasclass("right"))
+      this.css("right", "" + (-w-50) + "px");
+    else if(this.hasclass("top"))
+      this.css("top", "" + (-h-50) + "px");
+    else if(this.hasclass("bottom"))
+      this.css("bottom", "" + (-h-50) + "px");
+    this.remclass("visible").addclass("hidden");
+    return this;
+  };
+
+  return overlay;
+};
+
+
+
+
+/**
+ * Makes given element sleepy. By default it is in "asleep" state (it has the "asleep" CSS class)
+ * If we wake it (method: wake) it will be awake (will have the "awake" CSS class) for some time.
+ * Then it will fall asleep again (the "awake" CSS class is removed, and it gets "asleep" CSS class).
+ * User can wake it again by invoking the "wake" method.
+ * User can of course define how it will behave in "awake" and in "asleep" states in CSS file.
+ * @param {!noh.Element} element to modify
+ * @param {number=} opt_duration How many miliseconds will it be awake by default (it will be 1000 if not provided).
+ * @return {!noh.Element}
+ */
+noh.sleepy = function(element, opt_duration) {
+
+  element.addclass("noh").addclass("sleepy");
+
+  element.defaultAwakeTime_ = opt_duration === undefined ? 1000 : opt_duration;
+
+  element.wake = function(opt_duration) {
+    this.remclass("asleep").addclass("awake");
+    window.clearTimeout(this.timeoutId_);
+    var duration = opt_duration === undefined ? element.defaultAwakeTime_ : opt_duration;
+    var callback = function() { element.sleep(); }
+    this.timeoutId_ = window.setTimeout(callback, duration);
+  };
+
+  element.sleep = function() {
+    window.clearTimeout(this.timeoutId_);
+    this.timeoutId_ = undefined;
+    this.remclass("awake").addclass("asleep");
+  };
+
+  element.sleep();
+
+  return element;
+};
+
+
+
+
+
 
 
 
@@ -743,7 +880,7 @@ noh.details = function(var_args) {
   var content = noh.div({class: "noh details content"}, arguments);
   var blind = noh.blind(content);
   var button = noh.button({class: "noh details button", title: "show/hide details"}, "details...");
-  button.$.click(function() {blind.roll(!blind.down());});
+  button.on("click", function() {blind.roll(!blind.down());});
   return noh.div({class: "noh details"}, noh.div(button), noh.div(blind));
 };
 
@@ -790,7 +927,9 @@ noh.Reel = function(lines, width, height, var_args) {
   this.chksize();
 
   var this_ = this;
-  this.$.show(function() {this_.rotate(0);}); // to update positions and size
+  this.$.show(function() {
+    this_.update();
+  });
   this.selected_ = -1;
 };
 
@@ -809,6 +948,9 @@ noh.Reel.prototype.selected = function() { return this.selected_; };
 noh.Reel.prototype.select = function(nr) {
   if((nr < -1) || (nr >= this.length))
     nr = -1;
+
+  if(this.selected_ == nr)
+    return this;
 
   if(this.selected_ != -1)
     this.getelem(this.selected_).remclass("selected");
@@ -895,9 +1037,14 @@ noh.Reel.prototype.getelem = function(nr) {
 
 /**
  * Update the reel properties like size, elements positions, CSS classes etc.
+ * @param {number} opt_lines Optionally we can change the number of visible elements.
  * @return {!noh.Reel} this (for chaining)
  */
-noh.Reel.prototype.update = function() {
+noh.Reel.prototype.update = function(opt_lines) {
+
+  if(opt_lines !== undefined)
+    this.lines = opt_lines;
+  //TODO: check opt_lines value in debug mode
 
   this.chksize();
 
@@ -976,7 +1123,138 @@ noh.reel = function(lines, width, height, var_args) {
   return new noh.Reel(lines, width, height, an.attrs, an.nodes);
 };
 
-noh.reelsel = function(lines, width, height, selnr, var_args) {
+
+
+/**
+ * Makes given element more fancy.
+ * It always add a "fancy" class (so we can define in CSS file what really is "fancy",
+ * but it can also add some more fun javascript stuff to some elements (depending of the element type)
+ * you can enable/disable/configure different fancy features using "options" parameter.
+ * @param {!noh.Element} element to modify
+ * @param {noh.FancyOptions=} opt_options TODO: define some configuration options
+ * @return {!noh.Element}
+ */
+noh.fancy = function(element, opt_options) {
+  element.addclass("fancy");
+  if(noh.arr.indexOf(element.tag, ["h1", "h2", "h3", "h4"]) != -1) {
+    element.on("click", function() { this.noh.scroll(); });
+  }
+  return element;
+}
+
+
+
+
+/**
+ * Something like a simple "kbd" element, but it wraps urls in given text inside the appropriate "a" elements.
+ * @param {string} atext Text to wrap inside kdb element.
+ * @return {!noh.Element} kbd element with given text splitted to words; and with urls wrapped inside the a links
+ */
+noh.ukbd = function(atext) {
+  var words = atext.split(/\s+/);
+  var url = /(https?|ftp):\/\//;
+  var map = words.map(function(word) {
+    if(url.test(word))
+      return a({href:word, target:"_blank"}, word);
+    else
+      return " " + word + " ";
+  });
+  return noh.kbd(map);
+}
+
+
+
+
+
+
+
+
+
+noh.log = {};
+
+
+
+
+/** @typedef {!ArrayLike.<*>} */
+noh.log.Data; //FIXME: how to express ArrayLike type?
+
+
+/**
+ * @param {noh.log.Data} data
+ * @return {string}
+ */
+noh.log.data2str = function(data) {
+  var str = "";
+  if(data.length > 0)
+    str += data[0];
+  for(var i = 1; i < data.length; ++i)
+    str = str + " " + data[i].toString();  
+  return str;
+};
+
+/**
+ * @interface
+ * This is basic interface for loggers.
+ */
+noh.log.ILogger = function() {};
+
+
+/**
+ * Logs given data with given severity
+ * @param {string} classes One or more (space separated) classes to decorate the logged message (like: "info", or "warning", or "error", or "debug")
+ * @param {noh.log.Data} data Data to log. It has to be an array like object.
+ */
+noh.log.ILogger.prototype.log = function(classes, data) {};
+
+
+
+
+
+/**
+ * Little (one line) logger.
+ * @constructor
+ * @implements {noh.log.ILogger}
+ */
+noh.log.Little = function() {
+  noh.Element.call(this, "div", {class: 'noh log little'});
+};
+
+noh.log.Little.prototype = new noh.Element("div");
+
+/**
+/**
+ * Logs given data with given severity
+ * @param {string} classes One or more (space separated) classes to decorate the logged message (like: "info", or "warning", or "error", or "debug")
+ * @param {!Array.<*>} data Data to log. It has to be an array like object.
+ */
+noh.log.Little.prototype.log = function(classes, data) { 
+  if(this.length)
+    this.rem(); // removes last (in this case only one) child.
+  var ukbd = noh.ukbd(noh.log.data2str(data)).addclass("noh log element").addclass(classes);
+  this.add(ukbd);
+};
+
+
+/**
+ * Little (one line) logger.
+ * @return {!noh.log.ILogger}
+ */
+noh.log.little = function() {
+  return new noh.log.Little();
+};
+
+
+/**
+ * Sleepy little logger
+ * @param {number=} opt_duration How many miliseconds will it be visible. See {@linkcode noh.sleepy}
+ * @return {!noh.log.ILogger}
+ */
+noh.log.slittle = function(opt_duration) {
+  var little = noh.log.little();
+  var slittle = noh.sleepy(little, opt_duration);
+  slittle.log_ = slittle.log;
+  slittle.log = function(classes, data) { this.log_(classes, data); this.wake(); };
+  return slittle;
 };
 
 
@@ -985,9 +1263,255 @@ noh.reelsel = function(lines, width, height, selnr, var_args) {
 
 
 
+/**
+ * @interface
+ * Another interface for loggers. This one is subset of chrome console API and firefox console API.
+ * It just allows to log messages with three different severity levels:
+ * "info", "warn", "error" (and "log" which is the same as "info")
+ */
+noh.log.IConsole = function() {};
+
+/**
+ * Logs given data with default (general) severity. Usually this is the same as "info"
+ * @param {...*} var_args Data to log. Strings are printed as they are; numbers are converted to strings; Objects are converted to strings using .toString() method.
+ */
+noh.log.IConsole.prototype.log = function(var_args) {};
+
+/**
+ * Logs given data with "info" (normal) severity. Usually this is the same as "log"
+ * @param {...*} var_args Data to log. {@linkcode noh.IConsole.prototype.log}
+ */
+noh.log.IConsole.prototype.info = function(var_args) {};
+
+/**
+ * Logs given data with "warn" (warning) severity. Usually this severity is marked somehow (like bold font), but not with red color.
+ * @param {...*} var_args Data to log. {@linkcode noh.IConsole.prototype.log}
+ */
+noh.log.IConsole.prototype.warn = function(var_args) {};
+
+/**
+ * Logs given data with "error" severity. Usually this severity is highlighted (f.e. with red bold font).
+ * @param {...*} var_args Data to log. {@linkcode noh.IConsole.prototype.log}
+ */
+noh.log.IConsole.prototype.error = function(var_args) {};
 
 
 
+
+/**
+ * Wraps an ILogger object into IConsole.
+ * This console can be then installed as global console object (window.console), so all system logs will be logged using given logger.
+ * @implements {noh.IConsole}
+ * @constructor
+ * @param {!noh.log.ILogger} logger A logger to wrap.
+ */
+noh.log.L2C = function(logger) {
+  this.logger = logger;
+};
+
+
+/**
+ * Logs given data with default (general) severity. This is the same as "info"
+ * @param {...*} var_args Data to log. Strings are printed as they are; numbers are converted to strings; Objects are converted to strings using .toString() method.
+ */
+noh.log.L2C.prototype.log = function(var_args) { this.logger.log("info", arguments); };
+
+/**
+ * Logs given data with "info" (normal) severity.
+ * @param {...*} var_args Data to log. {@linkcode noh.log.IConsole.prototype.log}
+ */
+noh.log.L2C.prototype.info = function(var_args) { this.logger.log("info", arguments); };
+
+/**
+ * Logs given data with "warn" (warning) severity. Usually this severity is marked somehow (like bold font), but not with red color.
+ * @param {...*} var_args Data to log. {@linkcode noh.log.IConsole.prototype.log}
+ */
+noh.log.L2C.prototype.warn = function(var_args) { this.logger.log("warning", arguments); };
+
+/**
+ * Logs given data with "error" severity. Usually this severity is highlighted (f.e. with red bold font).
+ * @param {...*} var_args Data to log. {@linkcode noh.log.IConsole.prototype.log}
+ */
+noh.log.L2C.prototype.error = function(var_args) { this.logger.log("error", arguments); };
+
+noh.log.L2C.prototype.debug = function(var_args) { this.logger.log("debug", arguments); };
+
+/**
+ * Installs this console as a global console object.
+ */
+noh.log.L2C.prototype.install = function() { window.console = this; };
+
+
+/**
+ * Wraps an ILogger object into IConsole.
+ * This console can be then installed as global console object (window.console), so all system logs will be logged using given logger.
+ * @param {!noh.log.ILogger} logger
+ * @return {!noh.log.IConsole}
+ */
+noh.log.l2c = function(logger) {
+  return new noh.log.L2C(logger);  
+};
+
+
+
+
+
+
+/**
+ * Wraps an IConsole object into ILogger.
+ * @implements {noh.ILogger}
+ * @constructor
+ * @param {!noh.log.IConsole} console A console to wrap.
+ */
+noh.log.C2L = function(console) {
+  this.console = console;
+};
+
+/**
+ * Logs given data with given severity
+ * @param {string} classes One or more (space separated) classes to decorate the logged message (like: "info", or "warning", or "error", or "debug")
+ * @param {!Array.<*>} data Data to log. It has to be an array like object.
+ */
+noh.log.C2L.prototype.log = function(classes, data) {
+  if(/error/.test(classes))
+    this.console.error.apply(this.console, data);
+  else if(/warning/.test(classes))
+    this.console.warn.apply(this.console, data);
+  else if( (/debug/.test(classes)) && (this.console.debug instanceof Function) )
+    this.console.debug.apply(this.console, data);
+  else
+    this.console.info.apply(this.console, data);
+};
+
+
+/**
+ * Wraps an IConsole object into ILogger.
+ * @param {!noh.log.IConsole} console
+ * @return {!noh.log.ILogger}
+ */
+noh.log.c2l = function(console) {
+  return new noh.log.C2L(console);
+};
+
+
+
+
+/**
+ * Creates a logger that logs on all provided loggers.
+ * @implements {noh.log.ILogger}
+ * @constructor
+ * @param {Array.<!noh.log.ILogger>} loggers
+ */
+noh.log.Multi = function(loggers) {
+  this.loggers = loggers;
+};
+
+noh.log.Multi.prototype.log = function(classes, data) {
+  for(var i = 0; i < this.loggers.length; ++i)
+    this.loggers[i].log(classes, data);
+};
+
+/**
+ * @param {Array.<!noh.ILogger>} loggers
+ * @return {!noh.ILogger}
+ */
+noh.log.multi = function(loggers) {
+  return new noh.log.Multi(loggers);
+};
+
+
+
+/**
+ * Creates a logger that filters every message first (through provided filter function),
+ * and then logs the result.
+ * @implements {noh.log.ILogger}
+ * @constructor
+ * @param {!noh.log.ILogger} logger
+ * @param {function(noh.log.Data):noh.log.Data} filter
+ */
+noh.log.Filter = function(logger, filter) {
+  this.logger = logger;
+  this.filter = filter;
+};
+
+noh.log.Filter.prototype.log = function(classes, data) {
+  this.logger.log(classes, this.filter(data));
+};
+
+/**
+ * @param {!noh.log.ILogger} logger
+ * @param {function(noh.log.Data):noh.log.Data} filter
+ * @return {!noh.ILogger}
+ */
+noh.log.filter = function(logger, filter) {
+  return new noh.log.Filter(logger, filter);
+};
+
+
+
+/**
+ * TODO: description
+ * @param {!noh.log.ILogger} logger
+ * @return {!noh.ILogger}
+ */
+noh.log.addtime = function(logger) {
+  var filter = function(data) {
+    var now = new Date();
+    var time = "[" + now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds() + "]";
+    return [time].concat(Array.prototype.slice.call(data, 0));
+  };
+  return noh.log.filter(logger, filter);
+};
+
+
+
+/**
+ * TODO: description
+ * @param {!noh.log.ILogger} logger
+ * @param {number} len
+ * @return {!noh.ILogger}
+ */
+noh.log.limitlen = function(logger, len) {
+  var filter = function(data) {
+    var str = noh.log.data2str(data);
+    return [noh.str.limitlen(str, len)];
+  };
+  return noh.log.filter(logger, filter);
+};
+
+
+
+
+
+/**
+ * Creates a logger that uses Reel to rotate log lines.
+ * @param {number} lines Number of visible lines.
+ * @param {number=} opt_duration How many miliseconds will any log line be visible. See {@linkcode noh.log.slittle}
+ * @return {!noh.log.ILogger}
+ */
+noh.log.reel = function(lines, opt_duration) {
+  //TODO: validation of lines value in debug mode
+  var length = lines * 2 + 1;
+  var duration = opt_duration === undefined ? 10000 : opt_duration;
+  var loggers = [];
+  for(var i = 0; i < length; ++i)
+    loggers.push(noh.log.slittle(duration));
+  var reel = noh.reel(lines, "automatic", "automatic", loggers);
+  reel.select(lines-1);
+  logger = noh.div({class: "noh log reel"}, reel);
+  logger.reel = reel;
+  logger.log = function(classes, data) {
+    var logger = this.reel.getelem(this.reel.lines)[0]; // This is first invisible logger
+    logger.log(classes, data);
+    this.reel.rotate(-1);
+  };
+  logger.setlines = function(lines) {
+    var r = lines - this.reel.lines;
+    this.reel.lines = lines;
+    this.reel.rotate(r);
+  };
+  return logger;
+};
 
 
 
@@ -1004,40 +1528,6 @@ noh.reelsel = function(lines, width, height, selnr, var_args) {
 
 
 
-
-/**
- * @interface
- * This is a basic interface for loggers. It is a small subset of chrome console API and firefox console API.
- * It just allows to log messages with three different severity levels:
- * "info", "warn", "error" (and "log" which is usually the same as "info")
- */
-noh.IConsole = function() {};
-
-/**
- * Logs given data with default (general) severity. Usually this is the same as "info"
- * @param {...*} var_args Data to log. Strings are printed as they are; numbers are converted to strings; Objects are converted to strings using .toString() method.
- */
-noh.IConsole.prototype.log = function(var_args) {};
-
-/**
- * Logs given data with "info" (normal) severity. Usually this is the same as "log"
- * @param {...*} var_args Data to log. {@linkcode noh.IConsole.prototype.log}
- */
-noh.IConsole.prototype.info = function(var_args) {};
-
-
-
-
-/**
- * @param {noh.Attrs=} opt_attrs Additional attributes of created logger
- * @implements {IConsole}
- */
-noh.llogger = function(opt_attrs) {
-    var node = noh.text($.extend({style: "font-size: smaller;"}, opt_attrs));
-    return noh.h3("TODO");
-};
-
-noh.plogger = function() { return noh.h3("TODO"); };
 
 
 
@@ -1075,8 +1565,7 @@ noh.ISelectable.prototype.toggle = function() {};
  */
 noh.MenuItem = function(content) {
   noh.Element.call(this, "div", {"class": "noh menu item"}, content);
-  var this_ = this;
-  this.$.click(function() { this_.toggle(); return false; });
+  this.on("click", function() { this.noh.toggle(); return false; });
 }
 
 noh.MenuItem.prototype = new noh.Element("div");
