@@ -111,7 +111,7 @@ tests.overlay = function() {
   var content2 = div({style:"margin: 10px; color: blue; font-size: x-large"}, " overlay BLEBLE", br(), "BLUBLU").addclass("pretty");
   var content3 = div({style:"margin: 30px; color: red; font-size: large"}, " overlay", br(), "BLU").addclass("pretty");
   var overlay = noh.overlay(content1, content2, content3).addclass("left top");
-  overlay.hide();
+  overlay.$.click(function() {overlay.hide()});
   var style = {"class":"noh link", style:"padding: 5px"};
   var show = a(style, 'overlay.show()');
   var hide = a(style, 'overlay.hide()');
@@ -143,7 +143,8 @@ tests.overlay2 = function() {
   var content2 = div({style:"margin: 10px; color: blue; font-size: x-large"}, " overlay BLEBLE", br(), "BLUBLU").addclass("pretty");
   var content3 = div({style:"margin: 30px; color: red; font-size: large"}, " overlay", br(), "BLU").addclass("pretty");
   var overlay = noh.overlay(content1, content2, content3).addclass("bottom"); //We will control left/right position by hand
-  overlay.hide().css("right", "10px");
+  overlay.css("right", "10px");
+  overlay.$.click(function() {overlay.hide()});
   var style = {"class":"noh link", style:"padding: 5px"};
   var show = a(style, 'overlay.show()');
   var hide = a(style, 'overlay.hide()');
