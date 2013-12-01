@@ -71,6 +71,32 @@ function noh_tests() {
 var tests = {};
 
 
+// TODO: use noh.ex elements in other tests
+
+tests.simple = function() { return noh.ex.simple(); };
+tests.goofy = function() { return noh.ex.goofy(); };
+tests.silly = function() { return noh.ex.silly(); };
+tests.whitey = function() { return noh.ex.whitey(); };
+tests.shiny = function() { return noh.ex.shiny(); };
+tests.shiny = function() { return noh.ex.shiny(); };            
+tests.idiots = function() { return noh.ex.idiots(); };
+
+tests.colors = function() {
+  return noh.div(
+    noh.sdiv(noh.ex.color("red")),
+    noh.sdiv(noh.ex.color("green")),
+    noh.sdiv(noh.ex.color("blue"))
+  );
+};
+
+tests.rainbows = function() {
+  return noh.div(
+    noh.sdiv(noh.ex.rainbow(5)),
+    noh.sdiv(noh.ex.rainbow(10)),
+    noh.sdiv(noh.ex.rainbow(15))
+  );
+};            
+
 tests.h16 = function() {
   return div(
     h1("Some h1 text"),
@@ -115,20 +141,36 @@ tests.overlay = function() {
   var style = {"class":"noh link", style:"padding: 5px"};
   var show = a(style, 'overlay.show()');
   var hide = a(style, 'overlay.hide()');
+  var show1 = a(style, 'overlay.show(1)');
+  var hide1 = a(style, 'overlay.hide(1)');
+  var show2 = a(style, 'overlay.show(2)');
+  var hide2 = a(style, 'overlay.hide(2)');
   var addsmooth = a(style, 'overlay.parent.addclass("smooth")');
   var remsmooth = a(style, 'overlay.parent.remclass("smooth")');
+  var addpretty = a(style, 'overlay[1].addclass("pretty")');
+  var rempretty = a(style, 'overlay[1].remclass("pretty")');
   var tobottom = a(style, 'overlay.remclass("top").addclass("bottom")');
   var totop = a(style, 'overlay.remclass("bottom").addclass("top")');
   show.$.click(function() {overlay.show()});
   hide.$.click(function() {overlay.hide()});
+  show1.$.click(function() {overlay.show(1)});
+  hide1.$.click(function() {overlay.hide(1)});
+  show2.$.click(function() {overlay.show(2)});
+  hide2.$.click(function() {overlay.hide(2)});
   addsmooth.$.click(function() {overlay.parent.addclass("smooth")});
   remsmooth.$.click(function() {overlay.parent.remclass("smooth")});
+  addpretty.$.click(function() {overlay[1].addclass("pretty")});
+  rempretty.$.click(function() {overlay[1].remclass("pretty")});
   tobottom.$.click(function() {overlay.remclass("top").addclass("bottom")});
   totop.$.click(function() {overlay.remclass("bottom").addclass("top")});
   return div(
     show, hide, br(),
+    show1, hide1, br(),
+    show2, hide2, br(),
     addsmooth,
     remsmooth, br(),
+    addpretty,
+    rempretty, br(),
     tobottom,
     totop,
     noh.table1r({style:"border: 6px ridge green"},
@@ -142,12 +184,21 @@ tests.overlay2 = function() {
   var content1 = div({style:"margin: 10px; color: green; font-size: xx-large"}, " overlay BLEBLE", br(), "BLUBLU").addclass("pretty");
   var content2 = div({style:"margin: 10px; color: blue; font-size: x-large"}, " overlay BLEBLE", br(), "BLUBLU").addclass("pretty");
   var content3 = div({style:"margin: 30px; color: red; font-size: large"}, " overlay", br(), "BLU").addclass("pretty");
-  var overlay = noh.overlay(content1, content2, content3).addclass("bottom"); //We will control left/right position by hand
+  var overlay = noh.overlay(
+    content1,
+    content2,
+    noh.ex.silly().addclass("pretty"),
+    content3
+  ).addclass("top"); //We will control left/right position by hand
   overlay.css("right", "10px");
   overlay.$.click(function() {overlay.hide()});
   var style = {"class":"noh link", style:"padding: 5px"};
   var show = a(style, 'overlay.show()');
   var hide = a(style, 'overlay.hide()');
+  var show1 = a(style, 'overlay.show(1)');
+  var hide1 = a(style, 'overlay.hide(1)');
+  var show2 = a(style, 'overlay.show(2)');
+  var hide2 = a(style, 'overlay.hide(2)');
   var addsmooth = a(style, 'overlay.parent.addclass("smooth")');
   var remsmooth = a(style, 'overlay.parent.remclass("smooth")');
   var tobottom = a(style, 'overlay.remclass("top").addclass("bottom")');
@@ -157,6 +208,10 @@ tests.overlay2 = function() {
   var right3 = a(style, 'overlay.css("right", "230px")');
   show.$.click(function() {overlay.show()});
   hide.$.click(function() {overlay.hide()});
+  show1.$.click(function() {overlay.show(1)});
+  hide1.$.click(function() {overlay.hide(1)});
+  show2.$.click(function() {overlay.show(2)});
+  hide2.$.click(function() {overlay.hide(2)});
   addsmooth.$.click(function() {overlay.parent.addclass("smooth")});
   remsmooth.$.click(function() {overlay.parent.remclass("smooth")});
   tobottom.$.click(function() {overlay.remclass("top").addclass("bottom")});
@@ -166,6 +221,58 @@ tests.overlay2 = function() {
   right3.$.click(function() {overlay.css("right", "230px")});
   return div(
     show, hide, br(),
+    show1, hide1, br(),
+    show2, hide2, br(),
+    addsmooth,
+    remsmooth, br(),
+    tobottom,
+    totop, br(),
+    right1, right2, right3,
+    noh.table1r({style:"border: 6px ridge green"},
+      td(overlay)
+    )
+  );
+};
+
+tests.overlay3 = function() {
+  var logger = noh.log.reel(15).addclass("pretty");
+  install_logger(logger);
+  var cmdline = noh.cmdline(40).addclass("pretty");
+  var overlay = noh.overlay(logger, cmdline);
+  overlay.addclass("bottom"); //We will control left/right position by hand
+  overlay.addclass("smooth");
+  overlay.css("right", "10px");
+  var style = {"class":"noh link", style:"padding: 5px"};
+  var show = a(style, 'overlay.show()');
+  var hide = a(style, 'overlay.hide()');
+  var show1 = a(style, 'overlay.show(1)');
+  var hide1 = a(style, 'overlay.hide(1)');
+  var show2 = a(style, 'overlay.show(2)');
+  var hide2 = a(style, 'overlay.hide(2)');
+  var addsmooth = a(style, 'overlay.parent.addclass("smooth")');
+  var remsmooth = a(style, 'overlay.parent.remclass("smooth")');
+  var tobottom = a(style, 'overlay.remclass("top").addclass("bottom")');
+  var totop = a(style, 'overlay.remclass("bottom").addclass("top")');
+  var right1 = a(style, 'overlay.css("right", "30px")');
+  var right2 = a(style, 'overlay.css("right", "130px")');
+  var right3 = a(style, 'overlay.css("right", "230px")');
+  show.$.click(function() {overlay.show()});
+  hide.$.click(function() {overlay.hide()});
+  show1.$.click(function() {overlay.show(1)});
+  hide1.$.click(function() {overlay.hide(1)});
+  show2.$.click(function() {overlay.show(2)});
+  hide2.$.click(function() {overlay.hide(2)});
+  addsmooth.$.click(function() {overlay.parent.addclass("smooth")});
+  remsmooth.$.click(function() {overlay.parent.remclass("smooth")});
+  tobottom.$.click(function() {overlay.remclass("top").addclass("bottom")});
+  totop.$.click(function() {overlay.remclass("bottom").addclass("top")});
+  right1.$.click(function() {overlay.css("right", "30px")});
+  right2.$.click(function() {overlay.css("right", "130px")});
+  right3.$.click(function() {overlay.css("right", "230px")});
+  return div(
+    show, hide, br(),
+    show1, hide1, br(),
+    show2, hide2, br(),
     addsmooth,
     remsmooth, br(),
     tobottom,
@@ -446,24 +553,32 @@ tests.log_reel = function() {
   return get_test_logger(rlogger);
 };
 
+function install_logger(logger) {
 
-tests.log_install = function() {
-  var install = function(logger) {
-    noh.log.l2c(
+  noh.log.l2c(
+
+    noh.log.multi([
+
+      noh.log.c2l(window.console),
+
       noh.log.limitlen(
         noh.log.addtime(
-          noh.log.multi([
-            noh.log.c2l(window.console),
-            logger
-          ])
+          logger
         ), 40
       )
-    ).install();
-  };
+
+   ])
+
+  ).install();
+
+};
+
+tests.log_install = function() {
+
   var style = {"class":"noh link", style:"padding: 5px"};
-  var binstall = a(style, 'install(logger)');
+  var binstall = a(style, 'install_logger(logger)');
   var logger = noh.log.reel(15, 30000).addclass("pretty smooth");
-  binstall.$.click(function() { install(logger); console.log("Welcome!"); });
+  binstall.$.click(function() { install_logger(logger); console.log("Welcome!"); });
   return div(
     binstall,
     noh.table1r({style:"border: 6px ridge green"},
@@ -472,3 +587,7 @@ tests.log_install = function() {
   );
 };
 
+
+tests.cmdline = function() {
+  return noh.cmdline(40);
+};

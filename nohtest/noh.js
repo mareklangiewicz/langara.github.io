@@ -296,6 +296,14 @@ noh.str.limitlen = function(text, maxlen) {
   return text;
 };
 
+
+noh.str.prefix = function(text, prefix, len) {
+  while(text.length < len)
+    text = prefix + text;
+  return text;
+};
+
+
 /**
  * A base constructor for Node objects. This is base "class" for all UI objects created by NOH.
  * @constructor
@@ -559,7 +567,54 @@ noh.tablebar = function(var_args) {
 
 
 
+// Just a div element with style changed to clearly separate its content from the rest of the page.
+noh.sdiv = function(var_args) {
+  return noh.div({style:"margin:10px; padding:10px; border:solid 2px"}, arguments);
+};
 
+
+//TODO: documentation for simple elements for tests and docs. (write some nice introduction in noh_doc.js using these elements)
+noh.ex = {};
+
+noh.ex.simple = function() {
+  return noh.span("Simpleeeee! kind of man!").css("padding", 10).css("background-color", "lightgray").css("border", "solid 2px");
+};
+
+noh.ex.goofy = function() {
+  return noh.span("Daaaaa..").css("padding", 20).css("background-color", "gray").css("border", "solid 4px");
+};
+
+noh.ex.silly = function() {
+  return noh.span({style:"padding: 25px; font-size:xx-large; color:red; background-color:yellow; border:solid 1px red; border-radius:40px"}, ":-)");
+};
+
+noh.ex.whitey = function() {
+  return noh.span({style: "padding:15px; color:white; background-color:white; border:solid 2px white"}, "White on white");
+};
+
+noh.ex.shiny = function() {
+  return noh.span({style:"padding:10px; color:red; background-color:pink; border:solid 2px red"}, ":*");
+};
+
+noh.ex.idiots = function() {
+  return noh.div(noh.ex.simple(), noh.ex.goofy(), noh.ex.silly());
+};
+
+noh.ex.color = function(color) {
+  return noh.span({style:"padding:8px"}, "C").css("color", color).css("background-color", color)
+};
+
+//TODO: insert this code to introduction as an example of simplest "template".
+//TODO: write in introduction that first examples are written so even javascript beginner should be able to understand it
+/**
+ * @param {number} How many colors we want
+ */
+noh.ex.rainbow = function(len) {
+  var arr = [];
+  for(var i = 0; i < len; ++i)
+    arr.push(noh.ex.color("hsl(" + (i*360/len) + ",100%,50%)"));
+  return noh.span(arr);
+};
 
 
 
@@ -607,31 +662,60 @@ noh.overlay = function(var_args) {
 
   var overlay = noh.div(arguments).addclass("noh overlay");
   
-  overlay.show = function() {
-    if(this.hasclass("left"))
-      this.css("left", ""); // determined by the CSS rule
-    if(this.hasclass("right"))
-      this.css("right", ""); // determined by the CSS rule
-    if(this.hasclass("top"))
-      this.css("top", ""); // determined by the CSS rule
-    if(this.hasclass("bottom"))
-      this.css("bottom", ""); // determined by the CSS rule
-    this.remclass("hidden").addclass("visible");
+  /**
+   * @param {number=} idx of child to show (undefined means whole overlay)
+   */
+  overlay.show = function(idx) {
+    //TODO: validate idx in debug mode
+    var obj = idx === undefined ? this : this[idx];
+    if(!obj.hasclass("hidden"))
+      return overlay;
+    if(this.hasclass("left") || this.hasclass("right"))
+      obj.css("left", "").css("right", ""); // determined by the CSS rule
+    if(this.hasclass("top") || this.hasclass("bottom"))
+      obj.css("top", "").css("bottom", ""); // determined by the CSS rule
+    obj.remclass("hidden").addclass("visible");
     return this;
   };
 
-  overlay.hide = function() {
-    var w = this.$.width();
-    var h = this.$.height();
+  /**
+   * @param {number=} idx of child to hide (undefined means whole overlay)
+   */
+  overlay.hide = function(idx) {
+    //TODO: validate idx in debug mode
+
+    var obj = idx === undefined ? this : this[idx];
+    if(obj.hasclass("hidden"))
+      return overlay;
+
+    var winwidth = $(window).width();
+    var winheight = $(window).height();
+    var width = obj.$.outerWidth(true);
+    var height = obj.$.outerHeight(true);
+    var offset = obj.$.offset();
+    var left = offset.left;
+    var top = offset.top - $(document).scrollTop();
+    var right = winwidth - left - width;
+    var bottom = winheight - top - height;
+
     if(this.hasclass("left"))
-      this.css("left", "" + (-w-50) + "px");
-    else if(this.hasclass("right"))
-      this.css("right", "" + (-w-50) + "px");
+      obj.css("left", "" + (-left-width-5) + "px");
+    else if(this.hasclass("right")) {
+      if(obj === this) // we are moving whole overlay (position:fixed; alligned to right side)
+        obj.css("right", "" + (-right-width-5) + "px");
+      else // we are moving one child (position:relative)
+        obj.css("left", "" + (width+right+5) + "px");
+    }
     else if(this.hasclass("top"))
-      this.css("top", "" + (-h-50) + "px");
-    else if(this.hasclass("bottom"))
-      this.css("bottom", "" + (-h-50) + "px");
-    this.remclass("visible").addclass("hidden");
+      obj.css("top", "" + (-top-height-5) + "px");
+    else if(this.hasclass("bottom")) {
+      if(obj === this) // we are moving whole overlay (position:fixed; alligned to bottom side)
+        obj.css("bottom", "" + (-bottom-height-5) + "px");
+      else // we are moving one child (position:relative)
+        obj.css("top", "" + (height+bottom+5) + "px");
+    }
+
+    obj.remclass("visible").addclass("hidden");
     return this;
   };
 
@@ -1045,6 +1129,7 @@ noh.Reel.prototype.update = function(opt_lines) {
   if(opt_lines !== undefined)
     this.lines = opt_lines;
   //TODO: check opt_lines value in debug mode
+  //TODO: additional warning in debug mode, when lines is to close to length - so it can look ugly (test it in practice first)
 
   this.chksize();
 
@@ -1457,7 +1542,14 @@ noh.log.filter = function(logger, filter) {
 noh.log.addtime = function(logger) {
   var filter = function(data) {
     var now = new Date();
-    var time = "[" + now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds() + "]";
+    var time =
+      "[" +
+      noh.str.prefix("" + now.getHours(), "0", 2) +
+      ":" +
+      noh.str.prefix("" + now.getMinutes(), "0", 2) +
+      ":" +
+      noh.str.prefix("" + now.getSeconds(), "0", 2) +
+      "]";
     return [time].concat(Array.prototype.slice.call(data, 0));
   };
   return noh.log.filter(logger, filter);
@@ -1514,6 +1606,37 @@ noh.log.reel = function(lines, opt_duration) {
 };
 
 
+
+
+noh.cmdline = function(len) {
+  var input = noh.input({type: "text", size: len, placeholder: 'alert("hello world")', class:"noh cmdline"});
+  var enter = noh.button({class:"noh cmdline", title:"Press enter to run the command."}, String.fromCharCode(8629));
+  var cmdline = noh.div({class:"noh cmdline"}, input, enter).css("display", "inline-block");
+  cmdline.run = function() {
+    var val = input.$.val();
+    console.log(val);
+
+    try {
+      var r = eval(val);
+      if(r !== undefined)
+        console.log(r);
+    }
+    catch(e) {
+      console.error(e);
+    }
+
+    input.$.val("");
+  };
+  input.on("keypress", function(e) {
+    if(e.which == 13)
+      cmdline.run();
+  });
+  enter.on("click", function() {
+    cmdline.run();
+  });
+
+  return cmdline;
+};
 
 
 
