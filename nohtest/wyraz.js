@@ -41,8 +41,12 @@ function wyraz_body() {
 function slow_help() {
   slow_log([
     'Witamy w aplikacji Wyraz.',
-    'wpisz: anagram("wyraz") aby wyszukać anagramy słowa alamakota.',
-    'wpisz: metagram("hala") aby wyszukać metaramy słowa hala.',
+    'wpisz: anagram("wyraz") aby wyszukać anagramy słowa wyraz.',
+    'wpisz: metagram("hala") aby wyszukać metagramy słowa hala.',
+    'wpisz: skrotka("boisko") aby wyszukać skrótki słowa boisko.',
+    'wpisz: kolowo("boisko") aby wyszukać anagramy kołowe słowa boisko.',
+    'wpisz: wspak("boisko") aby otrzymać wyraz oksiob.',
+    'wpisz: kolowo(wspak("boisko")) aby otrzymać anagramy kołowe słowa oksiob.',
     'wpisz: wyraz("irena") aby przeanalizować wyraz irena pod wieloma różnymi względami.',
     'wpisz: 2+2*2 aby dowiedzieć się ile to jest 2+2*2 :-)',
     'wpisz: Math.random() aby wylosować liczbę rzeczywistą między 0 a 1',
@@ -126,6 +130,8 @@ var ghost_background = function(opt_root) {
 function wyraz(text) {
   console.log('Analizuję "' + text + '":');
   anagram(text);
+  metagram(text);
+  skrotka(text);
   console.log('Skończyłem analizę.');
 }
 
@@ -141,7 +147,7 @@ function anagram(text) {
   else {
     console.log('Znalazłem ' + results.length + ' anagramów "' + text + '" w słowniku:');
     for(var i = 0; i < results.length; ++i)
-      console.log('    ' + results[i]);
+      console.log('-   ' + results[i]);
   }
 }
 
@@ -158,10 +164,47 @@ function metagram(text) {
   else {
     console.log('Znalazłem ' + results.length + ' metagramów "' + text + '" w słowniku:');
     for(var i = 0; i < results.length; ++i)
-      console.log('    ' + results[i]);
+      console.log('-   ' + results[i]);
   }
 }
 
+function skrotka(text) {
+  console.log('Szukam skrótek "' + text + '":');
+  var results = [];
+  for(var i = 0; i < slowa.length; ++i)
+    if(chk_skrotka(text, slowa[i]))
+      results.push(slowa[i]);
+  if(results.length == 0) {
+    console.log('Nie znalazłem żadnych skrótek "' + text + '" w słowniku.');
+  }
+  else {
+    console.log('Znalazłem ' + results.length + ' skrótek "' + text + '" w słowniku:');
+    for(var i = 0; i < results.length; ++i)
+      console.log('-   ' + results[i]);
+  }
+}
+
+
+function kolowo(text) {
+  console.log('Szukam anagramów kołowych "' + text + '":');
+  var results = [];
+  for(var i = 0; i < slowa.length; ++i)
+    if(chk_kolowo(text, slowa[i]))
+      results.push(slowa[i]);
+  if(results.length == 0) {
+    console.log('Nie znalazłem żadnych anagramów kołowych "' + text + '" w słowniku.');
+  }
+  else {
+    console.log('Znalazłem ' + results.length + ' anagramów kołowych "' + text + '" w słowniku:');
+    for(var i = 0; i < results.length; ++i)
+      console.log('-   ' + results[i]);
+  }
+}
+
+
+function wspak(text) {
+  return text.split("").reverse().join("");
+}
 
 
 function chk_anagram(text1, text2) {
@@ -180,6 +223,25 @@ function chk_metagram(text1, text2) {
     return false;
   for(var i = 0; i < text1.length; ++i)
     if( (text1.substring(0, i) == text2.substring(0, i)) && (text1.substring(i+1) == text2.substring(i+1)) )
+      return true;
+  return false;
+}
+
+function chk_skrotka(text1, text2) {
+  if(text1.length != text2.length + 1)
+    return false;
+  for(var i = 0; i < text1.length; ++i)
+    if( (text1.substring(0, i) == text2.substring(0, i)) && (text1.substring(i+1) == text2.substring(i)) )
+      return true;
+  return false;
+}
+
+
+function chk_kolowo(text1, text2) {
+  if(text1.length != text2.length)
+    return false;
+  for(var i = 1; i < text1.length; ++i)
+    if(text1.substring(i) + text1.substring(0,i) == text2)
       return true;
   return false;
 }
