@@ -88,31 +88,27 @@ function load() {
     cache: true,
     xhrFields: {
       onprogress: function (e) {
-        if (e.lengthComputable) {
-          console.log('Loaded '+ (e.loaded / e.total * 100) + '%');
-        } else {
-          console.log('Length not computable.');
-        }
+        load.loaded_ = e.loaded;
       }
     },
     beforeSend: function (XHR) {
       XHR.progress(function() {
         console.warn(arguments);
       });
-      /*
       load.interval_ = setInterval (function () {
         if (XHR.readyState > 2)
-          var totalBytes  = XHR.getResponseHeader('Content-length');
-          var dlBytes     = XHR.responseText.length;
-          if(totalBytes > 0)
-            console.log(Math.round((dlBytes/ totalBytes) * 100) + "%")
+          var total  = XHR.getResponseHeader('Content-length');
+          var loaded = load.loaded_ !== undefined ? load.loaded_ : 0;
+          if((total > 0) && (loaded > 0))
+            console.log(Math.round((loaded/total) * 100) + "%")
+          else if(total > 0)
+            console.log(Math.round(total/1024) + "K");
           else
-            console.log(Math.round(dlBytes /1024) + "K");
+            console.log("...");
       }, 200);
-      */
     },
     complete: function () {
-      //clearInterval (load.interval_);
+      clearInterval (load.interval_);
     },
     success: function (response) {
       console.log("PL: Wczytywanie słownika dict zakończone. EN: Loading dict finished.");
