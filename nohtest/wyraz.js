@@ -78,36 +78,36 @@ function pomoc() {
 function load() {
   if(load.interval_) {
     console.error("PL: Wczytywanie w trakcie! EN: Loading already in progress!");
+    return;
   }
+  console.log("PL: Wczytywanie słownika:");
+  console.log("EN: Loading dict:");
   $.ajax ({
-    type            : 'GET',
-    //dataType        : 'xml',
-    url             : 'dict-utf8.json' ,
-    beforeSend      : function (XHR)
-    {
-        load.interval_ = setInterval (function ()
-        {
-            if (XHR.readyState > 2)
-            {
-                var totalBytes  = XHR.getResponseHeader('Content-length');
-                var dlBytes     = XHR.responseText.length;
-                if(totalBytes > 0)
-                  console.log(Math.round((dlBytes/ totalBytes) * 100) + "%")
-                else
-                  console.log(Math.round(dlBytes /1024) + "K");
-            }
-        }, 200);
+    type: 'GET',
+    url: 'dict-utf8.json' ,
+    cache: true,
+    beforeSend: function (XHR) {
+      load.interval_ = setInterval (function () {
+        if (XHR.readyState > 2)
+          var totalBytes  = XHR.getResponseHeader('Content-length');
+          var dlBytes     = XHR.responseText.length;
+          if(totalBytes > 0)
+            console.log(Math.round((dlBytes/ totalBytes) * 100) + "%")
+          else
+            console.log(Math.round(dlBytes /1024) + "K");
+      }, 200);
     },
-    complete        : function ()
-    {
-        clearInterval (load.interval_);
+    complete: function () {
+      clearInterval (load.interval_);
     },
-    success         : function (response)
-    {
-        console.log("PL: Wczytywanie słownika dict zakończone. EN: Loading dict finished.");
-        dict = response;
+    success: function (response) {
+      console.log("PL: Wczytywanie słownika dict zakończone. EN: Loading dict finished.");
+      dict = response;
+    },
+    error: function() {
+      console.error(arguments);
     }
-}); 
+  }); 
 }
 
 function slow_log(lines, delay) {
