@@ -86,10 +86,20 @@ function load() {
     type: 'GET',
     url: 'dict-utf8.json' ,
     cache: true,
+    xhrFields: {
+      onprogress: function (e) {
+        if (e.lengthComputable) {
+          console.log('Loaded '+ (e.loaded / e.total * 100) + '%');
+        } else {
+          console.log('Length not computable.');
+        }
+      }
+    }
     beforeSend: function (XHR) {
       XHR.progress(function() {
         console.warn(arguments);
       });
+      /*
       load.interval_ = setInterval (function () {
         if (XHR.readyState > 2)
           var totalBytes  = XHR.getResponseHeader('Content-length');
@@ -99,9 +109,10 @@ function load() {
           else
             console.log(Math.round(dlBytes /1024) + "K");
       }, 200);
+      */
     },
     complete: function () {
-      clearInterval (load.interval_);
+      //clearInterval (load.interval_);
     },
     success: function (response) {
       console.log("PL: Wczytywanie słownika dict zakończone. EN: Loading dict finished.");
