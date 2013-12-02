@@ -84,6 +84,7 @@ function load() {
   console.log("EN: Loading dict:");
   $.ajax ({
     type: 'GET',
+    dataType: 'json',
     url: 'dict-utf8.json' ,
     cache: true,
     xhrFields: {
