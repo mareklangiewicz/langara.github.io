@@ -87,6 +87,9 @@ function load() {
     url: 'dict-utf8.json' ,
     cache: true,
     beforeSend: function (XHR) {
+      XHR.progress(function() {
+        console.warn(arguments);
+      });
       load.interval_ = setInterval (function () {
         if (XHR.readyState > 2)
           var totalBytes  = XHR.getResponseHeader('Content-length');
