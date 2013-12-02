@@ -89,6 +89,7 @@ function load() {
     xhrFields: {
       onprogress: function (e) {
         load.loaded_ = e.loaded;
+        load.total_ = e.total;
       }
     },
     beforeSend: function (XHR) {
@@ -96,16 +97,15 @@ function load() {
         console.warn(arguments);
       });
       load.interval_ = setInterval (function () {
-        if (XHR.readyState > 2)
-          var total  = XHR.getResponseHeader('Content-length');
-          var loaded = load.loaded_ !== undefined ? load.loaded_ : 0;
-          if((total > 0) && (loaded > 0))
-            console.log(Math.round((loaded/total) * 100) + "%")
-          else if(total > 0)
-            console.log(Math.round(total/1024) + "K");
-          else
-            console.log("...");
-      }, 200);
+        var total = load.total_ !== undefined ? load.total_ : 0; 
+        var loaded = load.loaded_ !== undefined ? load.loaded_ : 0;
+        if((total > 0) && (loaded > 0))
+          console.log(Math.round((loaded/total) * 100) + "%")
+        else if(loaded > 0)
+          console.log(Math.round(loaded/1024) + "K");
+        else
+          console.log("...");
+      }, 500);
     },
     complete: function () {
       clearInterval (load.interval_);
