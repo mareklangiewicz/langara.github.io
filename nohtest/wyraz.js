@@ -102,7 +102,7 @@ function load() {
         if((total > 0) && (loaded > 0))
           console.log(Math.round((loaded/total) * 100) + "%")
         else if(loaded > 0)
-          console.log(Math.round(loaded/1024) + "K");
+          console.log(Math.round(loaded/1024) + " KB");
         else
           console.log("...");
       }, 500);
@@ -111,7 +111,8 @@ function load() {
       clearInterval (load.interval_);
     },
     success: function (response) {
-      console.log("PL: Wczytywanie słownika dict zakończone. EN: Loading dict finished.");
+      console.log("PL: Wczytywanie słownika dict zakończone.");
+      console.log("EN: Loading dict finished.");
       dict = response;
     },
     error: function() {
