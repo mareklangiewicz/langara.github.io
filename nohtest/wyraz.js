@@ -94,7 +94,7 @@ function load() {
           console.log('Length not computable.');
         }
       }
-    }
+    },
     beforeSend: function (XHR) {
       XHR.progress(function() {
         console.warn(arguments);
