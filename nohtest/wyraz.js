@@ -40,6 +40,7 @@ function wyraz_body() {
     'PL: Witamy w aplikacji Wyraz. Wpisz: pomoc() aby uzyskać więcej pomocy.',
     'EN: Welcome to Wyraz app. Enter: help() to get some help.'
   ], 500);
+  window.setTimeout(function() {cmdline[0].$.focus();}, 200);
   return body;
 }
 
@@ -84,8 +85,9 @@ function load() {
   console.log("EN: Loading dict:");
   $.ajax ({
     type: 'GET',
-    dataType: 'json',
-    url: 'dict-utf8.json' ,
+    dataType: 'script',
+    //url: 'dict-utf8.json',
+    url: 'dict-utf8.js',
     cache: true,
     xhrFields: {
       onprogress: function (e) {
@@ -110,11 +112,11 @@ function load() {
     },
     complete: function () {
       clearInterval (load.interval_);
+      load.interval_ = undefined;
     },
     success: function (response) {
       console.log("PL: Wczytywanie słownika dict zakończone.");
       console.log("EN: Loading dict finished.");
-      dict = response;
     },
     error: function() {
       console.error(arguments);
