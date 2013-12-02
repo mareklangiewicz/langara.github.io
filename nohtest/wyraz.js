@@ -1,5 +1,7 @@
 // [ vim: set tabstop=2 shiftwidth=2 expandtab : ] 
 
+var dict = [];
+
 function init() {
   noh.init({pollute:true});
   var body = wyraz_body();
@@ -34,30 +36,78 @@ function wyraz_body() {
   logger.on("click", function() {overlay.hide(); return false;});
   $(document).on("click", function() {overlay.show();});
   ghost_background(body.dom);
-  slow_help();
+  slow_log([
+    'PL: Witamy w aplikacji Wyraz. Wpisz: pomoc() aby uzyskać więcej pomocy.',
+    'EN: Welcome to Wyraz app. Enter: help() to get some help.'
+  ], 500);
   return body;
 }
 
-function slow_help() {
+
+function help() {
   slow_log([
-    'Witamy w aplikacji Wyraz.',
+    'Help for "Wyraz" app:',
+    'This is an application for playing around with polish words dictionary.',
+    'enter: load() to load the dictionary to the dict variable (warning: it can take even 5 minutes)',
+    'TODO: translate help to english'
+  ], 500);
+}
+
+function pomoc() {
+  slow_log([
+    'Pomoc aplikacji Wyraz:',
+    'wpisz: load() aby wczytać słownik do zmiennej dict. (uwaga: to może potrwać nawet parę minut)',
+    'wpisz: dict.length aby zobaczyć ile słów jest w słowniku.',
+    'wpisz: dict[0] aby zobaczyć pierwsze słowo w słowniku.',
+    'wpisz: dict[10] aby zobaczyć jedenaste słowo w słowniku.',
+    'wpisz: dict[100000] aby zobaczyć stutysięczne-pierwsze słowo w słowniku.',
     'wpisz: anagram("wyraz") aby wyszukać anagramy słowa wyraz.',
     'wpisz: metagram("hala") aby wyszukać metagramy słowa hala.',
-    'wpisz: skrotka("boisko") aby wyszukać skrótki słowa boisko.',
-    'wpisz: kolowo("boisko") aby wyszukać anagramy kołowe słowa boisko.',
-    'wpisz: wspak("boisko") aby otrzymać wyraz oksiob.',
-    'wpisz: kolowo(wspak("boisko")) aby otrzymać anagramy kołowe słowa oksiob.',
+    'wpisz: shorter("boisko") aby wyszukać skrótki słowa boisko.',
+    'wpisz: circle("boisko") aby wyszukać anagramy kołowe słowa boisko.',
+    'wpisz: rev("boisko") aby otrzymać wyraz oksiob.',
+    'wpisz: circle(rev("boisko")) aby otrzymać anagramy kołowe słowa oksiob.',
     'wpisz: wyraz("irena") aby przeanalizować wyraz irena pod wieloma różnymi względami.',
     'wpisz: 2+2*2 aby dowiedzieć się ile to jest 2+2*2 :-)',
-    'wpisz: Math.random() aby wylosować liczbę rzeczywistą między 0 a 1',
-    'wpisz: Math.random()*100 aby wylosować liczbę rzeczywistą z przedziału 0..100',
-    'wpisz: Math.round(Math.random()*100) aby wylosować liczbę całkowitą z przedziału 0..100',
-    'wpisz: slowa[10] aby zobaczyć dziesiąte słowo w słowniku.',
-    'wpisz: slowa[100000] aby zobaczyć stutysięczne słowo w słowniku.',
-    'wpisz: slowa.length aby zobaczyć ile słów jest w słowniku.',
-    'wpisz: slowa[Math.round(Math.random()*slowa.length)] aby zobaczyć losowe słowo ze słownika.',
+    'wpisz: rnd(0,100) aby otrzymać liczbę losową z przedziału 0..100.',
+    'wpisz: dict[rnd(0,dict.length-1)] aby zobaczyć losowe słowo ze słownika.',
     '(możesz używać dowolnych instrukcji języka javascript)'
-  ], 2000);
+  ], 500);
+}
+
+function load() {
+  if(load.interval_) {
+    console.error("PL: Wczytywanie w trakcie! EN: Loading already in progress!");
+  }
+  $.ajax ({
+    type            : 'GET',
+    //dataType        : 'xml',
+    url             : 'dict-utf8.json' ,
+    beforeSend      : function (XHR)
+    {
+        load.interval_ = setInterval (function ()
+        {
+            if (XHR.readyState > 2)
+            {
+                var totalBytes  = XHR.getResponseHeader('Content-length');
+                var dlBytes     = XHR.responseText.length;
+                if(totalBytes > 0)
+                  console.log(Math.round((dlBytes/ totalBytes) * 100) + "%")
+                else
+                  console.log(Math.round(dlBytes /1024) + "K");
+            }
+        }, 200);
+    },
+    complete        : function ()
+    {
+        clearInterval (load.interval_);
+    },
+    success         : function (response)
+    {
+        console.log("PL: Wczytywanie słownika dict zakończone. EN: Loading dict finished.");
+        dict = response;
+    }
+}); 
 }
 
 function slow_log(lines, delay) {
@@ -111,7 +161,7 @@ var ghost = function(element, opt_delay, opt_duration, opt_root) {
 };
 
 var word_ghost = function(opt_delay, opt_duration, opt_root) {
-  var word = noh.fancy(h2(slowa[rnd(0,slowa.length-1)]));
+  var word = noh.fancy(h2(dict[rnd(0,dict.length-1)]));
   var winwidth = $(window).width();
   var winheight = $(window).height();
   word.css("left", rnd(10, winwidth/2));
@@ -131,16 +181,18 @@ function wyraz(text) {
   console.log('Analizuję "' + text + '":');
   anagram(text);
   metagram(text);
-  skrotka(text);
+  shorter(text);
+  circle(text);
+  circle(rev(text));
   console.log('Skończyłem analizę.');
 }
 
 function anagram(text) {
   console.log('Szukam anagramów "' + text + '":');
   var results = [];
-  for(var i = 0; i < slowa.length; ++i)
-    if(chk_anagram(text, slowa[i]))
-      results.push(slowa[i]);
+  for(var i = 0; i < dict.length; ++i)
+    if(chk_anagram(text, dict[i]))
+      results.push(dict[i]);
   if(results.length == 0) {
     console.log('Nie znalazłem żadnych anagramów "' + text + '" w słowniku.');
   }
@@ -155,9 +207,9 @@ function anagram(text) {
 function metagram(text) {
   console.log('Szukam metagramów "' + text + '":');
   var results = [];
-  for(var i = 0; i < slowa.length; ++i)
-    if(chk_metagram(text, slowa[i]))
-      results.push(slowa[i]);
+  for(var i = 0; i < dict.length; ++i)
+    if(chk_metagram(text, dict[i]))
+      results.push(dict[i]);
   if(results.length == 0) {
     console.log('Nie znalazłem żadnych metagramów "' + text + '" w słowniku.');
   }
@@ -168,12 +220,12 @@ function metagram(text) {
   }
 }
 
-function skrotka(text) {
+function shorter(text) {
   console.log('Szukam skrótek "' + text + '":');
   var results = [];
-  for(var i = 0; i < slowa.length; ++i)
-    if(chk_skrotka(text, slowa[i]))
-      results.push(slowa[i]);
+  for(var i = 0; i < dict.length; ++i)
+    if(chk_shorter(text, dict[i]))
+      results.push(dict[i]);
   if(results.length == 0) {
     console.log('Nie znalazłem żadnych skrótek "' + text + '" w słowniku.');
   }
@@ -185,12 +237,12 @@ function skrotka(text) {
 }
 
 
-function kolowo(text) {
+function circle(text) {
   console.log('Szukam anagramów kołowych "' + text + '":');
   var results = [];
-  for(var i = 0; i < slowa.length; ++i)
-    if(chk_kolowo(text, slowa[i]))
-      results.push(slowa[i]);
+  for(var i = 0; i < dict.length; ++i)
+    if(chk_circle(text, dict[i]))
+      results.push(dict[i]);
   if(results.length == 0) {
     console.log('Nie znalazłem żadnych anagramów kołowych "' + text + '" w słowniku.');
   }
@@ -202,7 +254,7 @@ function kolowo(text) {
 }
 
 
-function wspak(text) {
+function rev(text) {
   return text.split("").reverse().join("");
 }
 
@@ -227,7 +279,7 @@ function chk_metagram(text1, text2) {
   return false;
 }
 
-function chk_skrotka(text1, text2) {
+function chk_shorter(text1, text2) {
   if(text1.length != text2.length + 1)
     return false;
   for(var i = 0; i < text1.length; ++i)
@@ -237,7 +289,7 @@ function chk_skrotka(text1, text2) {
 }
 
 
-function chk_kolowo(text1, text2) {
+function chk_circle(text1, text2) {
   if(text1.length != text2.length)
     return false;
   for(var i = 1; i < text1.length; ++i)
