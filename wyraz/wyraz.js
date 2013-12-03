@@ -12,37 +12,11 @@ function init() {
 $(document).ready(init);
 
 
-function wyraz_body() {
-  var cmdline = noh.cmdline(40).addclass("pretty");
-  var logger = noh.log.reel(35, 240000).addclass("pretty");
-  noh.log.l2c(
-    noh.log.multi([
-      noh.log.c2l(window.console),
-      noh.log.limitlen(
-        noh.log.addtime(
-          logger
-        ), 120
-      )
-   ])
-  ).install();
-  var overlay = noh.overlay(logger, cmdline);
-  overlay.addclass("bottom smooth"); //We will control left/right position by hand
-  overlay.css("right", 20);
-  var body = div(
-    noh.fancy(h1("Wyraz")),
-    overlay
-  ).addclass("smooth");
-  logger.on("click", function() {overlay.hide(); return false;});
-  $(document).on("click", function() {overlay.show();});
-  ghost_background(body.dom);
-  slow_log([
-    'PL: Witamy w aplikacji Wyraz. Wpisz: pomoc() aby uzyskać więcej pomocy.',
-    'EN: Welcome to Wyraz app. Enter: help() to get some help.'
-  ], 500);
-  window.setTimeout(function() {cmdline[0].$.focus();}, 200);
-  return body;
-}
 
+
+
+
+// Komendy dla uzytkownika:
 
 function help() {
   slow_log([
@@ -53,14 +27,17 @@ function help() {
   ], 500);
 }
 
+function advanced() {
+  slow_log([
+    'Advanced help for "Wyraz" app:',
+    'TODO: translate advanced help to english'
+  ], 500);
+}
+
 function pomoc() {
   slow_log([
     'Pomoc aplikacji Wyraz:',
     'wpisz: load("words-games") aby wczytać słownik words-games do zmiennej words. (uwaga: to może potrwać nawet parę minut)',
-    'wpisz: words.length aby sprawdzić liczbę słów w słowniku.',
-    'wpisz: words[0] aby zobaczyć pierwsze słowo w słowniku.',
-    'wpisz: words[10] aby zobaczyć jedenaste słowo w słowniku.',
-    'wpisz: words[100000] aby zobaczyć stutysięczne-pierwsze słowo w słowniku.',
     'wpisz: anagram("okulista", words) aby wyszukać anagramy słowa okulista w słowniku words.',
     'wpisz: metagram("hala", words) aby wyszukać metagramy słowa hala w słowniku words.',
     'wpisz: shorter("boisko", words) aby wyszukać skrótki słowa boisko w słowniku words.',
@@ -68,10 +45,25 @@ function pomoc() {
     'wpisz: rev("boisko") aby otrzymać odwrotność wyrazu boisko, czyli oksiob.',
     'wpisz: circle(rev("boisko")) aby wyszukać przekształcenia kołowe słowa oksiob w słowniku words.',
     'wpisz: wyraz("irena") aby przeanalizować wyraz irena pod wieloma różnymi względami.',
+    'wpisz: zaawansowany() aby zobaczyć pomoc dla zaawansowanych.'
+  ], 500);
+}
+
+function zaawansowany() {
+  slow_log([
+    'Zaawansowana pomoc aplikacji Wyraz:',
+    'wpisz: words.length aby sprawdzić liczbę słów w słowniku.',
+    'wpisz: words[0] aby zobaczyć pierwsze słowo w słowniku.',
+    'wpisz: words[10] aby zobaczyć jedenaste słowo w słowniku.',
+    'wpisz: words[100000] aby zobaczyć stutysięczne-pierwsze słowo w słowniku.',
+    'wpisz: words[10] = "blabla" aby podmienić jedenaste słowo w słowniku na "blabla" (wszelkie zmiany są tylko tymczasowe - do przeładowania strony)',
     'wpisz: 2+2*2 aby dowiedzieć się ile to jest 2+2*2 :-)',
     'wpisz: rnd(0,100) aby otrzymać liczbę losową z przedziału 0..100.',
     'wpisz: words[rnd(0,words.length-1)] aby zobaczyć losowe słowo ze słownika.',
-    '(możesz używać dowolnych instrukcji języka javascript)'
+    'TODO: więcej pomocy!!!',
+    '(możesz używać dowolnych instrukcji języka javascript)',
+    'Alternatywnie można używać wbudowanej konsoli przeglądarki Google Chrome (Ctrl+Shift+J)',
+    'może nie jest taka piękna :-) ale pod wieloma względami lepsza..'
   ], 500);
 }
 
@@ -86,8 +78,8 @@ function load(dictname) {
     console.error('EN: Enter dictionary name! (for example: "words-games" or: "words-freq")');
     return;
   }
-  console.log("PL: Wczytywanie słownika:");
-  console.log("EN: Loading words:");
+  console.log('PL: Wczytywanie słownika "' + dictname + '" do zmiennej words:');
+  console.log('EN: Loading dictionary "' + dictname + '" to variable words:');
   $.ajax ({
     type: 'GET',
     dataType: 'script',
@@ -119,8 +111,8 @@ function load(dictname) {
       load.interval_ = undefined;
     },
     success: function (response) {
-      console.log("PL: Wczytywanie słownika words zakończone.");
-      console.log("EN: Loading dictionary to variable words finished.");
+      console.log('PL: Wczytywanie słownika "' + dictname + '" do zmiennej words zakończone pomyślnie.');
+      console.log('EN: Loading dictionary "' + dictname + '" to variable words finished successfully.');
     },
     error: function() {
       console.error(arguments);
@@ -128,72 +120,8 @@ function load(dictname) {
   }); 
 }
 
-function slow_log(lines, delay) {
-  var idx = 0;
-  var interval = undefined;
-  var callback = function() {
-    if(idx >= lines.length) {
-      window.clearInterval(interval);
-      interval = undefined;
-      return;
-    }
-    console.log(lines[idx]);
-    idx ++;
-  };
-
-  interval = window.setInterval(callback, delay);
-}
-
-
 function rnd(min, max) { return Math.round(min + Math.random() * (max-min+1)); }
 
-
-/**
- * This element will show itself somewhere  for a while and then it sill disappear. That's all.
- * @param {!noh.Element} element that will become a ghost
- * @param {number=} opt_delay How many miliseconds will it be hidden before showing itself. Default is random between 0 and 10000
- * @param {number=} opt_duration How many miliseconds will it be shown before hiding itself forever. Default is random between 0 and 10000
- * @param {Node=} opt_root A root element to which the gost will be attached (and detached later). Default is document.body
- */
-var ghost = function(element, opt_delay, opt_duration, opt_root) {
-  var delay = opt_delay === undefined ? rnd(0,10000) : opt_delay;
-  var duration = opt_duration === undefined ? rnd(0,10000) : opt_duration;
-  var root = opt_root ? opt_root : document.body;
-  var aghost = noh.sleepy(element, opt_duration).addclass("ghost");
-
-  var detach = function() {
-    aghost.detachFromDOM(root);
-  };
-
-  var show = function() {
-    aghost.wake();
-    window.setTimeout(detach, duration + 20000);
-  };
-
-  var attach = function() {
-    aghost.attachToDOM(root);
-    window.setTimeout(show, 2000);
-  };
-
-  window.setTimeout(attach, delay);
-};
-
-var word_ghost = function(opt_delay, opt_duration, opt_root) {
-  var word = noh.fancy(h2(words[rnd(0,words.length-1)]));
-  var winwidth = $(window).width();
-  var winheight = $(window).height();
-  word.css("left", rnd(10, winwidth/2));
-  word.css("top", rnd(100, winheight-200));
-  ghost(word, opt_delay, opt_duration, opt_root);
-};
-
-
-var ghost_background = function(opt_root) {
-  var next_ghost = function() {
-    word_ghost(rnd(500, 5000), rnd(1000, 10000), opt_root);
-  };
-  window.setInterval(next_ghost, 3000);
-};
 
 function wyraz(text) {
   console.log('Analizuję "' + text + '":');
@@ -316,4 +244,116 @@ function chk_circle(text1, text2) {
   return false;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function wyraz_body() {
+  var cmdline = noh.cmdline(40).addclass("pretty");
+  var logger = noh.log.reel(35, 240000).addclass("pretty");
+  noh.log.l2c(
+    noh.log.multi([
+      noh.log.c2l(window.console),
+      noh.log.limitlen(
+        noh.log.addtime(
+          logger
+        ), 120
+      )
+   ])
+  ).install();
+  var overlay = noh.overlay(logger, cmdline);
+  overlay.addclass("bottom smooth"); //We will control left/right position by hand
+  overlay.css("right", 20);
+  var body = div(
+    noh.fancy(h1("Wyraz")),
+    overlay
+  ).addclass("smooth");
+  logger.on("click", function() {overlay.hide(); return false;});
+  $(document).on("click", function() {overlay.show();});
+  ghost_background(body.dom);
+  slow_log([
+    'PL: Witamy w aplikacji Wyraz. Wpisz: pomoc() aby uzyskać więcej pomocy.',
+    'EN: Welcome to Wyraz app. Enter: help() to get some help.'
+  ], 500);
+  window.setTimeout(function() {cmdline[0].$.focus();}, 200);
+  return body;
+}
+
+
+
+function slow_log(lines, delay) {
+  var idx = 0;
+  var interval = undefined;
+  var callback = function() {
+    if(idx >= lines.length) {
+      window.clearInterval(interval);
+      interval = undefined;
+      return;
+    }
+    console.log(lines[idx]);
+    idx ++;
+  };
+
+  interval = window.setInterval(callback, delay);
+}
+
+
+
+
+/**
+ * This element will show itself somewhere  for a while and then it sill disappear. That's all.
+ * @param {!noh.Element} element that will become a ghost
+ * @param {number=} opt_delay How many miliseconds will it be hidden before showing itself. Default is random between 0 and 10000
+ * @param {number=} opt_duration How many miliseconds will it be shown before hiding itself forever. Default is random between 0 and 10000
+ * @param {Node=} opt_root A root element to which the gost will be attached (and detached later). Default is document.body
+ */
+var ghost = function(element, opt_delay, opt_duration, opt_root) {
+  var delay = opt_delay === undefined ? rnd(0,10000) : opt_delay;
+  var duration = opt_duration === undefined ? rnd(0,10000) : opt_duration;
+  var root = opt_root ? opt_root : document.body;
+  var aghost = noh.sleepy(element, opt_duration).addclass("ghost");
+
+  var detach = function() {
+    aghost.detachFromDOM(root);
+  };
+
+  var show = function() {
+    aghost.wake();
+    window.setTimeout(detach, duration + 20000);
+  };
+
+  var attach = function() {
+    aghost.attachToDOM(root);
+    window.setTimeout(show, 2000);
+  };
+
+  window.setTimeout(attach, delay);
+};
+
+var word_ghost = function(opt_delay, opt_duration, opt_root) {
+  var word = noh.fancy(h2(words[rnd(0,words.length-1)]));
+  var winwidth = $(window).width();
+  var winheight = $(window).height();
+  word.css("left", rnd(10, winwidth/2));
+  word.css("top", rnd(100, winheight-200));
+  ghost(word, opt_delay, opt_duration, opt_root);
+};
+
+
+var ghost_background = function(opt_root) {
+  var next_ghost = function() {
+    word_ghost(rnd(500, 5000), rnd(1000, 10000), opt_root);
+  };
+  window.setInterval(next_ghost, 3000);
+};
 
