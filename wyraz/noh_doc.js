@@ -63,9 +63,10 @@ function about() {
     p("TODO: about initialization; about options; about pollute:true and why we should avoid it in bigger projects;"),
     p("TODO: example that adds some dynamic behavoiur, and serves as a kind of template"),
     p("The NOH library requires a jQuery library. (tested on: jquery-1.10.2.js)"),
+    p("Please check the ", a({href:'noh_tests.html'}, b("noh_tests.html")), " file! It demonstrates all available elements in action."),
     p("Additional API documentation generated with ",
       a({href:'http://usejsdoc.org/'}, "jsdoc3"),
-      " is available here: ",
+      " will be available here: ",
       a({href:'apidoc/index.html'}, "NOH API documentation")
     )
   );

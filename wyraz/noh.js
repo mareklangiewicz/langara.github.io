@@ -369,7 +369,7 @@ noh.Node.prototype.splice = function() { throw new NotSupportedError(); };
 
 /**
  * Attaches a node to given DOM root element
- * @param {!noh.Node} root
+ * @param {!Node} root (It's a DOM Node class (not noh.Node)
  * @return {!noh.Node} this (for chaining)
  */
 noh.Node.prototype.attachToDOM = function(root) {
@@ -1637,6 +1637,16 @@ noh.cmdline = function(len) {
 
   return cmdline;
 };
+
+
+
+
+
+
+
+
+
+
 
 
 
