@@ -16,7 +16,7 @@ $(document).ready(init);
 
 
 
-// Komendy dla uzytkownika:
+// User commands:
 
 function help() {
   slow_log([
@@ -24,14 +24,14 @@ function help() {
     'This is an application for playing around with polish words dictionary.',
     'enter: load() to load the dictionary to the words variable (warning: it can take even 5 minutes)',
     'TODO: translate help to english'
-  ], 500);
+  ], 200);
 }
 
 function advanced() {
   slow_log([
     'Advanced help for "Wyraz" app:',
     'TODO: translate advanced help to english'
-  ], 500);
+  ], 200);
 }
 
 function pomoc() {
@@ -40,13 +40,14 @@ function pomoc() {
     'wpisz: load("words-games") aby wczytać słownik words-games do zmiennej words. (uwaga: to może potrwać nawet parę minut)',
     'wpisz: anagram("okulista", words) aby wyszukać anagramy słowa okulista w słowniku words.',
     'wpisz: metagram("hala", words) aby wyszukać metagramy słowa hala w słowniku words.',
-    'wpisz: shorter("boisko", words) aby wyszukać skrótki słowa boisko w słowniku words.',
-    'wpisz: circle("boisko") aby wyszukać przekształcenia kołowe słowa boisko w słowniku words.',
+    'wpisz: short("boisko", words) aby wyszukać skrótki słowa boisko w słowniku words.',
+    'wpisz: carousel("boisko", words) aby wyszukać karuzeli słowa boisko w słowniku words.',
     'wpisz: rev("boisko") aby otrzymać odwrotność wyrazu boisko, czyli oksiob.',
-    'wpisz: circle(rev("boisko")) aby wyszukać przekształcenia kołowe słowa oksiob w słowniku words.',
-    'wpisz: wyraz("irena") aby przeanalizować wyraz irena pod wieloma różnymi względami.',
+    'wpisz: carousel(rev("boisko"), words) aby wyszukać karuzeli słowa oksiob w słowniku words.',
+    'wpisz: drawer("ala", words) aby wyszukać szuflad słowa ala w słowniku words.',
+    'wpisz: wyraz("irena", words) aby przeanalizować wyraz irena pod wieloma różnymi względami używając słownika words.',
     'wpisz: zaawansowany() aby zobaczyć pomoc dla zaawansowanych.'
-  ], 500);
+  ], 200);
 }
 
 function zaawansowany() {
@@ -64,7 +65,218 @@ function zaawansowany() {
     '(możesz używać dowolnych instrukcji języka javascript)',
     'Alternatywnie można używać wbudowanej konsoli przeglądarki Google Chrome (Ctrl+Shift+J)',
     'może nie jest taka piękna :-) ale pod wieloma względami lepsza..'
-  ], 500);
+  ], 200);
+}
+
+
+
+function anagram(arr1, arr2) {
+  if(!(arr1 instanceof Array))
+    arr1 = [arr1];
+  if(!(arr2 instanceof Array))
+    arr2 = [arr2];
+  var res = []; // all results will be here
+  for(var i = 0; i < arr1.length; ++i) {
+    console.log('PL: Szukam anagramów "' + arr1[i] + '":');
+    console.log('EN: Searching for anagrams "' + arr1[i] + '":');
+    var r = []; // results for given ar1[i]
+    for(var j = 0; j < arr2.length; ++j)
+      if(chk_anagram(arr1[i], arr2[j]))
+        r.push(arr2[j]);
+    if(r.length == 0) {
+      console.log('PL: Nie znalazłem żadnych anagramów "' + arr1[i] + '".');
+      console.log('EN: No anagrams of "' + arr1[i] + '" found.');
+    }
+    else {
+      console.log('PL: Znalazłem ' + r.length + ' anagramów "' + arr1[i] + '".');
+      console.log('EN: ' + r.length + ' "' + arr1[i] +'" anagrams found.');
+    }
+    res = res.concat(r);
+  }
+  return res;
+}
+
+
+function metagram(arr1, arr2) {
+  if(!(arr1 instanceof Array))
+    arr1 = [arr1];
+  if(!(arr2 instanceof Array))
+    arr2 = [arr2];
+  var res = []; // all results will be here
+  for(var i = 0; i < arr1.length; ++i) {
+    console.log('PL: Szukam metagramów "' + arr1[i] + '":');
+    console.log('EN: Searching for metagrams "' + arr1[i] + '":');
+    var r = []; // results for given ar1[i]
+    for(var j = 0; j < arr2.length; ++j)
+      if(chk_metagram(arr1[i], arr2[j]))
+        r.push(arr2[j]);
+    if(r.length == 0) {
+      console.log('PL: Nie znalazłem żadnych metagramów "' + arr1[i] + '".');
+      console.log('EN: No metagrams of "' + arr1[i] + '" found.');
+    }
+    else {
+      console.log('PL: Znalazłem ' + r.length + ' metagramów "' + arr1[i] + '".');
+      console.log('EN: ' + r.length + ' "' + arr1[i] +'" metagrams found.');
+    }
+    res = res.concat(r);
+  }
+  return res;
+}
+
+function short(arr1, arr2) {
+  if(!(arr1 instanceof Array))
+    arr1 = [arr1];
+  if(!(arr2 instanceof Array))
+    arr2 = [arr2];
+  var res = []; // all results will be here
+  for(var i = 0; i < arr1.length; ++i) {
+    console.log('PL: Szukam skrótek "' + arr1[i] + '":');
+    console.log('EN: Searching for shorts "' + arr1[i] + '":');
+    var r = []; // results for given ar1[i]
+    for(var j = 0; j < arr2.length; ++j)
+      if(chk_short(arr1[i], arr2[j]))
+        r.push(arr2[j]);
+    if(r.length == 0) {
+      console.log('PL: Nie znalazłem żadnych skrótek "' + arr1[i] + '".');
+      console.log('EN: No shorts of "' + arr1[i] + '" found.');
+    }
+    else {
+      console.log('PL: Znalazłem ' + r.length + ' skrótek "' + arr1[i] + '".');
+      console.log('EN: ' + r.length + ' "' + arr1[i] +'" shorts found.');
+    }
+    res = res.concat(r);
+  }
+  return res;
+}
+
+
+function carousel(arr1, arr2) {
+  if(!(arr1 instanceof Array))
+    arr1 = [arr1];
+  if(!(arr2 instanceof Array))
+    arr2 = [arr2];
+  var res = []; // all results will be here
+  for(var i = 0; i < arr1.length; ++i) {
+    console.log('PL: Szukam karuzeli "' + arr1[i] + '":');
+    console.log('EN: Searching for carousels "' + arr1[i] + '":');
+    var r = []; // results for given ar1[i]
+    for(var j = 0; j < arr2.length; ++j)
+      if(chk_carousel(arr1[i], arr2[j]))
+        r.push(arr2[j]);
+    if(r.length == 0) {
+      console.log('PL: Nie znalazłem żadnych karuzel "' + arr1[i] + '".');
+      console.log('EN: No carousels of "' + arr1[i] + '" found.');
+    }
+    else {
+      console.log('PL: Znalazłem ' + r.length + ' karuzel "' + arr1[i] + '".');
+      console.log('EN: ' + r.length + ' "' + arr1[i] +'" carousels found.');
+    }
+    res = res.concat(r);
+  }
+  return res;
+}
+
+
+function drawer(arr1, arr2) {
+  if(!(arr1 instanceof Array))
+    arr1 = [arr1];
+  if(!(arr2 instanceof Array))
+    arr2 = [arr2];
+  var res = []; // all results will be here
+  for(var i = 0; i < arr1.length; ++i) {
+    console.log('PL: Szukam szuflad "' + arr1[i] + '":');
+    console.log('EN: Searching for drawers "' + arr1[i] + '":');
+    var r = []; // results for given ar1[i]
+    for(var j = 0; j < arr2.length; ++j)
+      if(chk_drawer(arr1[i], arr2[j]))
+        r.push(arr2[j]);
+    if(r.length == 0) {
+      console.log('PL: Nie znalazłem żadnych szuflad "' + arr1[i] + '".');
+      console.log('EN: No drawers of "' + arr1[i] + '" found.');
+    }
+    else {
+      console.log('PL: Znalazłem ' + r.length + ' szuflad "' + arr1[i] + '".');
+      console.log('EN: ' + r.length + ' "' + arr1[i] +'" drawers found.');
+    }
+    res = res.concat(r);
+  }
+  return res;
+}
+
+
+function find(arr1, arr2) {
+  if(!(arr1 instanceof Array))
+    arr1 = [arr1];
+  if(!(arr2 instanceof Array))
+    arr2 = [arr2];
+  var res = []; // all results will be here
+  for(var i = 0; i < arr1.length; ++i)
+    for(var j = 0; j < arr2.length; ++j)
+      if(arr1[i] == arr2[j]) {
+        res.push(arr2[j]);
+        break;
+      }
+  return res;
+}
+
+function rev(arr1, arr2) {
+
+  var rev_ = function(text) {
+    return text.split("").reverse().join("");
+  };
+
+  var res = [];
+  
+  if(!(arr1 instanceof Array))
+    arr1 = [arr1];
+
+  if(arr2 === undefined) {
+    for(var i = 0; i < arr1.length; ++i)
+      res.push(rev_(arr1[i]));
+    return res;
+  }
+
+  if(!(arr2 instanceof Array))
+    arr2 = [arr2];
+
+  for(var i = 0; i < arr1.length; ++i) {
+    if(arr2.length > 1) { // We do not pollute the console if the dictionary is just one word.
+      console.log('PL: Szukam odwrotności "' + arr1[i] + '":');
+      console.log('EN: Searching for reverse "' + arr1[i] + '":');
+    }
+
+    var r = find(rev_(arr1[i]), arr2);
+
+    if(arr2.length > 1) { // We do not pollute the console if the dictionary is just one word.
+      if(r.length == 0) {
+        console.log('PL: Nie znalazłem odwrotności "' + arr1[i] + '".');
+        console.log('EN: No reverse of "' + arr1[i] + '" found.');
+      }
+      else {
+        console.log('PL: Znalazłem ' + r.length + ' odwrotności "' + arr1[i] + '".');
+        console.log('EN: ' + r.length + ' "' + arr1[i] +'" reverse found.');
+      }
+    }
+    res = res.concat(r);
+  }
+
+  return res;
+}
+
+function rnd(min, max) { return Math.round(min + Math.random() * (max-min+1)); }
+
+
+function wyraz(arr1, arr2) {
+  var res = [];
+  var r = []; // result of single operation.
+  r = anagram(arr1, arr2); console.log(r); res = res.concat(r);
+  r = metagram(arr1, arr2); console.log(r); res = res.concat(r); 
+  r = short(arr1, arr2); console.log(r); res = res.concat(r);
+  r = rev(arr1, arr2); console.log(r); res = res.concat(r);
+  r = carousel(arr1, arr2); console.log(r); res = res.concat(r);
+  r = carousel(rev(arr1), arr2); console.log(r); res = res.concat(r);
+  r = drawer(arr1, arr2); console.log(r); res = res.concat(r);
+  return res;
 }
 
 function load(dictname) {
@@ -120,89 +332,6 @@ function load(dictname) {
   }); 
 }
 
-function rnd(min, max) { return Math.round(min + Math.random() * (max-min+1)); }
-
-
-function wyraz(text) {
-  console.log('Analizuję "' + text + '":');
-  anagram(text);
-  metagram(text);
-  shorter(text);
-  circle(text);
-  circle(rev(text));
-  console.log('Skończyłem analizę.');
-}
-
-function anagram(text) {
-  console.log('Szukam anagramów "' + text + '":');
-  var results = [];
-  for(var i = 0; i < words.length; ++i)
-    if(chk_anagram(text, words[i]))
-      results.push(words[i]);
-  if(results.length == 0) {
-    console.log('Nie znalazłem żadnych anagramów "' + text + '" w słowniku.');
-  }
-  else {
-    console.log('Znalazłem ' + results.length + ' anagramów "' + text + '" w słowniku:');
-    for(var i = 0; i < results.length; ++i)
-      console.log('-   ' + results[i]);
-  }
-}
-
-
-function metagram(text) {
-  console.log('Szukam metagramów "' + text + '":');
-  var results = [];
-  for(var i = 0; i < words.length; ++i)
-    if(chk_metagram(text, words[i]))
-      results.push(words[i]);
-  if(results.length == 0) {
-    console.log('Nie znalazłem żadnych metagramów "' + text + '" w słowniku.');
-  }
-  else {
-    console.log('Znalazłem ' + results.length + ' metagramów "' + text + '" w słowniku:');
-    for(var i = 0; i < results.length; ++i)
-      console.log('-   ' + results[i]);
-  }
-}
-
-function shorter(text) {
-  console.log('Szukam skrótek "' + text + '":');
-  var results = [];
-  for(var i = 0; i < words.length; ++i)
-    if(chk_shorter(text, words[i]))
-      results.push(words[i]);
-  if(results.length == 0) {
-    console.log('Nie znalazłem żadnych skrótek "' + text + '" w słowniku.');
-  }
-  else {
-    console.log('Znalazłem ' + results.length + ' skrótek "' + text + '" w słowniku:');
-    for(var i = 0; i < results.length; ++i)
-      console.log('-   ' + results[i]);
-  }
-}
-
-
-function circle(text) {
-  console.log('Szukam anagramów kołowych "' + text + '":');
-  var results = [];
-  for(var i = 0; i < words.length; ++i)
-    if(chk_circle(text, words[i]))
-      results.push(words[i]);
-  if(results.length == 0) {
-    console.log('Nie znalazłem żadnych anagramów kołowych "' + text + '" w słowniku.');
-  }
-  else {
-    console.log('Znalazłem ' + results.length + ' anagramów kołowych "' + text + '" w słowniku:');
-    for(var i = 0; i < results.length; ++i)
-      console.log('-   ' + results[i]);
-  }
-}
-
-
-function rev(text) {
-  return text.split("").reverse().join("");
-}
 
 
 function chk_anagram(text1, text2) {
@@ -225,7 +354,7 @@ function chk_metagram(text1, text2) {
   return false;
 }
 
-function chk_shorter(text1, text2) {
+function chk_short(text1, text2) {
   if(text1.length != text2.length + 1)
     return false;
   for(var i = 0; i < text1.length; ++i)
@@ -235,13 +364,23 @@ function chk_shorter(text1, text2) {
 }
 
 
-function chk_circle(text1, text2) {
-  if(text1.length != text2.length)
-    return false;
-  for(var i = 1; i < text1.length; ++i)
-    if(text1.substring(i) + text1.substring(0,i) == text2)
+function chk_carousel(text1, text2) {
+  for(var offset = 0; offset < text1.length; ++offset) {
+    var ok = true;
+    for(var i = 0; i < text2.length; ++i)
+      if(text1[(offset+i) % text1.length] != text2[i]) {
+        ok = false;
+        break;
+      }
+    if(ok)
       return true;
+  }
   return false;
+}
+
+
+function chk_drawer(text1, text2) {
+  return text2.indexOf(text1) != -1;
 }
 
 
@@ -255,27 +394,47 @@ function chk_circle(text1, text2) {
 
 
 
-
+function verbose(logger) {
+  logger.lv_ = logger.log;
+  logger.log = function(classes, data) {
+    for(var i = 0; i < data.length; ++i) {
+      if((typeof data[i] !== "string") && noh.arr.isArrayLike(data[i])) {
+        logger.lv_(classes, ['[']);
+        for(var j = 0; j < data[i].length; ++j) {
+          logger.lv_(classes, ['- ' + data[i][j]]);
+          if(j > 25) {
+            logger.lv_(classes, ['...']);
+            break;
+          }
+        }
+        logger.lv_(classes, [']']);
+      }
+      else
+        logger.lv_(classes, [data[i]]);
+    }
+  };
+}
 
 
 function wyraz_body() {
   var cmdline = noh.cmdline(40).addclass("pretty");
   var logger = noh.log.reel(35, 240000).addclass("pretty");
+  //logger = noh.log.limitlen(logger, 120);
+  verbose(logger);
   noh.log.l2c(
     noh.log.multi([
       noh.log.c2l(window.console),
-      noh.log.limitlen(
-        noh.log.addtime(
-          logger
-        ), 120
-      )
+      logger
    ])
   ).install();
   var overlay = noh.overlay(logger, cmdline);
   overlay.addclass("bottom smooth"); //We will control left/right position by hand
   overlay.css("right", 20);
   var body = div(
-    noh.fancy(h1("Wyraz")),
+    p(
+      noh.fancy(h1("Wyraz")),
+      "Small web app written with the ", a({href:"https://github.com/langara/noh"}, "NOH"), " library"
+    ).css("margin", 20),
     overlay
   ).addclass("smooth");
   logger.on("click", function() {overlay.hide(); return false;});
@@ -317,7 +476,7 @@ function slow_log(lines, delay) {
  * @param {number=} opt_duration How many miliseconds will it be shown before hiding itself forever. Default is random between 0 and 10000
  * @param {Node=} opt_root A root element to which the gost will be attached (and detached later). Default is document.body
  */
-var ghost = function(element, opt_delay, opt_duration, opt_root) {
+function ghost(element, opt_delay, opt_duration, opt_root) {
   var delay = opt_delay === undefined ? rnd(0,10000) : opt_delay;
   var duration = opt_duration === undefined ? rnd(0,10000) : opt_duration;
   var root = opt_root ? opt_root : document.body;
@@ -338,22 +497,25 @@ var ghost = function(element, opt_delay, opt_duration, opt_root) {
   };
 
   window.setTimeout(attach, delay);
-};
+}
 
-var word_ghost = function(opt_delay, opt_duration, opt_root) {
-  var word = noh.fancy(h2(words[rnd(0,words.length-1)]));
+function word_ghost(opt_delay, opt_duration, opt_root) {
+  var text = (noh.arr.isArrayLike(words) && words.length > 0) ? words[rnd(0, words.length-1)] : '*';
+  var word = noh.fancy(h2(text));
   var winwidth = $(window).width();
   var winheight = $(window).height();
   word.css("left", rnd(10, winwidth/2));
   word.css("top", rnd(100, winheight-200));
+  word.css("transition", "all 4s");
   ghost(word, opt_delay, opt_duration, opt_root);
-};
+}
 
 
-var ghost_background = function(opt_root) {
+function ghost_background(opt_root) {
   var next_ghost = function() {
     word_ghost(rnd(500, 5000), rnd(1000, 10000), opt_root);
   };
   window.setInterval(next_ghost, 3000);
-};
+}
+
 
