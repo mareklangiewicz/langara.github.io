@@ -22,30 +22,61 @@ function help() {
   slow_log([
     'Help for "Wyraz" app:',
     'This is an application for playing around with polish words dictionary.',
-    'enter: load() to load the dictionary to the words variable (warning: it can take even 5 minutes)',
-    'TODO: translate help to english'
+    'I will not provide full help, just some examples.',
+    'It should be obvious for developers, but others should also be able to guess how it all works.',
+    'enter: load("words-games") to load the "words-games" dictionary to words variable. (warning: this can take several minutes)',
+    '(dictionary "words-games" contains 2703822 polish words)',
+    'enter: anagram("okulista",words) to search for "okulista" anagrams in words dictionary.',
+    'enter: metagram("hala",words) to search for "hala" metagrams in words dictionary.',
+    'enter: short("boisko",words) to search for "boisko" shorts in words dictionary.',
+    'enter: carousel("boisko", words) to search for "boisko" carousels in words dictionary.',
+    'enter: rev("boisko") to get the reverse of "boisko".',
+    'enter: carousel(rev("boisko"), words) to search for "oksiob" carousels in words dictionary.',
+    'enter: drawer("ala", words) to search for "ala" drawers in words dictionary.',
+    'enter: wyraz("irena", words) to analyze "irena" word using different functions.',
+    'enter: advanced() to see advanced help.'
   ], 200);
 }
 
 function advanced() {
   slow_log([
     'Advanced help for "Wyraz" app:',
-    'TODO: translate advanced help to english'
+    'enter: words.length to check how long is in words dictionary.',
+    'enter: words[0] to see first word in words dictionary.',
+    'enter: words[10] to see eleventh word in words dictionary.',
+    'enter: words[10] = "blabla" to change eleventh word in words dictionary to "blabla" (all changes are only temporary)',
+    'enter: wg = words to save words dictionary in wg variable.',
+    'enter: load("words-freq") to load "word-freq" dictionary to words variable. (this dictionary contains 102086 polish words sorted by popularity)',
+    'enter: wf = words to save words dictionary in wf variable.',
+    'enter: anagram(metagram("hala",wg),wg) to search for anagrams of metagrams of word:"hala" in wg dictionary.',
+    'enter: short(anagram("trawka",wg),wg) to search for shorts of anagrams of word:"trawka" in wg dictionary.',
+    'enter: sh = short(["trawka", "piorunek"], wg) to save in sh variable a list of shorts of words "trawka" i "piorunek" in wg dictionary.',
+    'enter: anagram(sh,wf) to search for anagrams of words from sh variable in wf dictionary.',
+    'enter: 2+2*2 aby to to know how much is:2+2*2 :-)',
+    'enter: rnd(0,100) aby get a random number between 0 and 100.',
+    'enter: words[rnd(0,words.length-1)] to get a random word from words dictionary.',
+    '(you can use any JavaScript instructions here if you know JavaScript)',
+    'You can also use internal Google Chrome console (Ctrl+Shift+J)',
+    'It is not so beautiful, but it is better in many ways..'
   ], 200);
 }
 
 function pomoc() {
   slow_log([
     'Pomoc aplikacji Wyraz:',
-    'wpisz: load("words-games") aby wczytać słownik words-games do zmiennej words. (uwaga: to może potrwać nawet parę minut)',
-    'wpisz: anagram("okulista", words) aby wyszukać anagramy słowa okulista w słowniku words.',
-    'wpisz: metagram("hala", words) aby wyszukać metagramy słowa hala w słowniku words.',
-    'wpisz: short("boisko", words) aby wyszukać skrótki słowa boisko w słowniku words.',
-    'wpisz: carousel("boisko", words) aby wyszukać karuzeli słowa boisko w słowniku words.',
+    'Ta aplikacja służy do zabawy w przekształcenia słów.',
+    'Nie napiszę pełnej pomocy, tylko parę przykładów.',
+    'To powinno być proste dla programistów, ale inni też powinni być w stanie się domyślić na czym zabawa polega.',
+    'wpisz: load("words-games") aby wczytać słownik "words-games" do zmiennej words. (uwaga: to może potrwać nawet parę minut)',
+    '(słownik "words-games" zawiera 2703822 słów języka polskiego - w tym odmiany)',
+    'wpisz: anagram("okulista",words) aby wyszukać anagramy słowa okulista w słowniku words.',
+    'wpisz: metagram("hala",words) aby wyszukać metagramy słowa hala w słowniku words.',
+    'wpisz: short("boisko",words) aby wyszukać skrótki słowa boisko w słowniku words.',
+    'wpisz: carousel("boisko",words) aby wyszukać karuzeli słowa boisko w słowniku words.',
     'wpisz: rev("boisko") aby otrzymać odwrotność wyrazu boisko, czyli oksiob.',
-    'wpisz: carousel(rev("boisko"), words) aby wyszukać karuzeli słowa oksiob w słowniku words.',
-    'wpisz: drawer("ala", words) aby wyszukać szuflad słowa ala w słowniku words.',
-    'wpisz: wyraz("irena", words) aby przeanalizować wyraz irena pod wieloma różnymi względami używając słownika words.',
+    'wpisz: carousel(rev("boisko"),words) aby wyszukać karuzeli słowa oksiob w słowniku words.',
+    'wpisz: drawer("ala",words) aby wyszukać szuflad słowa ala w słowniku words.',
+    'wpisz: wyraz("irena",words) aby przeanalizować wyraz irena pod wieloma różnymi względami używając słownika words.',
     'wpisz: zaawansowany() aby zobaczyć pomoc dla zaawansowanych.'
   ], 200);
 }
@@ -58,11 +89,17 @@ function zaawansowany() {
     'wpisz: words[10] aby zobaczyć jedenaste słowo w słowniku.',
     'wpisz: words[100000] aby zobaczyć stutysięczne-pierwsze słowo w słowniku.',
     'wpisz: words[10] = "blabla" aby podmienić jedenaste słowo w słowniku na "blabla" (wszelkie zmiany są tylko tymczasowe - do przeładowania strony)',
+    'wpisz: wg = words aby zapisać słownik words w zmiennej wg',
+    'wpisz: load("words-freq") aby wczytać słownik words-freq do zmiennej words. (ten słownik zawiera 102086 słów posortowanych według popularności)',
+    'wpisz: wf = words aby zapisać słownik words w zmiennej wf',
+    'wpisz: anagram(metagram("hala",wg),wg) aby wyszukać w słowniku wg anagramy metagramów słowa "hala".',
+    'wpisz: short(anagram("trawka",wg),wg) aby wyszukać w słowniku wg skrótki anagramów słowa "trawka".',
+    'wpisz: sh = short(["trawka", "piorunek"], wg) aby zapisać w zmiennej sh skrótki słów "trawka" i "piorunek" wyszukane w słowniku wg.',
+    'wpisz: anagram(sh,wf) aby wyszukać anagramy słów z listy sh w słowniku wf.',
     'wpisz: 2+2*2 aby dowiedzieć się ile to jest 2+2*2 :-)',
     'wpisz: rnd(0,100) aby otrzymać liczbę losową z przedziału 0..100.',
     'wpisz: words[rnd(0,words.length-1)] aby zobaczyć losowe słowo ze słownika.',
-    'TODO: więcej pomocy!!!',
-    '(możesz używać dowolnych instrukcji języka javascript)',
+    '(można używać dowolnych instrukcji języka javascript)',
     'Alternatywnie można używać wbudowanej konsoli przeglądarki Google Chrome (Ctrl+Shift+J)',
     'może nie jest taka piękna :-) ale pod wieloma względami lepsza..'
   ], 200);
@@ -335,6 +372,8 @@ function load(dictname) {
 
 
 function chk_anagram(text1, text2) {
+  if(text1 == text2)
+    return false; //Lets say that a word is not an anagram of itself.
   for(var i = 0; i < text1.length; ++i) {
     var j = text2.indexOf(text1[i]);
     if(j == -1)
@@ -355,11 +394,14 @@ function chk_metagram(text1, text2) {
 }
 
 function chk_short(text1, text2) {
-  if(text1.length != text2.length + 1)
-    return false;
-  for(var i = 0; i < text1.length; ++i)
-    if( (text1.substring(0, i) == text2.substring(0, i)) && (text1.substring(i+1) == text2.substring(i)) )
-      return true;
+  var j = 0;
+  for(var i = 0; i < text1.length; ++i) {
+    if(text1[i] == text2[j]) {
+      j++;
+      if(j == text2.length)
+        return true;
+    }
+  }
   return false;
 }
 
@@ -433,12 +475,16 @@ function wyraz_body() {
   var body = div(
     p(
       noh.fancy(h1("Wyraz")),
-      "Small web app written with the ", a({href:"https://github.com/langara/noh"}, "NOH"), " library"
+      "Small web app written with the ", a({href:"https://github.com/langara/noh"}, "NOH"), " library", br(),
+      i("warning: this app is tested only on browser: Google Chrome 30.0.1599.114").css("font-size", "small")
     ).css("margin", 20),
     overlay
   ).addclass("smooth");
-  logger.on("click", function() {overlay.hide(); return false;});
-  $(document).on("click", function() {overlay.show();});
+  overlay.on("click", function() {return false;});
+  $(document).on("click", function() {
+    if(overlay.hasclass("hidden")) overlay.show();
+    else overlay.hide();
+  });
   ghost_background(body.dom);
   slow_log([
     'PL: Witamy w aplikacji Wyraz. Wpisz: pomoc() aby uzyskać więcej pomocy.',
