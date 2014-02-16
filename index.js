@@ -5,8 +5,7 @@ $(window).load(onWindowLoad);
 
 
 function onDocumentReady() {
-    $("#authorizeButton").prop("disabled", true);
-    //$("#authorizeButton").click(onAuthorizeButtonClick);    
+    $("#authorizeButton").prop("disabled", true).click(onAuthorizeButtonClick);    
 }
 
 function onAuthorizeButtonClick() {
