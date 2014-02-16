@@ -5,9 +5,8 @@ $(window).load(onWindowLoad);
 
 
 function onDocumentReady() {
-    $("#authorizeButton")
-        .prop("disabled", true)
-        .click(onAuthorizeButtonClick);    
+    $("#authorizeButton").prop("disabled", true);
+    //$("#authorizeButton").click(onAuthorizeButtonClick);    
 }
 
 function onAuthorizeButtonClick() {
@@ -19,7 +18,8 @@ function onWindowLoad() {
 }
 
 function onRtbbInitialized() {
-    $.rtbb.authorize(onRtbbAuthSuccess, onRtbbAuthFailure);
+    //$.rtbb.authorize(onRtbbAuthSuccess, onRtbbAuthFailure);
+    $("#authorizeButton").prop("disabled", false);
 }
 
 function onRtbbAuthFailure() {
