@@ -15,7 +15,7 @@
  * TODO: implement some srccode, some logger and some tester.
  * </p>
  * <p>
- * Please check the files: {@link noh_example.js} (and {@link example.html}) for full (but simple) working example.
+ * Please check the files: {@link noh_example.js} (and {@link noh_example.html}) for full (but simple) working example.
  * Main documentation with introduction and examples is available here: {@link index.html|NOH library documentation}
  * Additional API documentation generated with {@link http://usejsdoc.org/|jsdoc3} is available here: {@link apidoc/index.html|NOH API documentation} TODO
  * </p>
@@ -23,7 +23,8 @@
  * NOH library depends on jQuery. TODO: Limit jQuery usage for NOH to be able to work with SVG or other elements (not only html)
  * {@linkcode http://stackoverflow.com/questions/3642035/jquerys-append-not-working-with-svg-element|stackoverflow}
  * </p>
- * @licence Released under the MIT license.
+ *
+ * Released under the MIT license.
  */
 
 /*
@@ -43,10 +44,10 @@
  * </div>
  *
  * We write JS code like:
- * div({id:"someid"},
- *     h2("EXAMPLE"),
- *     p(h4("Some header"),"Some content"),
- *     p(h4("Other header"),"Other content")
+ * noh.div({id:"someid"},
+ *     noh.h2("EXAMPLE"),
+ *     noh.p(noh.h4("Some header"),"Some content"),
+ *     noh.p(noh.h4("Other header"),"Other content")
  * )
  */
 
@@ -54,21 +55,18 @@
 /**
  * @namespace Main NOH library namespace.
  */
-noh = {};
+var noh = {};
 
 
 
 
-/** @typedef {{pollute:boolean|undefined}} */
-noh.Options;
-
-/** @typedef {Object.<string, string>} */
+/** @typedef {!Object.<string, string>} */
 noh.Attrs;
 
-/** @typedef {Array.<noh.Node>} */
+/** @typedef {Array.<!noh.Node>} */
 noh.Nodes;
 
-/** @typedef {(noh.Attrs|noh.Node|string|Array.<noh.AttrsAndNodes>|Arguments.<AttrsAndNodes>|undefined)} */
+/** @typedef {(noh.Attrs|noh.Node|string|Array.<noh.AttrsAndNodes>|Arguments|undefined)} */
 noh.AttrsAndNodes; 
 
 /** @typedef {{attrs: noh.Attrs, nodes:noh.Nodes}} */
@@ -87,22 +85,12 @@ noh.NotImplementedError.prototype = new Error("Not implemented");
 /**
  * @param {string=} opt_msg
  * @constructor
- * @extends {NotImplementedError}
+ * @extends {noh.NotImplementedError}
  */
 noh.NotSupportedError = function(opt_msg) { if(opt_msg) this.message = opt_msg; };
 noh.NotSupportedError.prototype = new noh.NotImplementedError("Operation not supported");
 
 
-
-
-/**
- * Default NOH library settings. Options can be overridden by {@link:noh.init} function parameter
- * @type {noh.Options}
- */
-noh.options = { 
-  /** will we pollute global namespace with noh functions; if false (default), everything will be available only under the {@link:noh} namespace */
-  pollute: false
-};
 
 
 /**
@@ -118,42 +106,64 @@ noh.TAGS = [
   "ul", "ol", "li", 
   "dl", "dt", "dd",
   "h1", "h2", "h3", "h4", "h5", "h6",
-  "form", "fieldset", "input", "textarea", "label", "select", "option", "b", "pre", "code", "i", "button",
+  "form", "fieldset", "input", "textarea", "label", "select", "option", "b", "pre", "code", "button",
   "kbd"
 ];
 
 
-/**
- * This function has to be called before any other NOH function. It has to be called exactly once.
- * @param {!noh.Options=} opt_options user can provide here values for some global NOH options to change it behaviour (optional)
- */
-noh.init = function(opt_options) {
-  if(noh.init.done_)
-    throw new NotSupportedError("The init function should be called only once!");
 
-  $.extend(noh.options, opt_options);                           
 
-  noh.text = function(text) { return new noh.Text(text); };
+// We can not generate all these functions dynamically, because we need closure compiler to correctly check types, shorten names, and remove not needed functions.
 
-  /**
-   * @param {string} tag
-   * @return {function(...noh.AttrsAndNodes):noh.Element}
-   */
-  var genTag = function(tag) {
-    return function(var_args) {
-      return new noh.Element(tag, arguments);
-    };
-  };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.body       = function(var_args) { return new noh.Element("body"      , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.link       = function(var_args) { return new noh.Element("link"      , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.div        = function(var_args) { return new noh.Element("div"       , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.p          = function(var_args) { return new noh.Element("p"         , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.span       = function(var_args) { return new noh.Element("span"      , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.a          = function(var_args) { return new noh.Element("a"         , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.img        = function(var_args) { return new noh.Element("img"       , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.br         = function(var_args) { return new noh.Element("br"        , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.hr         = function(var_args) { return new noh.Element("hr"        , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.em         = function(var_args) { return new noh.Element("em"        , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.i          = function(var_args) { return new noh.Element("i"         , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.strong     = function(var_args) { return new noh.Element("strong"    , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.table      = function(var_args) { return new noh.Element("table"     , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.tr         = function(var_args) { return new noh.Element("tr"        , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.th         = function(var_args) { return new noh.Element("th"        , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.td         = function(var_args) { return new noh.Element("td"        , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.thead      = function(var_args) { return new noh.Element("thead"     , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.tbody      = function(var_args) { return new noh.Element("tbody"     , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.tfoot      = function(var_args) { return new noh.Element("tfoot"     , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.colgroup   = function(var_args) { return new noh.Element("colgroup"  , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.col        = function(var_args) { return new noh.Element("col"       , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.ul         = function(var_args) { return new noh.Element("ul"        , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.ol         = function(var_args) { return new noh.Element("ol"        , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.li         = function(var_args) { return new noh.Element("li"        , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.dl         = function(var_args) { return new noh.Element("dl"        , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.dt         = function(var_args) { return new noh.Element("dt"        , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.dd         = function(var_args) { return new noh.Element("dd"        , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.h1         = function(var_args) { return new noh.Element("h1"        , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.h2         = function(var_args) { return new noh.Element("h2"        , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.h3         = function(var_args) { return new noh.Element("h3"        , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.h4         = function(var_args) { return new noh.Element("h4"        , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.h5         = function(var_args) { return new noh.Element("h5"        , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.h6         = function(var_args) { return new noh.Element("h6"        , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.form       = function(var_args) { return new noh.Element("form"      , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.fieldset   = function(var_args) { return new noh.Element("fieldset"  , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.input      = function(var_args) { return new noh.Element("input"     , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.textarea   = function(var_args) { return new noh.Element("textarea"  , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.label      = function(var_args) { return new noh.Element("label"     , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.select     = function(var_args) { return new noh.Element("select"    , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.option     = function(var_args) { return new noh.Element("option"    , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.b          = function(var_args) { return new noh.Element("b"         , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.pre        = function(var_args) { return new noh.Element("pre"       , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.code       = function(var_args) { return new noh.Element("code"      , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.button     = function(var_args) { return new noh.Element("button"    , arguments); };
+/** @param {...noh.AttrsAndNodes} var_args */ noh.kbd        = function(var_args) { return new noh.Element("kbd"       , arguments); };
 
-  for(var i = 0; i < noh.TAGS.length; ++i)
-    noh[noh.TAGS[i]] = genTag(noh.TAGS[i]); //TODO: maybe just type all possible functions by hand - to be able to annotate it all with type comments for closure compiler checking and optimisation
 
-  if(noh.options.pollute)
-    for(var i = 0; i < noh.TAGS.length; ++i)
-      window[noh.TAGS[i]] = noh[noh.TAGS[i]];
 
-  noh.init.done_ = true;
-};
+/** @param {string} text */ noh.text = function(text) { return new noh.Text(text); };
 
 
 /**
@@ -169,13 +179,15 @@ noh.init = function(opt_options) {
  * <li> which we have to ignore (user can pass some undefined arguments and we will ignore them) </li>
  * </ul>
  * Pretty examples of using this flexibility should be presented in the main documentation: {@link index.html|NOH Library documentation}
- * @param {noh.AttrsAndNodes} args Arguments parsed as attributes and nodes.
+ * @param {noh.AttrsAndNodes} args Arguments to be parsed as attributes and nodes.
  * @param {number=} opt_ignore Number of elements to ignore at the beginning of args list. It is important only if args is an array-like object (default is 0)
  * @param {noh.RecAttrsAndNodes=} opt_result A result object to be extended.
- * @return {noh.RecAttrsAndNodes} Attributes and children extracted from args.
+ * @return {!noh.RecAttrsAndNodes} Attributes and children extracted from args.
+ * @suppress {checkTypes} FIXME: how can I tell the closure compiler that in some cases an args is array-like?
  */
 noh.organize = function(args, opt_ignore, opt_result) {
 
+  var ignore = opt_ignore === undefined ? 0 : opt_ignore;
   var result = opt_result ? opt_result : {
     attrs: {},
     nodes: []
@@ -186,12 +198,13 @@ noh.organize = function(args, opt_ignore, opt_result) {
   else if(typeof args === "string")
     result.nodes.push(noh.text(args));
   else if(noh.arr.isArrayLike(args))
-    for(var i = opt_ignore === undefined ? 0 : opt_ignore; i < args.length; ++i)
+    for(var i = ignore; i < args.length; ++i)
       noh.organize(args[i], 0, result);
   else if(args instanceof Object)
     $.extend(result.attrs, args);
-  else if((args === undefined)||(args === null))
-    ;
+  else if((args === undefined)||(args === null)) {
+    // do nothing.
+  }
   else
     throw new TypeError("Unknown argument type: " + typeof args + " value: " + String(args));
 
@@ -262,21 +275,22 @@ noh.arr.obj2arr = function(records, obj) {
 
 /**
  * Checks if the provided object is an array or can be used as an array.
- * @param {Object} arr An object to test.
+ * @param {Object=} arr An object to test.
  * @return {boolean} True if arr is an array like object
  */
 noh.arr.isArrayLike = function(arr) {
+  if(arr == undefined) return false;
+  if(arr == null) return false;
+  if(arr instanceof jQuery) return true;
+  if(jQuery.isArray(arr)) return true;
+  var len = arr.length;
+  if(typeof(len) !== "number") return false;
+  if(len == 0) return true;
+  if(len < 0) return false;
   var hasOwn = Object.prototype.hasOwnProperty;
-  var len;
-  return arr != null && ( //Here the != is intentional (we don't want to use !==)
-    arr instanceof jQuery ||
-    typeof(len = arr.length) === "number" && (
-      (
-        len >= 0 && hasOwn.call(arr, 0) &&
-        hasOwn.call(arr, len - 1)
-      ) || jQuery.isArray(arr)
-    )
-  );
+  if(!hasOwn.call(arr, 0)) return false;
+  if(!hasOwn.call(arr, len - 1)) return false;
+  return true;
 };
 
 
@@ -316,21 +330,21 @@ noh.Node = function() {
   /**
    * @type {noh.Node}
    */
-  this.parent = null;
+  this.parent;
 
   /**
    * the dom property have to be overriden in derivatives!
-   * @type {noh.Node}
+   * @type {!Node}
    */
-  this.dom = null;
+  this.dom;
 
   /**
    * The jQuery object representing this node.
    * the $ property have to be overriden in derivatives!
    * TODO: better type description?
-   * @type {Object}
+   * @type {!Object}
    */
-  this.$ = null;
+  this.$;
 };
 
 
@@ -364,7 +378,7 @@ noh.Node.prototype.rem = function() {
  * then implement other array-like methods using splice. (like: pop, push, shift, unshift) 
  * @see http://stackoverflow.com/questions/6599071/array-like-objects-in-javascript
  */
-noh.Node.prototype.splice = function() { throw new NotSupportedError(); };
+noh.Node.prototype.splice = function() { throw new noh.NotSupportedError(); };
 
 
 /**
@@ -379,7 +393,7 @@ noh.Node.prototype.attachToDOM = function(root) {
 
 /**
  * Detaches a node from given DOM root element
- * @param {!noh.Node} root
+ * @param {!Node} root
  * @return {!noh.Node} this (for chaining)
  */
 noh.Node.prototype.detachFromDOM = function(root) {
@@ -449,7 +463,7 @@ noh.Element.prototype.attr = function(name, value) {
  * Applies the css style (just a convenient shortcut for typical jQuery method invocation)
  * @see http://api.jquery.com/css/#css2
  * @param {string} name CSS property name
- * @param {string} value CSS property value
+ * @param {string|number} value CSS property value
  * @return {!noh.Element} this (for chaining)
  */
 noh.Element.prototype.css = function(name, value) {
@@ -462,7 +476,7 @@ noh.Element.prototype.css = function(name, value) {
  * (just a convenient shortcut for typical jQuery method invocation)
  * @see http://api.jquery.com/on/#on-events-selector-data-handlereventObject
  * @param {string} events One or more space separated events (usually its just one word like: "click")
- * @param {string} handler A function to execute when the event is triggered.
+ * @param {function(Object=):(boolean|undefined)} handler A function to execute when the event is triggered.
  * @return {!noh.Element} this (for chaining)
  */
 noh.Element.prototype.on = function(events, handler) {
@@ -472,7 +486,7 @@ noh.Element.prototype.on = function(events, handler) {
 
 /**
  * Add one or more classes to element's "class" attribute
- * @param {string} class One or more space-separated classes to add to the class attribute
+ * @param {string} aclass One or more space-separated classes to add to the class attribute
  * @return {!noh.Element} this (for chaining)
  */
 noh.Element.prototype.addclass = function(aclass) {
@@ -494,7 +508,7 @@ noh.Element.prototype.toggleclass = function(aclass) {
 
 /**
  * Remove one or more classes from element's "class" attribute
- * @param {string} class One or more space-separated classes to be removed from the class attribute
+ * @param {string} aclass One or more space-separated classes to be removed from the class attribute
  * @return {!noh.Element} this (for chaining)
  */
 noh.Element.prototype.remclass = function(aclass) {
@@ -559,11 +573,15 @@ noh.table1r = function(var_args) {
 noh.tablebar = function(var_args) {
     var an = noh.organize(arguments);
     var cells = [];
-    for(var x = 0; x < an.children.length; ++x)
-        cells.push(j.td(an.nodes[x]));
+    for(var x = 0; x < an.nodes.length; ++x)
+        cells.push(noh.td(an.nodes[x]));
     return noh.table1r({"class":"noh bar"}, an.attrs, cells);
 };
 // TODO: better bars: bar(horizontal/vertical, ...); hbar = bar(horizontal, ...); vbar = ... And no tables! (but css)
+// FIXME: UPDATE: tablebar is not tested and not sure if needed at all.
+
+
+
 
 
 
@@ -607,7 +625,7 @@ noh.ex.color = function(color) {
 //TODO: insert this code to introduction as an example of simplest "template".
 //TODO: write in introduction that first examples are written so even javascript beginner should be able to understand it
 /**
- * @param {number} How many colors we want
+ * @param {number} len How many colors we want
  */
 noh.ex.rainbow = function(len) {
   var arr = [];
@@ -648,7 +666,7 @@ noh.srccode = function(afunction) {
 
 
 /**
- * This Element will fly over the page (position:fixed). User should some CSS classes to it:
+ * This Element will fly over the page (position:fixed). User should add some CSS classes to it:
  * "left" or "right" and "top" or "bottom" (but never: "left" and "right" or "top" and "bottom")
  * It will stick to given screen side automaticly (with some little margin)
  * and it can be swept away to nearest side using .hide() method; and brought back using the .show() method().
@@ -664,6 +682,7 @@ noh.overlay = function(var_args) {
   
   /**
    * @param {number=} idx of child to show (undefined means whole overlay)
+   * @this {noh.Element}
    */
   overlay.show = function(idx) {
     //TODO: validate idx in debug mode
@@ -680,6 +699,7 @@ noh.overlay = function(var_args) {
 
   /**
    * @param {number=} idx of child to hide (undefined means whole overlay)
+   * @this {noh.Element}
    */
   overlay.hide = function(idx) {
     //TODO: validate idx in debug mode
@@ -741,6 +761,7 @@ noh.sleepy = function(element, opt_duration) {
 
   element.defaultAwakeTime_ = opt_duration === undefined ? 1000 : opt_duration;
 
+  /** @this {noh.Element} */
   element.wake = function(opt_duration) {
     this.remclass("asleep").addclass("awake");
     window.clearTimeout(this.timeoutId_);
@@ -749,6 +770,7 @@ noh.sleepy = function(element, opt_duration) {
     this.timeoutId_ = window.setTimeout(callback, duration);
   };
 
+  /** @this {noh.Element} */
   element.sleep = function() {
     window.clearTimeout(this.timeoutId_);
     this.timeoutId_ = undefined;
@@ -798,8 +820,9 @@ noh.IBlind.prototype.roll = function(down) {};
  * (to avoid forcing browser to relayout the whole page too much)
  */
 noh.Blind = function(var_args) {
-  var content = noh.div({class:'noh blind content'}, arguments);
-  noh.Element.call(this, "div", {class: 'noh blind'}, content);
+  var content = noh.div(arguments).addclass('noh blind content');
+  noh.Element.call(this, "div", content);
+  this.addclass('noh blind');
   this.content_ = content;
   this.roll(false);
   var this_ = this;
@@ -890,7 +913,8 @@ noh.OneOf = function(var_args) {
     an.nodes[i] = blind;
     blind.oneOfIdx_ = i;
   }
-  noh.Element.call(this, "div", {class: 'noh oneof'}, an.attrs, an.nodes);
+  noh.Element.call(this, "div", an.attrs, an.nodes);
+  this.addclass('noh oneof');
 
   this.selected_ = -1; 
 };
@@ -961,11 +985,14 @@ noh.oneof = function(var_args) {
  * @return {!noh.Element} 
  */
 noh.details = function(var_args) {
-  var content = noh.div({class: "noh details content"}, arguments);
+  var content = noh.div(arguments).addclass('noh details content');
   var blind = noh.blind(content);
-  var button = noh.button({class: "noh details button", title: "show/hide details"}, "details...");
+  var button = noh.button("details...").addclass('noh details button').attr('title', 'show/hide details');
   button.on("click", function() {blind.roll(!blind.down());});
-  return noh.div({class: "noh details"}, noh.div(button), noh.div(blind));
+  var details = noh.div(noh.div(button), noh.div(blind)).addclass('noh details');
+  details.down = function() { return blind.down(); };
+  details.roll = function(down) { return blind.roll(down); };
+  return details;
 };
 
 
@@ -991,10 +1018,11 @@ noh.details = function(var_args) {
 noh.Reel = function(lines, width, height, var_args) {
   var an = noh.organize(arguments, 3);
   for(var i = 0; i < an.nodes.length; ++i) {
-    var element = noh.div({class:'noh reel element'}, an.nodes[i]);
+    var element = noh.div(an.nodes[i]).addclass('noh reel element');
     an.nodes[i] = element;
   }
-  noh.Element.call(this, "div", {class: 'noh reel'}, an.attrs, an.nodes);
+  noh.Element.call(this, "div", an.attrs, an.nodes);
+  this.addclass('noh reel');
 
   /**
    * @readonly
@@ -1053,6 +1081,7 @@ noh.Reel.prototype.select = function(nr) {
 noh.Reel.prototype.chksize = function() {
   var size = 0;
   var maxsize = 0;
+  var esize = 0;
   if(this.width == "automatic") {
     for(var i = 0; i < this.length; ++i) {
       esize = this[i].$.width();
@@ -1121,7 +1150,7 @@ noh.Reel.prototype.getelem = function(nr) {
 
 /**
  * Update the reel properties like size, elements positions, CSS classes etc.
- * @param {number} opt_lines Optionally we can change the number of visible elements.
+ * @param {number=} opt_lines Optionally we can change the number of visible elements.
  * @return {!noh.Reel} this (for chaining)
  */
 noh.Reel.prototype.update = function(opt_lines) {
@@ -1166,13 +1195,13 @@ noh.Reel.prototype.rotate = function(count) {
  * Rotates the reel many times with time gaps
  * @param {number} count How many lines to rotate down. (Negative means up)
  * @param {number=} opt_random If specified, the reel will generate random number between 0 and opt_random, and add it to param count.
- * @param {number=} opt_speed Defines how many milisecond to wait between single rotations. Default is 200
+ * @param {number=} opt_time Defines how many milisecond to wait between single rotations. Default is 200
  * @return {!noh.Reel} this (for chaining)
  */
 noh.Reel.prototype.spin = function(count, opt_random, opt_time) {
   if(this.intervalId_) {
     console.error("The reel is already spinning!");
-    return;
+    return this;
   }
   if(opt_random)
     count += Math.round(Math.random() * opt_random);
@@ -1193,6 +1222,7 @@ noh.Reel.prototype.spin = function(count, opt_random, opt_time) {
     }
   };
   this.intervalId_ = window.setInterval(callback, time);
+  return this;
 };
 
 /**
@@ -1210,6 +1240,9 @@ noh.reel = function(lines, width, height, var_args) {
 
 
 
+/** @typedef undefined */ //TODO: It will be a record type in future
+noh.FancyOptions;
+
 /**
  * Makes given element more fancy.
  * It always add a "fancy" class (so we can define in CSS file what really is "fancy",
@@ -1224,10 +1257,14 @@ noh.fancy = function(element, opt_options) {
   if(noh.arr.indexOf(element.tag, ["h1", "h2", "h3", "h4"]) != -1) {
     element.on("click", function() { this.noh.scroll(); });
   }
+  else if(element.tag == "a") {
+    var href = element.$.attr("href");
+    if(href && href.length > 0 && href[0] == "#") {
+      element.on("click", function() { noh.scroll($($(this).attr("href")).offset().top) });
+    }
+  }
   return element;
 }
-
-
 
 
 /**
@@ -1240,7 +1277,7 @@ noh.ukbd = function(atext) {
   var url = /(https?|ftp):\/\//;
   var map = words.map(function(word) {
     if(url.test(word))
-      return a({href:word, target:"_blank"}, word);
+      return noh.a({href:word, target:"_blank"}, word);
     else
       return " " + word + " ";
   });
@@ -1260,8 +1297,8 @@ noh.log = {};
 
 
 
-/** @typedef {!ArrayLike.<*>} */
-noh.log.Data; //FIXME: how to express ArrayLike type?
+/** @typedef {!Object} */
+noh.log.Data; //FIXME: how to express ArrayLike type? (like: ArrayLike.<*>)
 
 
 /**
@@ -1288,6 +1325,7 @@ noh.log.ILogger = function() {};
  * Logs given data with given severity
  * @param {string} classes One or more (space separated) classes to decorate the logged message (like: "info", or "warning", or "error", or "debug")
  * @param {noh.log.Data} data Data to log. It has to be an array like object.
+ * @return {!noh.log.ILogger} this (for chaining)
  */
 noh.log.ILogger.prototype.log = function(classes, data) {};
 
@@ -1301,7 +1339,8 @@ noh.log.ILogger.prototype.log = function(classes, data) {};
  * @implements {noh.log.ILogger}
  */
 noh.log.Little = function() {
-  noh.Element.call(this, "div", {class: 'noh log little'});
+  noh.Element.call(this, "div");
+  this.addclass('noh log little');
 };
 
 noh.log.Little.prototype = new noh.Element("div");
@@ -1310,19 +1349,21 @@ noh.log.Little.prototype = new noh.Element("div");
 /**
  * Logs given data with given severity
  * @param {string} classes One or more (space separated) classes to decorate the logged message (like: "info", or "warning", or "error", or "debug")
- * @param {!Array.<*>} data Data to log. It has to be an array like object.
+ * @param {noh.log.Data} data Data to log. It has to be an array like object.
+ * @return {!noh.log.Little} this (for chaining)
  */
 noh.log.Little.prototype.log = function(classes, data) { 
   if(this.length)
     this.rem(); // removes last (in this case only one) child.
   var ukbd = noh.ukbd(noh.log.data2str(data)).addclass("noh log element").addclass(classes);
   this.add(ukbd);
+  return this;
 };
 
 
 /**
  * Little (one line) logger.
- * @return {!noh.log.ILogger}
+ * @return {!noh.log.Little}
  */
 noh.log.little = function() {
   return new noh.log.Little();
@@ -1332,12 +1373,13 @@ noh.log.little = function() {
 /**
  * Sleepy little logger
  * @param {number=} opt_duration How many miliseconds will it be visible. See {@linkcode noh.sleepy}
- * @return {!noh.log.ILogger}
+ * @return {!noh.Element}
  */
 noh.log.slittle = function(opt_duration) {
   var little = noh.log.little();
   var slittle = noh.sleepy(little, opt_duration);
   slittle.log_ = slittle.log;
+  /** @this {noh.Element} */
   slittle.log = function(classes, data) { this.log_(classes, data); this.wake(); };
   return slittle;
 };
@@ -1359,24 +1401,28 @@ noh.log.IConsole = function() {};
 /**
  * Logs given data with default (general) severity. Usually this is the same as "info"
  * @param {...*} var_args Data to log. Strings are printed as they are; numbers are converted to strings; Objects are converted to strings using .toString() method.
+ * @return {!noh.log.IConsole} this (for chaining)
  */
 noh.log.IConsole.prototype.log = function(var_args) {};
 
 /**
  * Logs given data with "info" (normal) severity. Usually this is the same as "log"
- * @param {...*} var_args Data to log. {@linkcode noh.IConsole.prototype.log}
+ * @param {...*} var_args Data to log. {@linkcode noh.log.IConsole.prototype.log}
+ * @return {!noh.log.IConsole} this (for chaining)
  */
 noh.log.IConsole.prototype.info = function(var_args) {};
 
 /**
  * Logs given data with "warn" (warning) severity. Usually this severity is marked somehow (like bold font), but not with red color.
- * @param {...*} var_args Data to log. {@linkcode noh.IConsole.prototype.log}
+ * @param {...*} var_args Data to log. {@linkcode noh.log.IConsole.prototype.log}
+ * @return {!noh.log.IConsole} this (for chaining)
  */
 noh.log.IConsole.prototype.warn = function(var_args) {};
 
 /**
  * Logs given data with "error" severity. Usually this severity is highlighted (f.e. with red bold font).
- * @param {...*} var_args Data to log. {@linkcode noh.IConsole.prototype.log}
+ * @param {...*} var_args Data to log. {@linkcode noh.log.IConsole.prototype.log}
+ * @return {!noh.log.IConsole} this (for chaining)
  */
 noh.log.IConsole.prototype.error = function(var_args) {};
 
@@ -1386,7 +1432,7 @@ noh.log.IConsole.prototype.error = function(var_args) {};
 /**
  * Wraps an ILogger object into IConsole.
  * This console can be then installed as global console object (window.console), so all system logs will be logged using given logger.
- * @implements {noh.IConsole}
+ * @implements {noh.log.IConsole}
  * @constructor
  * @param {!noh.log.ILogger} logger A logger to wrap.
  */
@@ -1398,31 +1444,41 @@ noh.log.L2C = function(logger) {
 /**
  * Logs given data with default (general) severity. This is the same as "info"
  * @param {...*} var_args Data to log. Strings are printed as they are; numbers are converted to strings; Objects are converted to strings using .toString() method.
+ * @return {!noh.log.L2C} this (for chaining)
  */
-noh.log.L2C.prototype.log = function(var_args) { this.logger.log("info", arguments); };
+noh.log.L2C.prototype.log = function(var_args) { this.logger.log("info", arguments); return this; };
 
 /**
  * Logs given data with "info" (normal) severity.
  * @param {...*} var_args Data to log. {@linkcode noh.log.IConsole.prototype.log}
+ * @return {!noh.log.L2C} this (for chaining)
  */
-noh.log.L2C.prototype.info = function(var_args) { this.logger.log("info", arguments); };
+noh.log.L2C.prototype.info = function(var_args) { this.logger.log("info", arguments); return this; };
 
 /**
  * Logs given data with "warn" (warning) severity. Usually this severity is marked somehow (like bold font), but not with red color.
  * @param {...*} var_args Data to log. {@linkcode noh.log.IConsole.prototype.log}
+ * @return {!noh.log.L2C} this (for chaining)
  */
-noh.log.L2C.prototype.warn = function(var_args) { this.logger.log("warning", arguments); };
+noh.log.L2C.prototype.warn = function(var_args) { this.logger.log("warning", arguments); return this; };
 
 /**
  * Logs given data with "error" severity. Usually this severity is highlighted (f.e. with red bold font).
  * @param {...*} var_args Data to log. {@linkcode noh.log.IConsole.prototype.log}
+ * @return {!noh.log.L2C} this (for chaining)
  */
-noh.log.L2C.prototype.error = function(var_args) { this.logger.log("error", arguments); };
+noh.log.L2C.prototype.error = function(var_args) { this.logger.log("error", arguments); return this; };
 
-noh.log.L2C.prototype.debug = function(var_args) { this.logger.log("debug", arguments); };
+/**
+ * Logs given data with "debug" severity.
+ * @param {...*} var_args Data to log. {@linkcode noh.log.IConsole.prototype.log}
+ * @return {!noh.log.L2C} this (for chaining)
+ */
+noh.log.L2C.prototype.debug = function(var_args) { this.logger.log("debug", arguments); return this; };
 
 /**
  * Installs this console as a global console object.
+ * @suppress {checkTypes}
  */
 noh.log.L2C.prototype.install = function() { window.console = this; };
 
@@ -1431,7 +1487,7 @@ noh.log.L2C.prototype.install = function() { window.console = this; };
  * Wraps an ILogger object into IConsole.
  * This console can be then installed as global console object (window.console), so all system logs will be logged using given logger.
  * @param {!noh.log.ILogger} logger
- * @return {!noh.log.IConsole}
+ * @return {!noh.log.L2C}
  */
 noh.log.l2c = function(logger) {
   return new noh.log.L2C(logger);  
@@ -1444,7 +1500,7 @@ noh.log.l2c = function(logger) {
 
 /**
  * Wraps an IConsole object into ILogger.
- * @implements {noh.ILogger}
+ * @implements {noh.log.ILogger}
  * @constructor
  * @param {!noh.log.IConsole} console A console to wrap.
  */
@@ -1455,7 +1511,8 @@ noh.log.C2L = function(console) {
 /**
  * Logs given data with given severity
  * @param {string} classes One or more (space separated) classes to decorate the logged message (like: "info", or "warning", or "error", or "debug")
- * @param {!Array.<*>} data Data to log. It has to be an array like object.
+ * @param {noh.log.Data} data Data to log. It has to be an array like object.
+ * @return {!noh.log.C2L} this (for chaining)
  */
 noh.log.C2L.prototype.log = function(classes, data) {
   if(/error/.test(classes))
@@ -1466,13 +1523,14 @@ noh.log.C2L.prototype.log = function(classes, data) {
     this.console.debug.apply(this.console, data);
   else
     this.console.info.apply(this.console, data);
+  return this;
 };
 
 
 /**
  * Wraps an IConsole object into ILogger.
  * @param {!noh.log.IConsole} console
- * @return {!noh.log.ILogger}
+ * @return {!noh.log.C2L}
  */
 noh.log.c2l = function(console) {
   return new noh.log.C2L(console);
@@ -1491,14 +1549,21 @@ noh.log.Multi = function(loggers) {
   this.loggers = loggers;
 };
 
+/**
+ * Logs given data with given severity to multiple loggers
+ * @param {string} classes One or more (space separated) classes to decorate the logged message (like: "info", or "warning", or "error", or "debug")
+ * @param {noh.log.Data} data Data to log. It has to be an array like object.
+ * @return {!noh.log.Multi} this (for chaining)
+ */
 noh.log.Multi.prototype.log = function(classes, data) {
   for(var i = 0; i < this.loggers.length; ++i)
     this.loggers[i].log(classes, data);
+  return this;
 };
 
 /**
- * @param {Array.<!noh.ILogger>} loggers
- * @return {!noh.ILogger}
+ * @param {Array.<!noh.log.ILogger>} loggers
+ * @return {!noh.log.Multi}
  */
 noh.log.multi = function(loggers) {
   return new noh.log.Multi(loggers);
@@ -1519,14 +1584,21 @@ noh.log.Filter = function(logger, filter) {
   this.filter = filter;
 };
 
+/**
+ * Logs given data with given severity after filtering it.
+ * @param {string} classes One or more (space separated) classes to decorate the logged message (like: "info", or "warning", or "error", or "debug")
+ * @param {noh.log.Data} data Data to log. It has to be an array like object.
+ * @return {!noh.log.Filter} this (for chaining)
+ */
 noh.log.Filter.prototype.log = function(classes, data) {
   this.logger.log(classes, this.filter(data));
+  return this;
 };
 
 /**
  * @param {!noh.log.ILogger} logger
  * @param {function(noh.log.Data):noh.log.Data} filter
- * @return {!noh.ILogger}
+ * @return {!noh.log.Filter}
  */
 noh.log.filter = function(logger, filter) {
   return new noh.log.Filter(logger, filter);
@@ -1537,7 +1609,7 @@ noh.log.filter = function(logger, filter) {
 /**
  * TODO: description
  * @param {!noh.log.ILogger} logger
- * @return {!noh.ILogger}
+ * @return {!noh.log.ILogger}
  */
 noh.log.addtime = function(logger) {
   var filter = function(data) {
@@ -1561,7 +1633,7 @@ noh.log.addtime = function(logger) {
  * TODO: description
  * @param {!noh.log.ILogger} logger
  * @param {number} len
- * @return {!noh.ILogger}
+ * @return {!noh.log.ILogger}
  */
 noh.log.limitlen = function(logger, len) {
   var filter = function(data) {
@@ -1579,7 +1651,7 @@ noh.log.limitlen = function(logger, len) {
  * Creates a logger that uses Reel to rotate log lines.
  * @param {number} lines Number of visible lines.
  * @param {number=} opt_duration How many miliseconds will any log line be visible. See {@linkcode noh.log.slittle}
- * @return {!noh.log.ILogger}
+ * @return {!noh.Element}
  */
 noh.log.reel = function(lines, opt_duration) {
   //TODO: validation of lines value in debug mode
@@ -1590,13 +1662,15 @@ noh.log.reel = function(lines, opt_duration) {
     loggers.push(noh.log.slittle(duration));
   var reel = noh.reel(lines, "automatic", "automatic", loggers);
   reel.select(lines-1);
-  logger = noh.div({class: "noh log reel"}, reel);
+  var logger = noh.div(reel).addclass('noh log reel');
   logger.reel = reel;
+  /** @this {noh.Element} */
   logger.log = function(classes, data) {
     var logger = this.reel.getelem(this.reel.lines)[0]; // This is first invisible logger
     logger.log(classes, data);
     this.reel.rotate(-1);
   };
+  /** @this {noh.Element} */
   logger.setlines = function(lines) {
     var r = lines - this.reel.lines;
     this.reel.lines = lines;
@@ -1608,10 +1682,17 @@ noh.log.reel = function(lines, opt_duration) {
 
 
 
-noh.cmdline = function(len) {
-  var input = noh.input({type: "text", size: len, placeholder: 'alert("hello world")', class:"noh cmdline"});
-  var enter = noh.button({class:"noh cmdline", title:"Press enter to run the command."}, String.fromCharCode(8629));
-  var cmdline = noh.div({class:"noh cmdline"}, input, enter).css("display", "inline-block");
+/**
+ * TODO: desc
+ * @param {number} len
+ * @param {string=} opt_placeholder
+ * @return {!noh.Element}
+ */
+noh.cmdline = function(len, opt_placeholder) {
+  var placeholder = opt_placeholder || 'alert("hello world")';
+  var input = noh.input().attr('type', 'text').attr('size', len).attr('placeholder', placeholder).addclass('noh cmdline');
+  var enter = noh.button(String.fromCharCode(8629)).attr('title', 'Press enter to run the command.').addclass('noh cmdline');
+  var cmdline = noh.div(input, enter).css("display", "inline-block").addclass('noh cmdline');
   cmdline.run = function() {
     var val = input.$.val();
     console.log(val);
@@ -1627,6 +1708,20 @@ noh.cmdline = function(len) {
 
     input.$.val("");
   };
+
+  cmdline.type = function(text) {
+    input.$.val(text);
+  };
+
+  cmdline.focus = function() {
+    input.$.focus();
+  };
+
+  cmdline.onfocus = function(handler) {
+    input.$.focus(handler);
+    enter.$.focus(handler);
+  };
+
   input.on("keypress", function(e) {
     if(e.which == 13)
       cmdline.run();
@@ -1640,6 +1735,41 @@ noh.cmdline = function(len) {
 
 
 
+
+noh.objtest = function(obj, commands) {
+
+  var objwrap = noh.table1r({style:"border: 6px ridge green"},
+    noh.td(obj)
+  );
+
+  var cmdline = noh.cmdline(60, 'obj.some_method()');
+
+  cmdline.onfocus(function() {
+    window["obj"] = obj; 
+  });
+
+  var buttons = [];
+  for(var i = 0; i < commands.length; ++i) {
+    var button = noh.button(commands[i]).addclass('noh button')
+      .attr('title', 'Prepare the "' + commands[i] + '" command to run.');
+
+    button.on("click", function() {
+      window["obj"] = obj;
+      cmdline.type(this.textContent);
+      cmdline.focus();
+    });
+
+    buttons.push(button);
+    buttons.push(noh.br());
+  }
+
+
+  return noh.div(
+    noh.p(objwrap),
+    noh.p(cmdline),
+    noh.p(buttons)
+  );
+}
 
 
 
@@ -1707,13 +1837,13 @@ noh.MenuItem.prototype = new noh.Element("div");
  * This method should be overriden if we want to add some new fuctionality when the state is changing;
  * but you should call the original toggle anyway
  */
-noh.MenuItem.prototype.toggle = function() { this.toggleclass("selected"); };
+noh.MenuItem.prototype.toggle = function() { this.toggleclass("selected"); return this; };
 
 noh.MenuItem.prototype.selected = function() { return this.hasclass("selected"); };
 
 /**
  * @param {noh.Node|string} content Usually it is just a text to display, but it can be any noh.Node.
- * @return {noh.MenuItem}
+ * @return {!noh.MenuItem}
  */
 noh.menuitem = function(content) { return new noh.MenuItem(content); };
 
@@ -1731,7 +1861,8 @@ noh.bigmenuitem = function(item, payload) {
     noh.div(oneof)
   );
   item.toggle_orig_ = item.toggle;
-  item.toggle = function() { bigmenuitem.toggle(); };
+  item.toggle = function() { bigmenuitem.toggle(); return this; };
+  /** @this {noh.Element} */
   bigmenuitem.toggle = function() {
     item.toggle_orig_();  
     oneof.select(this.selected() ? 0 : -1);
@@ -1751,6 +1882,7 @@ noh.bigmenuitem = function(item, payload) {
  * @extends {noh.Element}
  * @implements {noh.IOneOf}
  * @param {...noh.AttrsAndNodes} var_args Attributes and children. Children should be proper menuitems (implement:ISelectable extend:Element)
+ * @constructor
  */
 noh.Menu = function(var_args) {
 
@@ -1761,7 +1893,7 @@ noh.Menu = function(var_args) {
   this.items_ = an.nodes;
 
   for(var i = 0; i < this.items_.length; ++i) {
-    var item = this.items[i];
+    var item = this.items_[i];
     if(item.selected())
       item.toggle();
     item.menu_ = this;
@@ -1782,16 +1914,18 @@ noh.Menu.prototype.selected = function() { return this.selected_; };
 noh.Menu.prototype.select = function(idx) {
 
   if(this.selected_ != -1)
-    this.items_[selected_].toggle_orig_(); // deselects old item
+    this.items_[this.selected_].toggle_orig_(); // deselects old item
 
   //TODO: check the idx value in DEBUG mode (check the @define in closure compiler) (make sure it is removed completely in release mode)
 
   this.selected_ = idx;
 
   if(idx == -1)
-    return;
+    return this;
 
   this.items_[idx].toggle_orig_(); //selects new item
+
+  return this;
 };
 
 
@@ -1813,7 +1947,7 @@ noh.menu = function(var_args) {
  * @return {noh.ISelectable} A menuitem with menu attached.
  */
 noh.submenu = function(item, menu) {
-  var submenu = bigmenuitem(item, menu);
+  var submenu = noh.bigmenuitem(item, menu);
   submenu.menu = menu;
   return submenu;
 };

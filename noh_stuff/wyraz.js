@@ -3,7 +3,6 @@
 var words = [];
 
 function init() {
-  noh.init({pollute:true});
   var body = wyraz_body();
   body.attachToDOM(document.body);
 }
@@ -472,11 +471,11 @@ function wyraz_body() {
   var overlay = noh.overlay(logger, cmdline);
   overlay.addclass("bottom smooth"); //We will control left/right position by hand
   overlay.css("right", 20);
-  var body = div(
-    p(
-      noh.fancy(h1("Wyraz")),
-      "Small web app written with the ", a({href:"https://github.com/langara/noh"}, "NOH"), " library", br(),
-      i("warning: this app is tested only on browser: Google Chrome 30.0.1599.114").css("font-size", "small")
+  var body = noh.div(
+    noh.p(
+      noh.fancy(noh.h1("Wyraz")),
+      "Small web app written with the ", noh.a({href:"https://github.com/langara/noh"}, "NOH"), " library", noh.br(),
+      noh.i("warning: this app was tested only on browser: Google Chrome 30.0.1599.114").css("font-size", "small")
     ).css("margin", 20),
     overlay
   ).addclass("smooth");
@@ -547,7 +546,7 @@ function ghost(element, opt_delay, opt_duration, opt_root) {
 
 function word_ghost(opt_delay, opt_duration, opt_root) {
   var text = (noh.arr.isArrayLike(words) && words.length > 0) ? words[rnd(0, words.length-1)] : '*';
-  var word = noh.fancy(h2(text));
+  var word = noh.fancy(noh.h2(text));
   var winwidth = $(window).width();
   var winheight = $(window).height();
   word.css("left", rnd(10, winwidth/2));

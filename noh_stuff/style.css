@@ -5,6 +5,7 @@
 .smooth.fast *      { transition: all 0.3s; }
 .smooth.slow *      { transition: all   1s; }
 .smooth.very_slow * { transition: all   2s; }
+.smooth.very_lazy * { transition: all   6s ease-in-out; }
 .smooth.immediate * { transition: all   0s; }
 
 .noh.sleepy.asleep { opacity: 0; }
