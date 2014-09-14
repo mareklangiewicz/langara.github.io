@@ -1,0 +1,3 @@
+[submodule "noh_insects"]
+	path = noh_insects
+	url = https://github.com/langara/noh_insects.git
