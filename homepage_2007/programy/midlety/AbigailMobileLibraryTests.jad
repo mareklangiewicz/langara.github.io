@@ -1,0 +1,8 @@
+MIDlet-1: TestsMidlet, , abigail.tests.TestsMidlet
+MIDlet-Jar-Size: 11505
+MIDlet-Jar-URL: AbigailMobileLibraryTests.jar
+MIDlet-Name: AbigailMobileLibraryTests
+MIDlet-Vendor: Vendor
+MIDlet-Version: 1.0
+MicroEdition-Configuration: CLDC-1.0
+MicroEdition-Profile: MIDP-1.0

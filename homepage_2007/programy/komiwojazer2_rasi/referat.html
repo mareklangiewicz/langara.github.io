@@ -1,0 +1,322 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<?xml version="1.0"?>
+<html>
+	<head>
+		<title>Referat z RASI</title>
+		<meta http-equiv="content-type" content="text/html; charset=ISO-8859-2"/>
+		<style type="text/css">
+			<!--
+				.Type { color: #2e8b57; font-weight: bold; }
+				pre { color: #000000; background-color: #ffffff; }
+				body { color: #000000; background-color: #ffffff; }
+				.lnr { color: #a52a2a; }
+				.Comment { color: #0000ff; }
+				.PreProc { color: #a020f0; }
+				.Constant { color: #ff00ff; }
+				.Statement { color: #a52a2a; font-weight: bold; }
+			-->
+		</style>
+	</head>
+	<body>
+		<h2> Referat z Równoległych Algorytmów Sztucznej Inteligencji </h2>
+		<h4> Autor: Marek Langiewicz </h4>
+		<h2> Wstęp </h2>
+			Przedstawimy tutaj mechanizm zdalnego wywoływania procedur (RPC - Remote Procedure Call) w wercji Sun RPC
+			(na podstawie książki "Programowanie współbieżne i rozproszone" - Zbigniew Weiss, Tadeusz Gruźlewski).
+			Całość przedstawimy na przykładzie prostego programu. Program składa się z klienta i serwera.
+			Serwer udostępnia dwie procedury zdalne a klient je wywołuje. Pierwsza procedura
+			<code>cześć</code> pobiera jako argument napis (np. <code>"cześć jestem jakimś klientem"</code>) i zwraca też napis
+			(odpowiedź serwera). Druga procedura <code>dodaj</code> wykonuje dodawanie dwóch liczb całkowitych i zwraca wynik.
+			Argumenty tej procedury są przesyłane w postaci strukturki <code>struct para {int x,y; };</code> ponieważ procedury
+			zdalne mogą mieć conajwyżej jeden argument. Żeby dokładniej zobaczyć jakie są różnice między zdalnym wywołaniem
+			procedur za zwykłym, najpierw przedstawimy program w wersji lokalnej. Poprostu będą dwa moduły: serwer - moduł z
+			implementacją procedur <code>czesc</code> i <code>dodaj</code>; klient - program wywołujący procedury zawarte w module
+			serwer.
+		<h2> Serwer - wersja lokalna </h2>
+		<pre>
+			<span class="lnr">  1</span>
+			<span class="lnr">  2</span>  <span class="Comment">/*</span><span class="Comment">************************************</span>
+			<span class="lnr">  3</span>  <span class="Comment"> *     Serwer - wersja lokalna       *</span>
+			<span class="lnr">  4</span>  <span class="Comment"> ************************************</span><span class="Comment">*/</span>
+			<span class="lnr">  5</span>
+			<span class="lnr">  6</span>  <span class="PreProc">#include </span><span class="Constant">&lt;iostream&gt;</span>
+			<span class="lnr">  7</span>  <span class="Statement">using</span> <span class="Type">namespace</span> std;
+			<span class="lnr">  8</span>
+			<span class="lnr">  9</span>  <span class="Type">struct</span> para { <span class="Type">int</span> x,y; };
+			<span class="lnr"> 10</span>
+			<span class="lnr"> 11</span>  <span class="Type">char</span> *czesc(<span class="Type">char</span> *text) {
+			<span class="lnr"> 12</span>    <span class="Type">char</span> *hostname = <span class="Constant">&quot;lokalny_serwerek&quot;</span>;
+			<span class="lnr"> 13</span>    cout &lt;&lt; <span class="Constant">&quot;&lt;&lt; &quot;</span> &lt;&lt; text &lt;&lt; endl;
+			<span class="lnr"> 14</span>    <span class="Type">static</span> <span class="Type">const</span> <span class="Type">int</span> o_len = <span class="Constant">100</span>;
+			<span class="lnr"> 15</span>    <span class="Type">static</span> <span class="Type">char</span> odpowiedz[o_len];
+			<span class="lnr"> 16</span>    strcpy(odpowiedz,<span class="Constant">&quot;No witam, nazywam sie &quot;</span>);
+			<span class="lnr"> 17</span>    strcpy(odpowiedz+strlen(odpowiedz),hostname);
+			<span class="lnr"> 18</span>    cout &lt;&lt; <span class="Constant">&quot;&gt;&gt; &quot;</span> &lt;&lt; odpowiedz &lt;&lt; endl;
+			<span class="lnr"> 19</span>    <span class="Statement">return</span> odpowiedz;
+			<span class="lnr"> 20</span>  }
+			<span class="lnr"> 21</span>
+			<span class="lnr"> 22</span>  <span class="Type">int</span> dodaj(para p) {
+			<span class="lnr"> 23</span>    <span class="Statement">return</span> p.x + p.y;
+			<span class="lnr"> 24</span>  }
+			<span class="lnr"> 25</span>
+			<span class="lnr"> 26</span>
+			<span class="lnr"> 27</span>
+		</pre>
+		Widzimy tutaj że dodaj poprostu dodaje dwie liczby x i y, a czesc oprócz zwrócenia wyniku (przywitania) wypisuje na
+		konsoli to co dostał i to co zwraca. W linijce 12 wizimy że serwer na stałe przyjmuje nazwę "lokalny_serwerek".
+		W wersji RPC tu będzie prawdziwa nazwa komputera na którym został uruchomiony serwer.
+		<h2> Klient - wersja lokalna </h2>
+		<pre>
+			<span class="lnr"> 28</span>
+			<span class="lnr"> 29</span>  <span class="Comment">/*</span><span class="Comment">************************************</span>
+			<span class="lnr"> 30</span>  <span class="Comment"> *     Klient - wersja lokalna       *</span>
+			<span class="lnr"> 31</span>  <span class="Comment"> ************************************</span><span class="Comment">*/</span>
+			<span class="lnr"> 32</span>
+			<span class="lnr"> 33</span>  <span class="PreProc">#include </span><span class="Constant">&lt;iostream&gt;</span>
+			<span class="lnr"> 34</span>  <span class="Statement">using</span> <span class="Type">namespace</span> std;
+			<span class="lnr"> 35</span>
+			<span class="lnr"> 36</span>  <span class="Type">struct</span> para { <span class="Type">int</span> x,y; };
+			<span class="lnr"> 37</span>
+			<span class="lnr"> 38</span>  <span class="Type">char</span> *czesc(<span class="Type">char</span> *text)
+			<span class="lnr"> 39</span>  <span class="Type">int</span> dodaj(para p);
+			<span class="lnr"> 40</span>
+			<span class="lnr"> 41</span>  <span class="Type">int</span> main(<span class="Type">int</span> argc,<span class="Type">char</span> **argv) {
+			<span class="lnr"> 42</span>    <span class="Statement">if</span>(argc != <span class="Constant">4</span>) {
+			<span class="lnr"> 43</span>      cerr &lt;&lt; <span class="Constant">&quot;Podaj nazwe komputera z ktorym mam pogadac&quot;</span> &lt;&lt; endl
+			<span class="lnr"> 44</span>        &lt;&lt; <span class="Constant">&quot;i dwie liczby ktore mam mu kazac dodac.&quot;</span> &lt;&lt; endl
+			<span class="lnr"> 45</span>        &lt;&lt; <span class="Constant">&quot;(to jest wersja lokalna wiec nazwa komputera bedzie zignorowana)&quot;</span> &lt;&lt; endl;
+			<span class="lnr"> 46</span>      exit(-<span class="Constant">1</span>);
+			<span class="lnr"> 47</span>    }
+			<span class="lnr"> 48</span>
+			<span class="lnr"> 49</span>    <span class="Type">char</span> *hostname = <span class="Constant">&quot;lokalny_klient&quot;</span>;
+			<span class="lnr"> 50</span>
+			<span class="lnr"> 51</span>    <span class="Type">static</span> <span class="Type">const</span> <span class="Type">int</span> arg_len = <span class="Constant">100</span>;
+			<span class="lnr"> 52</span>    <span class="Type">char</span> arg[arg_len];
+			<span class="lnr"> 53</span>    strcpy(arg,<span class="Constant">&quot;Czesc! Jestem &quot;</span>);
+			<span class="lnr"> 54</span>    strcpy(arg+strlen(arg),hostname);
+			<span class="lnr"> 55</span>
+			<span class="lnr"> 56</span>    cout &lt;&lt; <span class="Constant">&quot;&gt;&gt; &quot;</span> &lt;&lt; arg &lt;&lt; endl;
+			<span class="lnr"> 57</span>    <span class="Type">char</span> *odpowiedz = czesc(arg);
+			<span class="lnr"> 58</span>    cout &lt;&lt; <span class="Constant">&quot;&lt;&lt; &quot;</span> &lt;&lt; odpowiedz &lt;&lt; endl;
+			<span class="lnr"> 59</span>
+			<span class="lnr"> 60</span>    para p;
+			<span class="lnr"> 61</span>    p.x = atoi(argv[<span class="Constant">2</span>]);
+			<span class="lnr"> 62</span>    p.y = atoi(argv[<span class="Constant">3</span>]);
+			<span class="lnr"> 63</span>    <span class="Type">int</span> wynik = dodaj(p);
+			<span class="lnr"> 64</span>    cout &lt;&lt; <span class="Constant">&quot;Wynik dodawania: &quot;</span> &lt;&lt; wynik &lt;&lt; endl;
+			<span class="lnr"> 65</span>  }
+			<span class="lnr"> 66</span>
+			<span class="lnr"> 67</span>
+			<span class="lnr"> 68</span>
+		</pre>
+	A to jest lkient. Program pobiera jako parametry nazwę komputera (tutaj ignorowana) i dwie liczby do dodania;
+	potem wywołuje procedurki zdefiniowane w module serwer i wyświetla wyniki. Klient przed wywołaniem procedury
+	<code>czesc</code> wyswietla argument ktory jej przekaze a po wywolaniu wyswietla otrzymany wynik. Na koncu
+	wywoluje <code>dodaj</code> dla podanych liczb i wyswietla otrzymany wynik. Podobnie jak w przypadku serwera
+	nazwa komputera jest wpisana na stałe (linia 49). W wersji RPC to będzie prawdziwa nazwa komputera na którym
+	został uruchomiony klient.
+	<h2> Serwer - wersja RPC </h2>
+		<pre>
+			<span class="lnr"> 69</span>
+			<span class="lnr"> 70</span>  <span class="Comment">/*</span><span class="Comment">************************************</span>
+			<span class="lnr"> 71</span>  <span class="Comment"> *       Serwer - wersja RPC         *</span>
+			<span class="lnr"> 72</span>  <span class="Comment"> ************************************</span><span class="Comment">*/</span>
+			<span class="lnr"> 73</span>
+			<span class="lnr"> 74</span>  <span class="PreProc">#include </span><span class="Constant">&lt;unistd.h&gt;</span> <span class="Comment">// dla gethostname</span>
+			<span class="lnr"> 75</span>  <span class="PreProc">#include </span><span class="Constant">&lt;rpc/rpc.h&gt;</span>
+			<span class="lnr"> 76</span>  <span class="PreProc">#include </span><span class="Constant">&lt;iostream&gt;</span>
+			<span class="lnr"> 77</span>  <span class="Statement">using</span> <span class="Type">namespace</span> std;
+			<span class="lnr"> 78</span>
+			<span class="lnr"> 79</span>  <span class="Type">const</span> <span class="Type">unsigned</span> <span class="Type">long</span> PROG = <span class="Constant">0x20000000</span>;
+			<span class="lnr"> 80</span>  <span class="Type">const</span> <span class="Type">unsigned</span> <span class="Type">long</span> VERS = <span class="Constant">1</span>;
+			<span class="lnr"> 81</span>  <span class="Type">const</span> <span class="Type">unsigned</span> <span class="Type">long</span> PROC_CZESC = <span class="Constant">1</span>;
+			<span class="lnr"> 82</span>  <span class="Type">const</span> <span class="Type">unsigned</span> <span class="Type">long</span> PROC_DODAJ = <span class="Constant">2</span>;
+			<span class="lnr"> 83</span>
+			<span class="lnr"> 84</span>  <span class="Type">struct</span> para { <span class="Type">int</span> x,y; };
+			<span class="lnr"> 85</span>
+			<span class="lnr"> 86</span>  <span class="Type">int</span> xdr_para(XDR *xdrsp,para *p) {
+			<span class="lnr"> 87</span>    <span class="Statement">return</span> xdr_int(xdrsp,&amp;p-&gt;x) &amp;&amp; xdr_int(xdrsp,&amp;p-&gt;y);
+			<span class="lnr"> 88</span>  }
+			<span class="lnr"> 89</span>
+			<span class="lnr"> 90</span>  <span class="Type">char</span> *czesc(<span class="Type">char</span> *text) {
+			<span class="lnr"> 91</span>    <span class="Type">static</span> <span class="Type">const</span> <span class="Type">int</span> hn_len = <span class="Constant">100</span>;
+			<span class="lnr"> 92</span>    <span class="Type">static</span> <span class="Type">char</span> hostname[hn_len];
+			<span class="lnr"> 93</span>    gethostname(hostname,hn_len);
+			<span class="lnr"> 94</span>    cout &lt;&lt; <span class="Constant">&quot;&lt;&lt; &quot;</span> &lt;&lt; text &lt;&lt; endl;
+			<span class="lnr"> 95</span>    <span class="Type">static</span> <span class="Type">const</span> <span class="Type">int</span> o_len = <span class="Constant">100</span>;
+			<span class="lnr"> 96</span>    <span class="Type">static</span> <span class="Type">char</span> odpowiedz[o_len];
+			<span class="lnr"> 97</span>    strcpy(odpowiedz,<span class="Constant">&quot;No witam, nazywam sie &quot;</span>);
+			<span class="lnr"> 98</span>    strcpy(odpowiedz+strlen(odpowiedz),hostname);
+			<span class="lnr"> 99</span>    cout &lt;&lt; <span class="Constant">&quot;&gt;&gt; &quot;</span> &lt;&lt; odpowiedz &lt;&lt; endl;
+			<span class="lnr">100</span>    <span class="Statement">return</span> odpowiedz;
+			<span class="lnr">101</span>  }
+			<span class="lnr">102</span>
+			<span class="lnr">103</span>  <span class="Type">int</span> dodaj(para p) {
+			<span class="lnr">104</span>    <span class="Statement">return</span> p.x + p.y;
+			<span class="lnr">105</span>  }
+			<span class="lnr">106</span>
+			<span class="lnr">107</span>  <span class="Type">char</span> *dodaj_rpc(<span class="Type">char</span> *arg) {
+			<span class="lnr">108</span>    para *p = (para*)arg; <span class="Comment">//castujemy argument do poprawnego typu</span>
+			<span class="lnr">109</span>    <span class="Type">static</span> <span class="Type">int</span> wynik = dodaj(*p); <span class="Comment">// wywolujemy wlasciwa funkcje</span>
+			<span class="lnr">110</span>    <span class="Statement">return</span> (<span class="Type">char</span>*)&amp;wynik; <span class="Comment">// castujemy wynik do char*</span>
+			<span class="lnr">111</span>  }
+			<span class="lnr">112</span>
+			<span class="lnr">113</span>  <span class="Type">int</span> main() {
+			<span class="lnr">114</span>    registerrpc(PROG,VERS,PROC_CZESC,czesc,xdr_wrapstring,xdr_wrapstring);
+			<span class="lnr">115</span>    registerrpc(PROG,VERS,PROC_DODAJ,dodaj_rpc,xdr_para,xdr_int);
+			<span class="lnr">116</span>    svc_run();
+			<span class="lnr">117</span>  }
+			<span class="lnr">118</span>
+			<span class="lnr">119</span>
+		</pre>
+		Najpierw popatrzmy na procedury <code>czesc</code> i <code>dodaj</code>. Okazuje się że niczym nie różnią się
+		od wersji lokalnej (oprócz tego że w 93 linii pobieramy prawdziwą nazwę komputera zamiast wymyślonej). Ponieważ
+		<code>dodaj</code> pobiera jako argument przez nas zdefiniowaną strukturkę, musimy stworzyć pewne opakowanie
+		<code>dodaj_rpc</code> które poprostu rzutuje typ argumentu i wyniku do <code>char*</code>. Ponieważ
+		<code>dodaj_rpc</code> zwraca wskaźnik, to napis wskazywany przez ten wskaźnik musi istnieć po zakończeniu procedury
+		i z tego powodu mamy <code>static</code> w linii 109. Popatrzmy teraz na main. Zawiera ona dwa wywołania
+		'rejestrujące' nasze procedury <code>czesc</code> i <code>dodaj</code> oraz wywołanie <code>svc_run()</code>
+		które nigdy się nie kończy i powoduje że serwer przechodzi w stan nasłuchiwania i jest gotowy do wykonywania
+		zarejestrowanych procedur. Serwer musi mieć identyfikator programu i nr wersji i dodatkowo każda rejestrowana
+		procedura też musi mieć swój identyfiaktor. Odpowiednie stałe są zdefiniowane na początku (linie 79-82) i są
+		używane przy rejestrowaniu procedur (linie 114,115). Identyfikator programu musi być z zakresu
+		0x20000000 - 0x3fffffff i oczywiście musi być unikalny dla każdego programu - serwera uruchomionego na
+		danym komputerze. Jest jeszcze jedna różnica między zdalnym a lokalnym wywoływaniem procedur: filtry.
+		Ponieważ na serwerze dane mogłyby mieć inną reprezentację niż na kliencie, więc trzeba przeprowadzać odpowiednie
+		konwersje. Do tego służą filtry które trzeba ręcznie definiować dla każdego nowego typu danych. Nawet jeśli
+		reprezentacja dandych jst akurat taka sama to i tak musimy definiować filtry
+		(tak ustalono żeby uzyskać przenośny, spójny mechanizm). Każdy filtr zwraca 0 w przypadku błędu lub
+		liczbę różną od zera w przypadku powodzenia. Dla podstawowych typów danych mamy zdefiniowane filtry:
+		<ul>
+			<li> <code>xdr_int</code> (dla typu <code>int</code>) </li>
+			<li> <code>xdr_float</code> (dla typu <code>float</code>) </li>
+			<li> <code>xdr_char</code> (dla typu <code>char</code>) </li>
+			<li> <code>xdr_wrapstring</code> (dla typu <code>char *</code>) </li>
+		</ul>
+		
+		W naszym programie przekazujemy zdalnie jeden nowy typ danych <code>para</code>.
+		Odpowiedni filtr jest zdefiniowany w liniach 86-88.
+		Nie wchodząc za głęboko w szczegóły można powiedzieć że filtry zawsze tworzymy w sposób analogiczny jak w tym
+		programie. Filtr ma pobierać jeden parametr typu <code>XDR *</code> i poprostu przekazywać go wywoływanym podfiltrom,
+		i parametr 'wskaźnik do struktury'. Filtr powinien poprostu filtry dla wszystkich pól struktury i zwrócić 0 jeśli
+		któryś z filtrów zwróci 0. Nie musimy się przejmować takimi rzeczami jak kierunek konwersji danych, bo to jest
+		zrobione automatycznie. Wystarczy że rejestrując procedurę zdalną podamy do <code>registerrpc</code>
+		odpowiedni filtr dla argumentu i wartości rejestrowanej procedury (linie 114, 115).
+		<h2> Klient - wersja RPC </h2>
+		<pre>
+			<span class="lnr">120</span>
+			<span class="lnr">121</span>  <span class="Comment">/*</span><span class="Comment">************************************</span>
+			<span class="lnr">122</span>  <span class="Comment"> *       Klient - wersja RPC         *</span>
+			<span class="lnr">123</span>  <span class="Comment"> ************************************</span><span class="Comment">*/</span>
+			<span class="lnr">124</span>
+			<span class="lnr">125</span>  <span class="PreProc">#include </span><span class="Constant">&lt;rpc/rpc.h&gt;</span>
+			<span class="lnr">126</span>  <span class="PreProc">#include </span><span class="Constant">&lt;iostream&gt;</span>
+			<span class="lnr">127</span>  <span class="Statement">using</span> <span class="Type">namespace</span> std;
+			<span class="lnr">128</span>
+			<span class="lnr">129</span>  <span class="Type">const</span> <span class="Type">unsigned</span> <span class="Type">long</span> PROG = <span class="Constant">0x20000000</span>;
+			<span class="lnr">130</span>  <span class="Type">const</span> <span class="Type">unsigned</span> <span class="Type">long</span> VERS = <span class="Constant">1</span>;
+			<span class="lnr">131</span>  <span class="Type">const</span> <span class="Type">unsigned</span> <span class="Type">long</span> PROC_CZESC = <span class="Constant">1</span>;
+			<span class="lnr">132</span>  <span class="Type">const</span> <span class="Type">unsigned</span> <span class="Type">long</span> PROC_DODAJ = <span class="Constant">2</span>;
+			<span class="lnr">133</span>
+			<span class="lnr">134</span>  <span class="Type">struct</span> para { <span class="Type">int</span> x,y; };
+			<span class="lnr">135</span>
+			<span class="lnr">136</span>  <span class="Type">int</span> xdr_para(XDR *xdrsp,para *p) {
+			<span class="lnr">137</span>    <span class="Statement">return</span> xdr_int(xdrsp,&amp;p-&gt;x) &amp;&amp; xdr_int(xdrsp,&amp;p-&gt;y);
+			<span class="lnr">138</span>  }
+			<span class="lnr">139</span>
+			<span class="lnr">140</span>  <span class="Type">char</span> *czesc(<span class="Type">char</span> *komp,<span class="Type">char</span> *text) {
+			<span class="lnr">141</span>    <span class="Type">static</span> <span class="Type">const</span> <span class="Type">int</span> wynik_len = <span class="Constant">500</span>;
+			<span class="lnr">142</span>    <span class="Type">static</span> <span class="Type">char</span> wynik[wynik_len];
+			<span class="lnr">143</span>    callrpc(komp,PROG,VERS,PROC_CZESC,xdr_wrapstring,text,xdr_wrapstring,wynik);
+			<span class="lnr">144</span>    <span class="Statement">return</span> wynik;
+			<span class="lnr">145</span>  }
+			<span class="lnr">146</span>
+			<span class="lnr">147</span>  <span class="Type">int</span> dodaj(<span class="Type">char</span> *komp,para p) {
+			<span class="lnr">148</span>    <span class="Type">int</span> wynik = <span class="Constant">0</span>;
+			<span class="lnr">149</span>    callrpc(komp,PROG,VERS,PROC_DODAJ,xdr_para,(<span class="Type">char</span>*)&amp;p,xdr_int,(<span class="Type">char</span>*)&amp;wynik);
+			<span class="lnr">150</span>    <span class="Statement">return</span> wynik;
+			<span class="lnr">151</span>  }
+			<span class="lnr">152</span>
+			<span class="lnr">153</span>  <span class="Type">int</span> main(<span class="Type">int</span> argc,<span class="Type">char</span> **argv) {
+			<span class="lnr">154</span>    <span class="Statement">if</span>(argc != <span class="Constant">4</span>) {
+			<span class="lnr">155</span>      cerr &lt;&lt; <span class="Constant">&quot;Podaj nazwe komputera z ktorym mam pogadac&quot;</span> &lt;&lt; endl
+			<span class="lnr">156</span>        &lt;&lt; <span class="Constant">&quot;i dwie liczby ktore mam mu kazac dodac.&quot;</span> &lt;&lt; endl;
+			<span class="lnr">157</span>      exit(-<span class="Constant">1</span>);
+			<span class="lnr">158</span>    }
+			<span class="lnr">159</span>
+			<span class="lnr">160</span>    <span class="Type">static</span> <span class="Type">const</span> <span class="Type">int</span> hn_len = <span class="Constant">100</span>;
+			<span class="lnr">161</span>    <span class="Type">static</span> <span class="Type">char</span> hostname[hn_len];
+			<span class="lnr">162</span>    gethostname(hostname,hn_len);
+			<span class="lnr">163</span>
+			<span class="lnr">164</span>    <span class="Type">static</span> <span class="Type">const</span> <span class="Type">int</span> arg_len = <span class="Constant">100</span>;
+			<span class="lnr">165</span>    <span class="Type">char</span> arg[arg_len];
+			<span class="lnr">166</span>    strcpy(arg,<span class="Constant">&quot;Czesc! Jestem &quot;</span>);
+			<span class="lnr">167</span>    strcpy(arg+strlen(arg),hostname);
+			<span class="lnr">168</span>
+			<span class="lnr">169</span>    cout &lt;&lt; <span class="Constant">&quot;&gt;&gt; &quot;</span> &lt;&lt; arg &lt;&lt; endl;
+			<span class="lnr">170</span>    <span class="Type">char</span> *odpowiedz = czesc(argv[<span class="Constant">1</span>],arg);
+			<span class="lnr">171</span>    cout &lt;&lt; <span class="Constant">&quot;&lt;&lt; &quot;</span> &lt;&lt; odpowiedz &lt;&lt; endl;
+			<span class="lnr">172</span>
+			<span class="lnr">173</span>    para p;
+			<span class="lnr">174</span>    p.x = atoi(argv[<span class="Constant">2</span>]);
+			<span class="lnr">175</span>    p.y = atoi(argv[<span class="Constant">3</span>]);
+			<span class="lnr">176</span>    <span class="Type">int</span> wynik = dodaj(argv[<span class="Constant">1</span>],p);
+			<span class="lnr">177</span>    cout &lt;&lt; <span class="Constant">&quot;Wynik dodawania: &quot;</span> &lt;&lt; wynik &lt;&lt; endl;
+			<span class="lnr">178</span>  }
+			<span class="lnr">179</span>
+			<span class="lnr">180</span>
+		</pre>
+		Najpierw popatrzmy na <code>main</code>. Od wersji lokalnej różni się to tylko tym, że pobieramy prawdziwą nazwę komputera
+		(linia 162) zamiast wymyślonej i procedurom <code>czesc</code> i <code>dodaj</code> podajemy dodatkowo nazwę komputera
+		na którym jest uruchomiony serwer. Wywoływane tutaj procedury <code>czesc</code> i <code>dodaj</code> są opakowaniami
+		które dopiero wywołyją zdalne wersje procedur. Popatrzmy teraz na te opakowania. <code>czesc</code> zwraca wynik typu
+		<code>char *</code> więc musimy mieć statyczny bufor na wynik żeby nie zniknął po zakończeniu procedury (linie 141,142).
+		Wywołanie procedury zdalnej odbywa się wywołując <code>callrpc</code> i podając nazwę komputera który udostępnia żądaną
+		procedurę zdalną, identyfikator programu, wersję, identyfikator procedury zdalnej, filtr dla argumentu procedury,
+		argument, filtr dla zwracanej wartości procedury i wartość (a dokładniej wskaźnik do bufora w którym ma być umieszczona
+		zwrócona wartość). Druga procedurka opakowująca wywołanie zdalneg procedury <code>dodaj</code> jest podobna.
+		Jedyna różnica jest taka że wskażniki do argumentu i zwracanej wartości muszą być zrzutowane do <code>char *</code>.
+		Wywołanie <code>callrpc</code> blokuje proces klienta do czasu aż serwer wykona żądaną procedurę i zwróci wynik.
+		<h2> Podsumowanie </h2>
+		Przykład pokazuje że przekształcenie programu tak, żeby niektóre procedury wykonywał zdalnie nie jest trudne. Oczywiście
+		w Sun RPC jest dużo więcej dostępnych funkcji ale reszta jest bardziej pomocnicza lub optymalizacyjna. Te pokazane
+		tutaj wystarczają do pisania programów RPC. W kodzie programów zostały pominięte sprawdzania błędów dla zwiększenia
+		przejrzystości.
+		<h2> Wykorzystane funkcje RPC </h2>
+		<ul>
+			<li>
+				<code>
+					int registerrpc(unsigned long PROG, unsigned long VERS, unsigned long PROC,
+					char *(* proc)(), int (* xdr_arg)(), int (* xdr_res)());
+				</code> Ta funkcja rejestruje nową zdalną procedurę.
+				<ul>
+					<li> <code>PROG, VERS, PROC</code> oznaczają odpowiednio numer programu, wersji i rejestrowanej procedury </li>
+					<li> <code>proc</code> jest wskaźnikiem do funkcji zdefiniowanej w serwerze odpowiadającej rejestrowanej
+					procedurze.</li>	
+					<li> <code>xdr_arg</code> i <code>xdr_res</code> są wskaźnikami do filtrów odpowiednio dla parametrów wejściowych
+					i wynikowych rejestrowanej procedury. </li>
+					<li> Zwracana wartość: 0 - gdy procedura została zarejestrowana; różne od 0 - w przypadku błędu. </li>
+				</ul>
+			</li>
+			<li>
+				<code>void svc_run()</code> wywołanie tej procedury nigdy się nie kończy i powoduje że serwer przechodzi w stan
+				oczekiwania na żądania wywołań procedur RPC.
+			</li>
+			<li>
+				<code>int callrpc(char *server, unsigned long PROG, unsigned long VERS, unsigned long PROC, 
+				int (* xdr_arg)(), char *arg, int (* xdr_res)(), char *res);</code>
+				Ta funkcja wywołuje żądaną procedurę zdalną na podanym komputerze. Funkcja jest blokująca, czyli
+				kończy się dopiero jak serwer zwróci odpowiedź (albo jak wystąpi jakiś błąd)
+				<ul>
+					<li> <code>server</code> nazwa komputera na którym działa serwer udostępniający żądaną procedurę zdalną </li>
+					<li> <code>PROG, VERS i PROC</code> Numer programu, wersji i wywoływanej procedury. </li>	
+					<li> <code>xdr_arg</code> i <code>xdr_res</code> są wskaźnikami do filtrów odpowiednio dla parametrów wejściowych
+					i wynikowych wywoływanej procedury. </li>
+					<li> <code>arg i res</code> są adresami parametru wejściowego i wynikowego </li>	
+					<li> Zwracana wartość: 0 - udane wywołanie procedury zdalnej; różne od 0 - błąd </li>
+				</ul>
+			</li>
+		</ul>
+	</body>
+</html>
+

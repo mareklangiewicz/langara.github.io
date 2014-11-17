@@ -1,0 +1,8 @@
+MIDlet-1: MicroMemo3Midlet,,MicroMemo3Midlet
+MIDlet-Jar-Size: 42887
+MIDlet-Jar-URL: MicroMemo3.jar
+MIDlet-Name: MicroMemo3
+MIDlet-Vendor: Vendor
+MIDlet-Version: 1.0
+MicroEdition-Configuration: CLDC-1.0
+MicroEdition-Profile: MIDP-1.0

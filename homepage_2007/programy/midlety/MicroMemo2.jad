@@ -1,0 +1,8 @@
+MIDlet-1: Midlet, ,MicroMemo2MIDlet
+MIDlet-Jar-Size: 38678
+MIDlet-Jar-URL: MicroMemo2.jar
+MIDlet-Name: MicroMemo2
+MIDlet-Vendor: Vendor
+MIDlet-Version: 1.0
+MicroEdition-Configuration: CLDC-1.0
+MicroEdition-Profile: MIDP-1.0

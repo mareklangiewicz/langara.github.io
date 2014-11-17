@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <meta name="generator" content="HTML Tidy for Linux/x86 (vers 1 September 2005), see www.w3.org" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" lang="en" content="program, Java, J2ME, memory, study, vocabulary" xml:lang="en" />
+    <meta name="keywords" lang="pl" content="program, Java, J2ME, pamięć, nauka, słówka, słownik" xml:lang="pl" />
+    <meta name="author" content="Marek Langiewicz" />
+
+    <title>"Micro Memo" - program wspomagający naukę</title>
+    <link rel="stylesheet" type="text/css" href="../../style/white/style1.css" />
+    <!--<link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/Core/Ultramarine" /> -->
+</head>
+
+<body>
+    <h2>program "Micro Memo"</h2>
+
+    <div class="rozdzial">
+        <h4>O programie</h4>
+
+        <p>"Micro Memo" to program który pisałem jako projekt programistyczny na uczelni. Pomysł polega na stworzeniu
+        czegoś podobnego do "Super Memo" (jest taki program pod MS Windowsa), ale działającego na komórkach.</p>
+
+        <p>Tworzymy sobie bazę pytań i odpowiedzi (np. słówka w języku obcym) i kopiujemy ją na komórkę, a program nas
+        odpytuje z tych pytań. Zadaniem programu jest tak zaplanować terminy powtórek, żeby zminimalizować czas nauki.
+        Ta minimalizacja czasu polega na takim zaplanowaniu terminów powtórek dla poszczególnych pytań, żeby kolejne
+        zapytanie o dane słówko nastąpiło tego dnia, kiedy jeszcze nie zapomnieliśmy całkiem jaka jest odpowiedź (bo
+        bez sensu się uczyć tego samego od nowa), ale również nie za wcześnie (bo bez sensu powtarzać coś do pamiętamy
+        bardzo dobrze).</p>
+
+        <p>A skąd program ma wiedzieć jak szybko zapomnimy dane słówko? Program będzie się tego uczył od nas na
+        podstawie wcześniejszych zapytań o dane słówko (użytkownik po każdym zapytaniu i zobaczeniu odpowiedzi ocenia
+        jak dobrze znał odpowiedź w skali 1..6)</p>
+
+        <p>Korzyści płynące z używania tego typu programu są wyjaśnione najlepiej na stronie programu Memaid (<a href=
+        "http://memaid.sourceforge.net/docs/repetitions.html">tutaj</a>). Memaid to podobny program do Super Memo, ale
+        działający pod linuksem.</p>
+
+        <p>Dokładniej o Micro Memo napisałem w opisie projektu na uczelnię (<a href=
+        "projekt_micromemo.html">tutaj</a>). Program nie jest jeszcze skończony (chociaż już dawno zaliczony... :P). Z
+        przytoczonego opisu wykonałem pierwsze 4 punkty. Poza tym jestem w trakcie przepisywania kodu, ponieważ chcę
+        aby Micro Memo działał nie tylko na komórkach, ale jako applet na stronie www i jako zwykła aplikacja na PC.
+        Żeby większość kodu była wspólna dla tych trzech platform napisałem klasy realizujące takie rzeczy jak dostęp
+        do dysku (lub karty pamięci telefonu), wyświetlanie różnych danych i pobieranie klawiszy dla każdej z platform
+        osobno. Jak skończę to przepisywanie to zamieszczę kod Micro Memo na tej stronie (i applet z działającym
+        programem).</p>
+    </div>
+
+    <p class="stopka">Tą stronę najlepiej oglądać za pomocą przeglądarki html. :-)<br />
+    Wszystkie prawa zastrzeżone <a href="http://ilang.magma-net.pl/marek">Marek Langiewicz 2007</a><br />
+    <code>[ vim: set enc=utf-8 spelllang=pl,en spell: ]</code></p>
+</body>
+</html>

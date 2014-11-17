@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"DTD/xhtml1-strict.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+
+    <meta content="binary, search, trees, AVL, applet, java" lang="en"
+          name="keywords" />
+
+    <meta content="drzewa binarne poszukiwań, AVL, applet, java" lang="pl"
+          name="keywords" />
+
+    <meta content="Marek Langiewicz" name="author" />
+
+    <title>AVL Tree Visualization Applet</title>
+
+    <link href="../../style/white/style1.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <h1>AVL Tree Visualization Applet</h1>
+
+    <div class="rozdzial"><h4> About </h4> <p> "Drzewa" Applet is designed to
+    graphic presentation of a balanced trees. It allows to observe changes in
+    such tree after inserting an arbitrary element. For now I implemented only
+    AVL tree, but adding new tree kinds shouldn't be difficult now. (TODO: add
+    some new tree kinds finally..) </p></div>
+
+    <div class="rozdzial"><h4> Manual </h4> <ol>
+        <li>Enter number to text field</li>
+
+        <li>Press "Wstaw" button to insert element to tree</li>
+
+        <li>Press "AVL" button to balance the tree (you can see rotation if
+        it's needed to balance the tree)</li>
+
+        <li>Go to point 1</li>
+      </ol> <p> Attention: to get proper AVL tree you must press "AVL"
+    button every time after adding new element! </p> <p>If you don't care
+    about proper AVL tree, you can ignore "AVL" button. The tree will behave
+    like ordinary BST tree (Binary Search Tree). You can also do rotation by hand by clicking on
+    elements in tree. And you can move whole tree on applet by clicking on
+    some free space inside applet. If some elements overlaps others, just move
+    the tree anywhere and it will fix itself automatically. </p></div>
+
+    <div class="rozdzial"><h4> Applet </h4> <p> (attention: below applet there
+    is something too.. :P) </p> <p> <object archive="Drzewa.jar"
+    classid="java:drzewa.Drzewa.class" height="500" width="700" /> </p> <h4> Applet
+    end. </h4></div>
+
+    <div class="rozdzial"><h4> Documentation and sources </h4> <ul>
+        <li>Documentation made using "javadoc" is <a
+        href="javadoc/index.html">Here</a></li>
+
+        <li>Class diagram is <a href="diagram.png">Here</a>. (It's very simple, but I had to do
+		this diagram for classes anyway..)</li>
+
+        <li>And sources (on GPL licence) are <a
+        href="drzewa.tgz">Here</a></li>
+      </ul></div>
+
+    <div class="rozdzial"><h4> Author </h4> <p> <a
+    href="http://ilang.magma-net.pl/marek/index_en.html">Marek Langiewicz</a>
+    </p></div>
+	<p class="stopka">
+  		<code>[ vim: set enc=utf-8 spelllang=pl,en spell: ]</code>
+	</p>
+  </body>
+</html>

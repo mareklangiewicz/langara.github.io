@@ -1,0 +1,18 @@
+body {
+  background-image:url(clip8_33g_lighten.jpg);
+  background-repeat:repeat;
+}
+div.rozdzial:after {
+  display:block;
+  text-align:center;
+  content:url(clip2_38.gif);
+}
+p.stopka {
+	font-style: italic;
+	text-align: center;
+}
+.ztytulem li:first-line, li.ztytulem:first-line {
+	font-weight: bold
+}
+
+

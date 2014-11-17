@@ -1,0 +1,8 @@
+MIDlet-1: MinimalMidlet, , MinimalMidlet
+MIDlet-Jar-Size: 1415
+MIDlet-Jar-URL: MinimalMidlet.jar
+MIDlet-Name: MinimalMidlet
+MIDlet-Vendor: Vendor
+MIDlet-Version: 1.0
+MicroEdition-Configuration: CLDC-1.0
+MicroEdition-Profile: MIDP-1.0

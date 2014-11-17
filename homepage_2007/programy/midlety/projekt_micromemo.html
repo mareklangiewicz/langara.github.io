@@ -1,0 +1,611 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1250">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 10">
+<meta name=Originator content="Microsoft Word 10">
+<link rel=File-List href="Projekt_pliki/filelist.xml">
+<title>Projekt programu wspomagającego nauczanie dla telefonów komórkowych z
+Javą</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>abigail</o:Author>
+  <o:LastAuthor>abigail</o:LastAuthor>
+  <o:Revision>2</o:Revision>
+  <o:TotalTime>182</o:TotalTime>
+  <o:Created>2003-03-13T19:07:00Z</o:Created>
+  <o:LastSaved>2003-03-13T19:07:00Z</o:LastSaved>
+  <o:Pages>1</o:Pages>
+  <o:Words>397</o:Words>
+  <o:Characters>2382</o:Characters>
+  <o:Company>bbbbb</o:Company>
+  <o:Lines>19</o:Lines>
+  <o:Paragraphs>5</o:Paragraphs>
+  <o:CharactersWithSpaces>2774</o:CharactersWithSpaces>
+  <o:Version>10.2625</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:SpellingState>Clean</w:SpellingState>
+  <w:GrammarState>Clean</w:GrammarState>
+  <w:HyphenationZone>21</w:HyphenationZone>
+  <w:Compatibility>
+   <w:BreakWrappedTables/>
+   <w:SnapToGridInCell/>
+   <w:WrapTextWithPunct/>
+   <w:UseAsianBreakRules/>
+  </w:Compatibility>
+  <w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;
+	mso-font-charset:2;
+	mso-generic-font-family:auto;
+	mso-font-pitch:variable;
+	mso-font-signature:0 268435456 0 0 -2147483648 0;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+h1
+	{mso-style-next:Normalny;
+	margin-top:12.0pt;
+	margin-right:0cm;
+	margin-bottom:3.0pt;
+	margin-left:0cm;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:1;
+	font-size:16.0pt;
+	font-family:Arial;
+	mso-font-kerning:16.0pt;}
+h3
+	{mso-style-next:Normalny;
+	margin-top:12.0pt;
+	margin-right:0cm;
+	margin-bottom:3.0pt;
+	margin-left:0cm;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	font-size:13.0pt;
+	font-family:Arial;}
+span.SpellE
+	{mso-style-name:"";
+	mso-spl-e:yes;}
+span.GramE
+	{mso-style-name:"";
+	mso-gram-e:yes;}
+@page Section1
+	{size:595.3pt 841.9pt;
+	margin:70.85pt 70.85pt 70.85pt 70.85pt;
+	mso-header-margin:35.4pt;
+	mso-footer-margin:35.4pt;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+ @list l0
+	{mso-list-id:24988721;
+	mso-list-type:hybrid;
+	mso-list-template-ids:648950032 68485121 68485123 68485125 68485121 68485123 68485125 68485121 68485123 68485125;}
+@list l0:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:36.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:Symbol;}
+@list l0:level2
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:72.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:"Courier New";}
+@list l0:level3
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:108.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:Wingdings;}
+@list l0:level4
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:144.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:Symbol;}
+@list l1
+	{mso-list-id:320810457;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-1898406052 68485121 68485135 68485125 68485121 68485123 68485125 68485121 68485123 68485125;}
+@list l1:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:36.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:Symbol;}
+@list l1:level2
+	{mso-level-tab-stop:72.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l2
+	{mso-list-id:577863383;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-1024152126 68485135 68485123 68485125 68485121 68485123 68485125 68485121 68485123 68485125;}
+@list l2:level1
+	{mso-level-tab-stop:18.0pt;
+	mso-level-number-position:left;
+	margin-left:18.0pt;
+	text-indent:-18.0pt;}
+@list l2:level2
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:54.0pt;
+	mso-level-number-position:left;
+	margin-left:54.0pt;
+	text-indent:-18.0pt;
+	font-family:"Courier New";}
+@list l3
+	{mso-list-id:689183248;
+	mso-list-type:hybrid;
+	mso-list-template-ids:1073401508 68485121 68485135 68485125 68485121 68485123 68485125 68485121 68485123 68485125;}
+@list l3:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:36.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:Symbol;}
+@list l3:level2
+	{mso-level-tab-stop:72.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l4
+	{mso-list-id:724181850;
+	mso-list-type:hybrid;
+	mso-list-template-ids:801901292 68485121 68485121 68485125 68485121 68485123 68485125 68485121 68485123 68485125;}
+@list l4:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:36.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:Symbol;}
+@list l4:level2
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:72.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:Symbol;}
+@list l5
+	{mso-list-id:949510618;
+	mso-list-type:hybrid;
+	mso-list-template-ids:1080184766 68485135 68485121 68485147 68485135 68485145 68485147 68485135 68485145 68485147;}
+@list l5:level1
+	{mso-level-tab-stop:53.4pt;
+	mso-level-number-position:left;
+	margin-left:53.4pt;
+	text-indent:-18.0pt;}
+@list l5:level2
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:89.4pt;
+	mso-level-number-position:left;
+	margin-left:89.4pt;
+	text-indent:-18.0pt;
+	font-family:Symbol;}
+@list l6
+	{mso-list-id:1059552287;
+	mso-list-type:hybrid;
+	mso-list-template-ids:446199678 68485121 68485123 68485125 68485121 68485123 68485125 68485121 68485123 68485125;}
+@list l6:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:36.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:Symbol;}
+@list l6:level2
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:54.0pt;
+	mso-level-number-position:left;
+	margin-left:54.0pt;
+	text-indent:-18.0pt;
+	font-family:"Courier New";}
+@list l7
+	{mso-list-id:1379549082;
+	mso-list-type:hybrid;
+	mso-list-template-ids:235448756 68485135 68485121 68485147 68485135 68485145 68485147 68485135 68485145 68485147;}
+@list l7:level1
+	{mso-level-tab-stop:88.8pt;
+	mso-level-number-position:left;
+	margin-left:88.8pt;
+	text-indent:-18.0pt;}
+@list l7:level2
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:124.8pt;
+	mso-level-number-position:left;
+	margin-left:124.8pt;
+	text-indent:-18.0pt;
+	font-family:Symbol;}
+@list l8
+	{mso-list-id:1432622317;
+	mso-list-type:hybrid;
+	mso-list-template-ids:212872276 68485135 68485121 68485147 68485135 68485145 68485147 68485135 68485145 68485147;}
+@list l8:level1
+	{mso-level-tab-stop:71.4pt;
+	mso-level-number-position:left;
+	margin-left:71.4pt;
+	text-indent:-18.0pt;}
+@list l8:level2
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:107.4pt;
+	mso-level-number-position:left;
+	margin-left:107.4pt;
+	text-indent:-18.0pt;
+	font-family:Symbol;}
+@list l9
+	{mso-list-id:1786384709;
+	mso-list-type:hybrid;
+	mso-list-template-ids:1607632756 68485121 68485123 68485125 68485121 68485123 68485125 68485121 68485123 68485125;}
+@list l9:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:36.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:Symbol;}
+@list l10
+	{mso-list-id:1876230481;
+	mso-list-type:hybrid;
+	mso-list-template-ids:1074324512 68485121 68485123 68485125 68485121 68485123 68485125 68485121 68485123 68485125;}
+@list l10:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:36.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:Symbol;}
+ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+<!--[if gte mso 10]>
+<style>
+ /* Style Definitions */
+ table.MsoNormalTable
+	{mso-style-name:Standardowy;
+	mso-tstyle-rowband-size:0;
+	mso-tstyle-colband-size:0;
+	mso-style-noshow:yes;
+	mso-style-parent:"";
+	mso-padding-alt:0cm 5.4pt 0cm 5.4pt;
+	mso-para-margin:0cm;
+	mso-para-margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";}
+</style>
+<![endif]-->
+</head>
+
+<body lang=PL style='tab-interval:35.4pt'>
+
+<div class=Section1>
+
+<h1 align=center style='text-align:center'>Projekt programu wspomagającego
+nauczanie - dla telefonów komórkowych z Javą.</h1>
+
+<h3 style='margin-left:36.0pt;text-indent:-18.0pt;mso-list:l0 level1 lfo6;
+tab-stops:list 36.0pt'><![if !supportLists]><span style='font-family:Symbol;
+mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol;font-weight:normal;
+mso-bidi-font-weight:bold'><span style='mso-list:Ignore'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]>Co to ma być?</h3>
+
+<p class=MsoNormal style='margin-left:35.4pt'>Program będzie się składał z
+dwóch (lub trzech) części:</p>
+
+<p class=MsoNormal style='margin-left:71.4pt;text-indent:-18.0pt;mso-list:l8 level1 lfo9;
+tab-stops:list 71.4pt'><![if !supportLists]><span style='mso-list:Ignore'>1.<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><![endif]>Edytor
+baz danych – program działający na komputerze PC służący do tworzenia plików z
+bazami informacji, których chcemy się nauczyć. Każda taka baza to plik
+zawierający kolekcję pytań i odpowiedzi (oczywiście poprawnych). Tak stworzone
+bazy danych będzie można wgrywać do komórki z programem uczącym.</p>
+
+<p class=MsoNormal style='margin-left:71.4pt;text-indent:-18.0pt;mso-list:l8 level1 lfo9;
+tab-stops:list 71.4pt'><![if !supportLists]><span style='mso-list:Ignore'>2.<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><![endif]>Program
+uczący – program działający na telefonie komórkowym z Javą, którego działanie
+polega na zadawaniu pytań użytkownikowi według określonych zasad. Kolejne
+powtórki są planowane na określone dni tak, aby maksymalizować stosunek ilości
+zapamiętanych informacji do poświęcanego czasu. </p>
+
+<p class=MsoNormal style='margin-left:71.4pt;text-indent:-18.0pt;mso-list:l8 level1 lfo9;
+tab-stops:list 71.4pt'><![if !supportLists]><span style='mso-list:Ignore'>3.<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><![endif]>(<span
+class=GramE>opcjonalnie) <span style='mso-spacerun:yes'> </span>Edytor</span>
+baz danych w wersji na komórkę – być może zrobię możliwość wstawiania pytań i
+odpowiedzi nie w postaci tekstu, ale nagrań dźwiękowych i wtedy sensownym
+byłoby napisanie takiego edytora na komórce (bo znika problem powolnego
+wklepywania literek na komórce), ale to może nie wszędzie działać ze względu na
+ograniczenia pamięciowe.</p>
+
+<h3 style='margin-left:36.0pt;text-indent:-18.0pt;mso-list:l0 level1 lfo6;
+tab-stops:list 36.0pt'><![if !supportLists]><span style='font-family:Symbol;
+mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol;font-weight:normal;
+mso-bidi-font-weight:bold'><span style='mso-list:Ignore'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]>Plan pracy</h3>
+
+<p class=MsoNormal style='margin-left:53.4pt;text-indent:-18.0pt;mso-list:l5 level1 lfo10;
+tab-stops:list 53.4pt'><![if !supportLists]><span style='mso-list:Ignore'>1.<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><![endif]>Stworzenie
+biblioteki do komunikacji z użytkownikiem i do obsługi plików na komórce i
+przetestowanie jej.</p>
+
+<p class=MsoNormal style='margin-left:53.4pt;text-indent:-18.0pt;mso-list:l5 level1 lfo10;
+tab-stops:list 53.4pt'><![if !supportLists]><span style='mso-list:Ignore'>2.<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><![endif]>Napisanie
+programu uczącego bez konkretnego algorytmu powtórek (bo to będzie największa
+część programu) tak aby działał dla dowolnego algorytmu (będzie <span
+style='font-family:"Courier New"'>interface Algorytm { … })</span></p>
+
+<p class=MsoNormal style='margin-left:53.4pt;text-indent:-18.0pt;mso-list:l5 level1 lfo10;
+tab-stops:list 53.4pt'><![if !supportLists]><span style='mso-list:Ignore'>3.<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><![endif]>Napisanie
+edytora baz danych (w Javie).<o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:53.4pt;text-indent:-18.0pt;mso-list:l5 level1 lfo10;
+tab-stops:list 53.4pt'><![if !supportLists]><span style='mso-list:Ignore'>4.<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><![endif]>Napisanie
+uproszczonego algorytmu implementującego ten interfejs (np. każący powtórzyć
+każdą jednostkę dokładnie trzy razy z dwudniowymi odstępami czasu).</p>
+
+<p class=MsoNormal style='margin-left:53.4pt;text-indent:-18.0pt;mso-list:l5 level1 lfo10;
+tab-stops:list 53.4pt'><![if !supportLists]><span style='mso-list:Ignore'>5.<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><![endif]>Przetestowanie
+programu na różnych telefonach.</p>
+
+<p class=MsoNormal style='margin-left:53.4pt;text-indent:-18.0pt;mso-list:l5 level1 lfo10;
+tab-stops:list 53.4pt'><![if !supportLists]><span style='mso-list:Ignore'>6.<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><![endif]>Napisanie
+algorytmu powtórek.</p>
+
+<p class=MsoNormal style='margin-left:53.4pt;text-indent:-18.0pt;mso-list:l5 level1 lfo10;
+tab-stops:list 53.4pt'><![if !supportLists]><span style='mso-list:Ignore'>7.<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><![endif]>Testowanie
+i ulepszanie algorytmu (może będzie parę do wyboru przez użytkownika).</p>
+
+<p class=MsoNormal style='margin-left:53.4pt;text-indent:-18.0pt;mso-list:l5 level1 lfo10;
+tab-stops:list 53.4pt'><![if !supportLists]><span style='mso-list:Ignore'>8.<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><![endif]>Stworzenie
+przykładowych baz danych.</p>
+
+<h3 style='margin-left:36.0pt;text-indent:-18.0pt;mso-list:l0 level1 lfo6;
+tab-stops:list 36.0pt'><![if !supportLists]><span style='font-family:Symbol;
+mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol;font-weight:normal;
+mso-bidi-font-weight:bold'><span style='mso-list:Ignore'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]>Klasy programu uczącego (wersja wstępna)</h3>
+
+<p class=MsoNormal style='margin-left:53.4pt'>W katalogu programu będą dwa
+rodzaje plików:</p>
+
+<p class=MsoNormal style='margin-left:88.8pt;text-indent:-18.0pt;mso-list:l7 level1 lfo11;
+tab-stops:list 88.8pt'><![if !supportLists]><span style='mso-list:Ignore'>1.<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><![endif]>Pliki
+baz danych (.<span class=GramE>data</span>)</p>
+
+<p class=MsoNormal style='margin-left:88.8pt;text-indent:-18.0pt;mso-list:l7 level1 lfo11;
+tab-stops:list 88.8pt'><![if !supportLists]><span style='mso-list:Ignore'>2.<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><![endif]>Pliki
+z stanem nauki dla poszcz. baz danych (.<span class=SpellE><span class=GramE>state</span></span>)</p>
+
+<p class=MsoNormal style='margin-left:72.0pt;text-indent:-18.0pt;mso-list:l0 level2 lfo6;
+tab-stops:list 72.0pt'><![if !supportLists]><span style='font-family:"Courier New";
+mso-fareast-font-family:"Courier New"'><span style='mso-list:Ignore'>o<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><![endif]><span
+class=SpellE><span style='font-family:"Courier New"'>LearningMIDLet</span></span><span
+style='font-family:"Courier New"'> </span>– Główna klasa programu</p>
+
+<p class=MsoNormal style='margin-left:108.0pt;text-indent:-18.0pt;mso-list:
+l0 level3 lfo6;tab-stops:list 108.0pt'><![if !supportLists]><span
+style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
+Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span class=SpellE><span class=GramE><span
+style='font-family:"Courier New"'>void</span></span></span><span
+style='font-family:"Courier New"'> start()</span><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:108.0pt;text-indent:-18.0pt;mso-list:
+l0 level3 lfo6;tab-stops:list 108.0pt'><![if !supportLists]><span
+style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
+Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]>...</p>
+
+<p class=MsoNormal style='margin-left:72.0pt;text-indent:-18.0pt;mso-list:l0 level2 lfo6;
+tab-stops:list 72.0pt'><![if !supportLists]><span style='font-family:"Courier New";
+mso-fareast-font-family:"Courier New"'><span style='mso-list:Ignore'>o<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><![endif]><span
+class=GramE><span style='font-family:"Courier New"'>interface</span></span><span
+style='font-family:"Courier New"'> <span class=SpellE>Algorithm</span></span><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:108.0pt;text-indent:-18.0pt;mso-list:
+l0 level3 lfo6;tab-stops:list 108.0pt'><![if !supportLists]><span
+style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
+Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]>...<o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:72.0pt;text-indent:-18.0pt;mso-list:l0 level2 lfo6;
+tab-stops:list 72.0pt'><![if !supportLists]><span style='font-family:"Courier New";
+mso-fareast-font-family:"Courier New"'><span style='mso-list:Ignore'>o<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><![endif]><span
+class=SpellE><span style='font-family:"Courier New"'>Calendar</span></span> – tu
+będą pamiętane powtórki i tu będzie algorytm wpisywał planowane powtórki na
+przyszłe dni.</p>
+
+<p class=MsoNormal style='margin-left:108.0pt;text-indent:-18.0pt;mso-list:
+l0 level3 lfo6;tab-stops:list 108.0pt'><![if !supportLists]><span
+style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
+Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]>…</p>
+
+<p class=MsoNormal style='margin-left:72.0pt;text-indent:-18.0pt;mso-list:l0 level2 lfo6;
+tab-stops:list 72.0pt'><![if !supportLists]><span style='font-family:"Courier New";
+mso-fareast-font-family:"Courier New"'><span style='mso-list:Ignore'>o<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><![endif]><span
+style='font-family:"Courier New"'>Interface – </span>zbiór procedur
+wyświetlających coś lub pytających użytkownika o coś</p>
+
+<p class=MsoNormal style='margin-left:108.0pt;text-indent:-18.0pt;mso-list:
+l0 level3 lfo6;tab-stops:list 108.0pt'><![if !supportLists]><span
+style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
+Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span class=SpellE><span class=GramE><span
+style='font-family:"Courier New"'>void</span></span></span><span
+style='font-family:"Courier New"'> <span class=SpellE>message</span>(<span
+class=SpellE>String</span> s)</span><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:108.0pt;text-indent:-18.0pt;mso-list:
+l0 level3 lfo6;tab-stops:list 108.0pt'><![if !supportLists]><span
+style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
+Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span class=SpellE><span class=GramE><span
+style='font-family:"Courier New"'>bool</span></span></span><span
+style='font-family:"Courier New"'> <span class=SpellE>yesOrNo</span>(<span
+class=SpellE>String</span> <span class=SpellE>question</span>)</span><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:108.0pt;text-indent:-18.0pt;mso-list:
+l0 level3 lfo6;tab-stops:list 108.0pt'><![if !supportLists]><span
+style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
+Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span class=SpellE><span style='font-family:
+"Courier New"'>UserAnswer</span></span><span style='font-family:"Courier New"'>
+<span class=SpellE>itemQuestion</span>(<span class=SpellE>Item</span> i) – </span><span
+class=GramE>pyta</span>; czeka na dowolny klawisz mierząc time1; wyświetla
+popr. odp.; czeka na <span class=SpellE>cyfre</span> od 1 do 6 mierząc time2;
+zwraca czasy i wciśniętą cyfrę.</p>
+
+<p class=MsoNormal style='margin-left:108.0pt;text-indent:-18.0pt;mso-list:
+l0 level3 lfo6;tab-stops:list 108.0pt'><![if !supportLists]><span
+style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
+Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]>…</p>
+
+<p class=MsoNormal style='margin-left:72.0pt;text-indent:-18.0pt;mso-list:l0 level2 lfo6;
+tab-stops:list 72.0pt'><![if !supportLists]><span style='font-family:"Courier New";
+mso-fareast-font-family:"Courier New"'><span style='mso-list:Ignore'>o<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><![endif]><span
+class=SpellE><span style='font-family:"Courier New"'>UserAnswer</span></span><span
+style='font-family:"Courier New"'> – </span>co odpowiedział użytkownik i w
+jakim czasie</p>
+
+<p class=MsoNormal style='margin-left:108.0pt;text-indent:-18.0pt;mso-list:
+l0 level3 lfo6;tab-stops:list 108.0pt'><![if !supportLists]><span
+style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
+Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span class=SpellE><span class=GramE><span
+style='font-family:"Courier New"'>int</span></span></span><span
+style='font-family:"Courier New"'> time1</span><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:108.0pt;text-indent:-18.0pt;mso-list:
+l0 level3 lfo6;tab-stops:list 108.0pt'><![if !supportLists]><span
+style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
+Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span class=SpellE><span class=GramE><span
+style='font-family:"Courier New"'>int</span></span></span><span
+style='font-family:"Courier New"'> time2</span><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:108.0pt;text-indent:-18.0pt;mso-list:
+l0 level3 lfo6;tab-stops:list 108.0pt'><![if !supportLists]><span
+style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
+Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span class=SpellE><span class=GramE><span
+style='font-family:"Courier New"'>int</span></span></span><span
+style='font-family:"Courier New"'> <span class=SpellE>answer</span> – </span>liczba
+z zakresu 1 - 6</p>
+
+<p class=MsoNormal style='margin-left:72.0pt;text-indent:-18.0pt;mso-list:l0 level2 lfo6;
+tab-stops:list 72.0pt'><![if !supportLists]><span style='font-family:"Courier New";
+mso-fareast-font-family:"Courier New"'><span style='mso-list:Ignore'>o<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><![endif]><span
+class=SpellE><span style='font-family:"Courier New"'>Item</span></span><span
+style='font-family:"Courier New"'> – </span>jednostka przechowująca pytanie i
+(poprawną) odpowiedź.<o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:108.0pt;text-indent:-18.0pt;mso-list:
+l0 level3 lfo6;tab-stops:list 108.0pt'><![if !supportLists]><span
+style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
+Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span class=SpellE><span style='font-family:
+"Courier New"'>Question</span></span><span style='font-family:"Courier New"'> <span
+class=SpellE>question</span></span><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:108.0pt;text-indent:-18.0pt;mso-list:
+l0 level3 lfo6;tab-stops:list 108.0pt'><![if !supportLists]><span
+style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
+Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span class=SpellE><span style='font-family:
+"Courier New"'>Answer</span></span><span style='font-family:"Courier New"'> <span
+class=SpellE>answer</span></span><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:108.0pt;text-indent:-18.0pt;mso-list:
+l0 level3 lfo6;tab-stops:list 108.0pt'><![if !supportLists]><span
+style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
+Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span class=SpellE><span class=GramE><span
+style='font-family:"Courier New"'>void</span></span></span><span
+style='font-family:"Courier New"'> <span class=SpellE>Edit</span>()</span><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:72.0pt;text-indent:-18.0pt;mso-list:l0 level2 lfo6;
+tab-stops:list 72.0pt'><![if !supportLists]><span style='font-family:"Courier New";
+mso-fareast-font-family:"Courier New"'><span style='mso-list:Ignore'>o<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><![endif]><span
+class=SpellE><span style='font-family:"Courier New"'>Question</span></span><span
+style='font-family:"Courier New"'> – </span>pytanie (niekoniecznie zwykły tekst
+– może to być nagranie dźwiękowe)</p>
+
+<p class=MsoNormal style='margin-left:72.0pt;text-indent:-18.0pt;mso-list:l0 level2 lfo6;
+tab-stops:list 72.0pt'><![if !supportLists]><span style='font-family:"Courier New";
+mso-fareast-font-family:"Courier New"'><span style='mso-list:Ignore'>o<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><![endif]><span
+class=SpellE><span style='font-family:"Courier New"'>Answer</span></span><span
+style='font-family:"Courier New"'> – </span>odpowiedź (tak jak wyżej)</p>
+
+<p class=MsoNormal style='margin-left:72.0pt;text-indent:-18.0pt;mso-list:l0 level2 lfo6;
+tab-stops:list 72.0pt'><![if !supportLists]><span style='font-family:"Courier New";
+mso-fareast-font-family:"Courier New"'><span style='mso-list:Ignore'>o<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><![endif]><span
+class=GramE>i</span> inne …</p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+</div>
+
+</body>
+
+</html>

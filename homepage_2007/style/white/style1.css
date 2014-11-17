@@ -1,0 +1,30 @@
+body {
+	font-family: "Verdana";
+	font-size: 12pt;
+	background-image:url(kamienie1.png);
+	background-repeat:repeat-y;
+	padding-left:90px;
+}
+div.rozdzial:after {
+	display:block;
+	content:url(pioro2.png);
+}
+dt {
+	font-weight: bold;
+}
+p.stopka {
+	font-style: italic;
+	text-align: center;
+}
+p.podtytul {
+	font-style: italic;
+}
+.ztytulem li:first-line, li.ztytulem:first-line {
+	font-weight: bold
+}
+dl.codedef dt {
+	font-family: monospace;
+	font-weight: bold;
+/*	font-size: larger;*/
+}
+

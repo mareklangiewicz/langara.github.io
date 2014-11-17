@@ -1,0 +1,3 @@
+<area shape="rect" href="$classMarekMailSystem2_1_1EmailSender.html" title="MarekMailSystem2.EmailSender" alt="" coords="149,84,381,111">
+<area shape="rect" href="$classMarekMailSystem2_1_1EmailManager.html" title="This is the main class. Most of the time you will use only this class to send emails..." alt="" coords="5,161,248,188">
+<area shape="rect" href="$classMarekMailSystem2_1_1SmtpEmailSender.html" title="This class represents smtp client with can connect to some smtp server and send an..." alt="" coords="272,161,539,188">

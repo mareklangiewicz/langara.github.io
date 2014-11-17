@@ -1,0 +1,7 @@
+<area shape="rect" href="$classMarekMailSystem2_1_1EmailSender.html" title="MarekMailSystem2.EmailSender" alt="" coords="293,43,525,69">
+<area shape="rect" href="$interfaceMarekMailSystem2_1_1IEmailSender.html" title="MarekMailSystem2.IEmailSender" alt="" coords="7,5,241,32">
+<area shape="rect" title="EmailSender" alt="" coords="239,15,247,23">
+<area shape="rect" title="EmailSender" alt="" coords="661,36,669,44">
+<area shape="rect" href="$interfaceMarekMailSystem2_1_1IEmailTable.html" title="This interface represents an Email Table (usually in some database)." alt="" coords="299,95,520,121">
+<area shape="rect" title="TemplateTable\nErrorTable" alt="" coords="516,103,524,111">
+<area shape="rect" title="TemplateTable\nErrorTable" alt="" coords="740,64,748,72">

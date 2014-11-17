@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pl" lang="pl">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" lang="en" content="binary, search, trees, AVL, applet, java" />
+    <meta name="keywords" lang="pl" content="drzewa binarne poszukiwań, AVL, applet, java" />
+    <meta name="author" content="Marek Langiewicz"/>
+    <title> Applet pokazujący tworzewnie drzwa AVL </title>
+    <link rel="stylesheet" type="text/css" href="../../style/white/style1.css" />
+  </head>
+  <body>
+    <h1> Applet pokazujący tworzenie drzewa AVL </h1>
+    <div class="rozdzial">
+      <h4> O programie </h4>
+      <p>
+        Applet "Drzewa" służy do graficznej prezentacji tworzenia drzew zbalansowanych.
+        Pozwala zaobserwować zmiany w drzewie po wstawieniu dowolnego elementu do drzewa.
+        Na razie zaimplementowane jest tylko drzewo AVL, ale dodanie kolejnych powinno
+        być już proste (TODO: w końcu to zrobić..)
+      </p>
+    </div>
+    <div class="rozdzial">
+      <h4> Użycie </h4>
+      <ol>
+        <li>Wpisujemy liczbę do pola tekstowego</li>
+        <li>Naciskamy "Wstaw" żeby wstawić wierzchołek do drzewa</li>
+        <li>Naciskamy "AVL" żeby zbalansować drzewo (przy pomocy rotacji)</li>
+        <li>I tak w kółko</li>
+      </ol>
+      <p>
+        Uwaga: żeby to było poprawne drzewo AVL należy naciskać "AVL"
+        po KAŻDYM wstawieniu nowego wierzchołka!
+      </p>	
+      <p>
+        A jak nie zależy nam na poprawnym drzewie AVL to możemy zignorować
+        przycisk "AVL". Drzewo będzie się zachowywać jak zwykłe BST
+        (binarne drzewo poszukiwań). Można też ręcznie wykonywać rotacje
+        klikając na wierzchołki. Można też przesuwać całe drzewo po ekranie
+        klikając na jakieś wolne miejsce w obszarze appletu. Jakby w wyniku
+        wykonanych rotacji niektóre wierzchołki zaczęły nachodzić na siebie
+        to wystarczy przesunąć drzewo w inne miejsce i samo się naprawi.
+      </p>
+    </div>
+    <div class="rozdzial">
+      <h4> Applet </h4>
+      <p> (uwaga: pod appletem jeszcze coś jest.. :P) </p>
+      <p>
+        <object archive="Drzewa.jar" classid="java:drzewa.Drzewa.class"
+		codetype="application/java-archive" width="700" height="500"> </object>
+      </p>
+      <h4> Koniec appletu. </h4>
+    </div>
+    <div class="rozdzial">
+      <h4> Dokumentacja i źródła </h4>
+      <ul>
+        <li>
+          Dokumentacja stworzona z użyciem "javadoc" jest <a href="javadoc/index.html">TU</a>
+        </li>
+        <li>
+          Diagram klas jest <a href="diagram.png">TU</a>.
+          (no wiem że to przerost formy nad treścią, ale i tak musiałem ten diagram zrobić na zajęcia..)
+        </li>
+        <li> I źródła (na licencji GPL) <a href="drzewa.tgz">TU</a> </li>
+      </ul>
+    </div>
+    <div class="rozdzial">
+      <h4> Autor </h4>
+      <p> <a href="http://mareklangiewicz.pl">Marek Langiewicz</a> </p>
+   </div>
+  <p><a href="http://validator.w3.org/check/referer"><img alt="Poprawny XHTML 1.0!" src="../../../valid-xhtml10.png" style=
+  "border:none;width:88px;height:31px;margin:5px" /></a><a href="http://jigsaw.w3.org/css-validator/"><img alt=
+  "Poprawny CSS!" src="../../../vcss.png" style="border:none;width:88px;height:31px;margin:5px" /></a></p>
+  <p class="stopka">
+  	<code>[ vim: set enc=utf-8 spelllang=pl spell: ]</code>
+  </p>
+  </body>
+</html>

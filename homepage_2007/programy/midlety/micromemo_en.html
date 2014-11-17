@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <meta name="generator" content="HTML Tidy for Linux/x86 (vers 1 September 2005), see www.w3.org" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" lang="en" content="program, Java, J2ME, memory, study, vocabulary" xml:lang="en" />
+    <meta name="keywords" lang="pl" content="program, Java, J2ME, pamięć, nauka, słówka, słownik" xml:lang="pl" />
+    <meta name="author" content="Marek Langiewicz" />
+
+    <title>"Micro Memo" - program wspomagający naukę</title>
+    <link rel="stylesheet" type="text/css" href="../../style/white/style1.css" />
+    <!--<link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/Core/Ultramarine" /> -->
+</head>
+
+<body>
+    <h2>program "Micro Memo"</h2>
+
+    <div class="rozdzial">
+        <h4>About program</h4>
+
+        <p>I wrote this program for one course at my study. The idea is to make something similar to the "Super Memo"
+		(it's a windows program), but on J2ME platform.</p>
+
+		<p>
+		First we make a database os questions and answers (like for example foreign language vocabulary) and we copy it
+		to the cellphone. Then the MicroMemo program quiz us on this questions periodically. The program task is to schedule
+		repetition times so it ask as about some questions exactly when we've almost forgotten the answer. This way it minimizes
+		the learning time. There is no sense to repeat some question when we still remember it very good; also repeating something
+		when we've forgotten it completely is too late because we have to learn it again then.
+		</p>
+
+		<p>
+		How the program will know how fast we forget a particular question? It will learn that from our earlier answers.
+		The user after every question try to guess the answer, and then program displays the answer, and then user
+		estimate how good he had known the answer (in 1..6 scale)
+		</p>
+
+		<p>
+		The benefits from using this kind of software are better explained on Memaid web page
+		<a href="http://memaid.sourceforge.net/docs/repetitions.html">HERE</a> Memaid is a SuperMemo alike linux program
+		</p>
+		
+		<p>
+		More about MicroMemo is in the specification I wrote for my classes (in polish) <a href="projekt_micromemo.html">HERE</a>.
+		The project is not finished yet. (although approved a long time ago.. :P). From the specification above I have done four first
+		items. Besides I started to rewrite the whole code, because I want MicroMemo to work not only on cellphones, but as an applet
+		and as a ordinary PC application also. So to make most of the program code common for this three platforms, I've written
+		some classes (to disk access and memory card on cellphone; to display data; to get key preses from the user) for each of
+		this platform separately. When I finish this rewriting, I will put the sources here. (And the working applet also)
+		</p>
+		
+    </div>
+
+    <p class="stopka">Tą stronę najlepiej oglądać za pomocą przeglądarki html. :-)<br />
+    Wszystkie prawa zastrzeżone <a href="http://ilang.magma-net.pl/marek">Marek Langiewicz 2007</a><br />
+    <code>[ vim: set enc=utf-8 spelllang=pl,en spell: ]</code></p>
+</body>
+</html>

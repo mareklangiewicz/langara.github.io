@@ -1,0 +1,74 @@
+Drugi projekt na przedmiot: Równoleg³e Algorytmy Sztucznej Inteligencji.
+
+Temat: Program szukaj±cy rozwi±zañ problemu komiwoja¿era metod± tabu search
+	z u¿yciem biblioteki PVM
+	
+Autor: Marek Langiewicz
+
+O projekcie:
+
+	Algorytm:
+		Wykorzysta³em równoleg³y algorytm przeszukiwania tabu (trochê zmodyfikowany).
+		Ka¿dy proces szukaj±cy komunikuje siê z procesem nadrzêdnym co okre¶lon±
+		ilo¶æ iteracji (losowa od 500 do 3000). Lista tabu to poprostu lista
+		ostatnio odwiedzonych rozwi±zañ (nie ¿adnych atryutów) (d³ listy tabu jest
+		losowa od 3 do 20). Proces szukaj±cy je¶li przez ustalon± ilo¶æ iteracji nie polepszy
+		rekordu to skacze w losowe miejsce. Ka¿dy procesz szukaj±cy pamiêta parê najlepszych
+		kierunków w które nie poszed³ i jak przychodzi pora komunikacji z procesem nadrzêdnym
+		to wymieniana jest te¿ lista najlepszych kierunków.
+
+	Implementacja:
+		Zosta³a u¿yta biblioteka PVM do równoleg³ych obliczeñ i równie¿ biblioteka
+		wxWidgets (do ogólnych zastosowañ w C++)
+
+		Po skompilowaniu programu i skopiowaniu binarek do odp. katalogów (tak jak chce PVM)
+		Uruchamiamy PVM i nasz program (podaj±c jako parametr liczbê procesów szukaj±cych
+		do odpalenia):
+			$ pvm
+			pvm> spawn -> TSP 10
+
+	Wyniki:
+		Ka¿dy Szukacz wypisuje swoje min zawsze jak poprawi na lepsze.
+		Dodatkowo Kontroler wypisuje ka¿d± poprawê globalnego min.
+		Przy ka¿dym napisie jest czas.
+
+
+Pliki projektu:
+
+	att48.tsp - dane programu
+		(ze strony: http://www.iwr.uni-heidelberg.de/groups/comopt/software/TSPLIB95/)
+		
+	d18512.tsp - inne dane (ich jeszcze nie uzywalem)
+	
+	Dane.cpp, Dane.h - Modu³ z klasami danych wykorzystywanymi w progrmie. Szczegó³y:
+		Perm - klasa reprezentujaca okreslon± permutacjê (czyli rozwi±zanie)
+			zawiera metody genetuj±ce otoczenie, porównuj±ce funkcje celu i inne
+		Tabu - klasa zawieraj±ca tablicê permutacji wykorzystywana jako lista tabu.
+			(metoda: cenzuruj kasuje z podanej tablicy wszystkie elementy nale¿±ce do tabu)
+		PermITabu - poprostu permutacja i lista tabu
+			u¿ywane jako stan algorytmu szukaj±cego który mo¿na zapisaæ na pó¼niej.
+		Naj - lista n najlepszych permutacji razem z ich listami tabu
+		
+	Miasta_att48.h - dane programu przeformatowane dla jêzyka C++
+	
+	DaneTest.cpp - programik testuj±cy poprawno¶æ modu³u Dane
+
+	Kontroler.cpp, Kontroler.h - klasa pamiêtaj±ca globalne minimum znalezione przez program
+		i globaln± tablicê Naj z najlepszymi kierunkami które mo¿na jeszcze sprawdziæ
+	
+	Szukacz.cpp Szukacz.h - modu³ z procesem szukaj±cym. W tym pliku (Szukacz.h) jest nasz algorytm
+		przeszukiwania tabu.
+	
+	TSP.cpp, TSP.h - program g³ówny tworz±cy objekt Kontroler i odpalaj±cy podan± ilo¶æ Szukaczy
+
+	wyniki_tsp_1.txt, wyniki_tsp_2.txt, wyniki_tsp_10.txt - wyniki dzia³ania programu dla 1 2 i 10
+		Szukaczy.
+
+	CommonWX.cpp, CommonWX.h - modu³ z ró¿nymi rzydatnymi procedukami (napisany wcze¶niej - nie specjalnie
+		dla tego projektu)
+	
+	Random.cpp, Random.h - do generowania liczb losowych.
+
+	wxPVM.cpp wxPVM.h - opakowanie na PVMa ¿eby mo¿na by³o przesy³aæ dane tak samo jak dla dowolnego
+		strumienia danych.
+	
