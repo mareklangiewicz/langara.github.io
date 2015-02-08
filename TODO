@@ -1,0 +1,20 @@
+- więcej linków do projektów - bezpośrednio do repo na githubie, czy bitbucket też. np do abishortcuts..
+- najpierw uzupełnić treść! (podobnie do homepage_2007, tylko trochę grzeczniej - bo to będą różni pracodawcy oglądać
+- nowe rzeczy w css z których skorzystać:
+@supports
+position:sticky (do fajnego spisu treści który ‘czasami’ się przewija) (ale tylko gdy browser supports)
+(jak jest robione rozsuwane search na developers….? - sprawdzić; najlepiej się wzorować na developer.android.com - obczaić tam wszystkie bajery - ale generalnie coś zrobić inaczej żeby moja stronka nie wyglądała jak zerżnięta z googli..)
+Generalnie sprawdzić googlowe stronki jak są zrobione - tzeba by automatem przeformatowywać, żeby móc przeczytać wygodniej html lub js.
+- blackboard wysuwany i chat wysuwany
+- podmianka styli: default(white clean pretty animations); simple(for older browsers); dark(metal style; showing that our content is separate from presentation)
+
+
+
+- potem wstawić bajery z noh i z noh_insects bezpośrednio na stronkę (jak już skończę noh_insects - pająki)
+- testować też na urządzeniach mobilnych - musi działać na nexusie 4
+- testować na nowych IE i firefoxie też!
+- potem:
+- logger, player youtubowy, (player grooveshark?): wszystko wysuwane z szufladek i nachodzące na treść strony. 
+- menu: z lewej (position fixed) - tam gdzie chodzi pająk - jak pająk pójdzie w złe miejsce to trudno, będzie zasłonięty aż wyjdzie. (albo menu zrobimy wysuwalne?? wysuwalne przy kliknięciu, czy już przy hover? może 2 poziomy wysuwania?
+- klikanie w menu przewija _płynnie_ stronkę. klikanie w nagłówki przewija _płynnie_ do ustawienia:kliknięty nagłówek na górze strony. (tak jak w noh_tests)
+- przycisk "top" tylko jeden w menu jako pierwsza opcja
