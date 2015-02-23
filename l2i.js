@@ -59,6 +59,17 @@ function verbose(logger) {
 function a(addr) { return noh.a({href:addr}, addr); }
 function la(addr) { return noh.li(a(addr)); }
 
+function getUrlParameter(sParam) {
+    var sPageURL = window.location.search.substring(1);
+    var sURLVariables = sPageURL.split('&');
+    for (var i = 0; i < sURLVariables.length; i++) {
+        var sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] == sParam) 
+            return sParameterName[1];
+    }
+}          
+
+function lparam(name) { return noh.li(name+': ' + decodeURIComponent(getUrlParameter(name))); }
 
 function l2i_body() {
 
@@ -91,8 +102,16 @@ function l2i_body() {
         la("file:" + MP3EX),
         la("file://" + MP3EX),
         la(GEOEX),
-        la("http://mareklangiewicz.pl/l2i.html?action=view&data=" + encodeURIComponent(GEOEX)),
-        la("http://mareklangiewicz.pl/l2i.html?action=android.media.action.MEDIA_PLAY_FROM_SEARCH&data=" + encodeURIComponent(MP3EX))
+        la(window.location.origin + window.location.pathname + "?action=view&data=" + encodeURIComponent(GEOEX)),
+        la(window.location.origin + window.location.pathname + "?action=android.media.action.MEDIA_PLAY_FROM_SEARCH&data=" + encodeURIComponent(MP3EX))
+      ),
+      noh.p(
+        noh.h3("Intent:"),
+        noh.ul(
+          lparam('action'),
+          lparam('data'),
+          lparam('extra')
+        )
       )
     ).css("margin", 20),
     overlay
