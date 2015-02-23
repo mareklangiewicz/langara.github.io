@@ -126,7 +126,7 @@ function l2i_body() {
     'EN: Welcome to L2I web app. Enter: help() to get some help.'
   ], 500);
   if(isNativeApp())
-      slow_log("NATIVE L2I APP DETECTED! TODO: change this page for this special case!");
+      slow_log(["NATIVE L2I APP DETECTED! TODO: change this page for this special case!"], 500);
   window.setTimeout(function() {cmdline[0].$.focus();}, 200);
   return body;
 }
