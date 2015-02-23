@@ -122,11 +122,10 @@ function l2i_body() {
       )
     ).css("margin", 20)
   ).addclass("smooth");
-  slow_log([
-    'EN: Welcome to L2I web app. Enter: help() to get some help.'
-  ], 500);
+  var welcome = [ 'EN: Welcome to L2I web app. Enter: help() to get some help.' ];
   if(isNativeApp())
-      slow_log(["NATIVE L2I APP DETECTED! TODO: change this page for this special case!"], 500);
+      welcome.push("NATIVE L2I APP DETECTED! TODO: change this page for this special case!");
+  slow_log(welcome, 500);
   window.setTimeout(function() {cmdline[0].$.focus();}, 200);
   return body;
 }
