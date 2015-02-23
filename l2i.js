@@ -20,9 +20,10 @@ function help() {
   slow_log([
     'Help for "L2I" app:',
     'This is a small mechanism for translating ordinary http links to android intents.',
+    'You have to install "L2I" android application to use it. TODO: link to L2I on play store',
     'TODO: remove this javascript console, or adapt it for mobile browsers',
     'TODO: create some real documentation here',
-    'You have to install "L2I" android application to use this features fully. TODO: link to L2I on play store'
+    'TODO SOMEDAY: forwarding intents to special desktop application(launcher) - especially voice commands, so a phone can listen for commands for desktop computer..',
   ], 200);
 }
 
@@ -77,7 +78,7 @@ function l2i_body() {
   var GEOEX = "geo:47.6, -122.3";
 
   var cmdline = noh.cmdline(40).addclass("pretty");
-  var logger = noh.log.reel(35, 240000).addclass("pretty");
+  var logger = noh.log.reel(15, 240000).addclass("pretty");
   //logger = noh.log.limitlen(logger, 120);
   verbose(logger);
   noh.log.l2c(
@@ -86,15 +87,15 @@ function l2i_body() {
       logger
    ])
   ).install();
-  var overlay = noh.overlay(logger, cmdline);
-  overlay.addclass("bottom smooth"); //We will control left/right position by hand
-  overlay.css("right", 20);
   var body = noh.div(
     noh.p(
       noh.fancy(noh.h1("L2I")), noh.br(),
-      noh.fancy(noh.h2("TODO: rename to I2I and implement general intent converter/translator")), noh.br(),
+      noh.fancy(noh.h2("Links -> Intents")), noh.br(),
+      noh.fancy(noh.h3("TODO: rename to I2I and implement universal intent converter/translator")), noh.br(),
       "(for example user could create some rules to create simple voice gateway for new commands like: play intent ....)", noh.br(),
       "TODO: some introduction here", noh.br(),
+      'This is a small mechanism for translating ordinary http links to android intents.', noh.br(),
+      'You have to install "L2I" android application to use it. TODO: link to L2I on play store', noh.br(),
       "TODO: example links", noh.br(),
       noh.ul(
         la("file:/sdcard/"),
@@ -112,9 +113,12 @@ function l2i_body() {
           lparam('data'),
           lparam('extra')
         )
+      ),
+      noh.p(
+        logger,
+        cmdline
       )
-    ).css("margin", 20),
-    overlay
+    ).css("margin", 20)
   ).addclass("smooth");
   slow_log([
     'EN: Welcome to L2I web app. Enter: help() to get some help.'
