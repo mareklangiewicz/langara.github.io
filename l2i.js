@@ -106,11 +106,16 @@ function l2i_body() {
         la("file://" + MP3EX),
         la(GEOEX),
         la(window.location.origin + window.location.pathname + "?action=view&data=" + encodeURIComponent(GEOEX)),
-        la(window.location.origin + window.location.pathname + "?action=android.media.action.MEDIA_PLAY_FROM_SEARCH&data=" + encodeURIComponent(MP3EX))
+        la(window.location.origin + window.location.pathname + "?action=android.media.action.MEDIA_PLAY_FROM_SEARCH&data=" + encodeURIComponent(MP3EX)),
+        la(window.location.origin + window.location.pathname + "?nature=start_service&action=MAREK_ACTION&data=some_marek_data"),
+        la(window.location.origin + window.location.pathname + "?nature=start_activity&action=MAREK_ACTION&data=some_marek_data"),
+        la(window.location.origin + window.location.pathname + "?nature=send_broadcast&action=MAREK_ACTION&data=some_marek_data"),
+        noh.li(noh.a({href:'https://docs.google.com/document/d/1tF9x6qF8OkZT9V1bP_fChxCy4ESt4HsAkmShcTDA_Ck/edit?usp=sharing'}, 'More examples in google text document'))
       ),
       noh.p(
         noh.h3("Intent:"),
         noh.ul(
+          lparam('nature'),
           lparam('action'),
           lparam('data'),
           lparam('extra')
