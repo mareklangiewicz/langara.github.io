@@ -5,16 +5,16 @@ body {
 	background-repeat:repeat-y;
 	padding-left:90px;
 }
-div.rozdzial:after {
-	display:block;
-	content:url('pioro2.png');
-}
 dt {
 	font-weight: bold;
 }
 
 h1, h2, h3, h4 {
     text-shadow: rgba(64, 64, 64, 0.496094) 6px 7px 5px;
+}
+
+hr {
+    box-shadow: rgba(64, 64, 64, 0.496094) 6px 7px 5px;
 }
 
 p.stopka {
