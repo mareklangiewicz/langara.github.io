@@ -1,0 +1,9 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "pl.mareklangiewicz.myintent",
+    "sha256_cert_fingerprints":
+    ["BC:FA:B6:42:7E:BB:F5:80:56:2B:B0:F6:74:D3:55:ED:67:50:4A:5F:A6:E4:F5:3C:97:33:00:D4:8F:5E:AB:DF"]
+  }
+}]
