@@ -1,12 +1,10 @@
-<?xml version="1.0" encoding="iso-8859-2"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pl" lang="pl">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1"/>
-		<title>Marek Langiewicz - Program 2 z Metod Optymalizacji - Komiwojażer</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<title>Marek Langiewicz - Program 2 z Metod Optymalizacji - Komiwojaďż˝er</title>
 	</head>
 	<body>
 		<h2> Autor </h2>
@@ -16,48 +14,48 @@
 		</p>
 		<h2> Opis problemu </h2>
 		<p>
-			Stosując algorytm zachłanny, wyznaczyć pewna drogę komiwojażera.
+			StosujÄc algorytm zachĹanny, wyznaczyÄ pewna drogÄ komiwojaĹźera.
 		</p>
 		<h2> Algorytm </h2>
 		<p>
-			Zastosowałem zwykły algorytm zachłanny. Algorytm rekurencyjnie szuka
-			najdłuższej ścieżki i jeśli nie może już iść głębiej, a ścieżka jest krótsza
-			niż ilość wierzchołków grafu, to cofa się rekurencyjnie do ostatniego rozwidlenia.
-			Przyjąłem że krawędzie grafu nie mają wag (kosztów). Jeśli powinny mieć, to mogę
-			to poprawić. Wtedy algorytm szedłby zawsze najpierw najtańszą drogą.
+			ZastosowaĹem zwykĹy algorytm zachĹanny. Algorytm rekurencyjnie szuka
+			najdĹuĹźszej ĹcieĹźki i jeĹli nie moĹźe juĹź iĹÄ gĹÄbiej, a ĹcieĹźka jest krĂłtsza
+			niĹź iloĹÄ wierzchoĹkĂłw grafu, to cofa siÄ rekurencyjnie do ostatniego rozwidlenia.
+			PrzyjÄĹem Ĺźe krawÄdzie grafu nie majÄ wag (kosztĂłw). JeĹli powinny mieÄ, to mogÄ
+			to poprawiÄ. Wtedy algorytm szedĹby zawsze najpierw najtaĹszÄ drogÄ.
 		</p>
 		<h2> Informacje o implementacji </h2>
-		<h3> Użycie programu </h3>
+		<h3> UĹźycie programu </h3>
 			<p>
-				Możemy podać programowi jako parametr nazwę pliku z danymi wejściowymi, albo
-				jeśli nie podamy, to program będzie czytał dane ze standartowego wejścia.
-				Przykładowe dane wejściowe są w plikach <kbd> przyklad1.in przyklad2.in </kbd>
-				(wierzchołki startowe są również zapisany w tych plikach - na końcu)
-				więc możemy napisać: <br/>
+				MoĹźemy podaÄ programowi jako parametr nazwÄ pliku z danymi wejĹciowymi, albo
+				jeĹli nie podamy, to program bÄdzie czytaÄ dane ze standartowego wejĹcia.
+				PrzykĹadowe dane wejĹciowe sÄ w plikach <kbd> przyklad1.in przyklad2.in </kbd>
+				(wierzchoĹki startowe sÄ rĂłwnieĹź zapisane w tych plikach - na koĹcu)
+				wiÄc moĹźemy napisaÄ: <br/>
 				<kbd> ./dluga_sciezka przyklad2.in </kbd> <br/>
-				albo: <br/>	
+				albo: <br/>
 				<kbd> ./dluga_sciezka &lt; przyklad2.in </kbd> <br/>
-				i program będzie w trakcie działania wypisywał odwiedzane wierzchołki;
-				na końcu program wypisze czy znalazł drogę komiwojażera, czy nie.
+				i program bÄdzie w trakcie dziaĹania wypisywaÄ odwiedzane wierzchoĹki;
+				na koĹcu program wypisze czy znalazĹ drogÄ komiwojaĹźera, czy nie.
 			</p>
-		<h3> Format danych wejściowych </h3>
+		<h3> Format danych wejĹciowych </h3>
 			<ul>
-				<li> liczba krawędzi grafu </li>
-				<li> krawędzie w postaci: <kbd> x-y </kbd> gdzie x i y to numery wierzchołków </li>
-				<li> numer wierzchołka startowego </li>
+				<li> liczba krawÄdzi grafu </li>
+				<li> krawÄdzie w postaci: <kbd> x-y </kbd> gdzie x i y to numery wierzchoĹkĂłw </li>
+				<li> numer wierzchoĹka startowego </li>
 			</ul>
 		<h3> Kompilacja programu </h3>
 		<p>
 			Program kompilujemy poleceniem <kbd> make </kbd> (wydanym w katalogu programu).
-			Potrzebny jest GNU Make. Można też skompilować pod M$ Windowsem używając
-			albo MinGW albo Cygwin - one mają GNU Make i GCC. Trzeba mieć też zainstalowaną bibliotekę
+			Potrzebny jest GNU Make. MoĹźna teĹź skompilowaÄ pod M$ Windowsem uĹźywajÄc
+			albo MinGW albo Cygwin - one majÄ GNU Make i GCC. Trzeba mieÄ teĹź zainstalowanÄ bibliotekÄ
 			<a href="http://www.wxwidgets.org">WX Widgets</a>.
-			A po co ten wxWidgets? Używam z tego dynamicznych tablic do zapamiętywania sąsiadów każdego wierzchołka.
-			Tam są napisane szybkie tablice i dynamiczne (w sensie: można zmieniać ich rozmiar) i bezpieczne
-			(w sensie: w trybie 'debug' sprawdzają czy nie odwołuję się do elementów poza tablicą).
-			Są szybsze i prostsze w obsłudze od standartowych tablic C++ (czyli od <kbd> vector </kbd> z
-			Standard Template Library). Poza tym te tablice są oparte na makrach a nie szablonach, więc
-			można je kompilować praktycznie dowolnym kompilatorem C++. Biblioteka wxWidgets jest darmowa
+			A po co ten wxWidgets? UĹźywam z tego dynamicznych tablic do zapamiÄtywania sÄsiadĂłw kaĹźdego wierzchoĹka.
+			Tam sÄ napisane szybkie tablice i dynamiczne (w sensie: moĹźna zmieniaÄ ich rozmiar) i bezpieczne
+			(w sensie: w trybie 'debug' sprawdzajÄ czy nie odwoĹujÄ siÄ do elementĂłw poza tablicÄ).
+			SÄ szybsze i prostsze w obsĹudze od standartowych tablic C++ (czyli od <kbd> vector </kbd> z
+			Standard Template Library). Poza tym te tablice sÄ oparte na makrach a nie szablonach, wiÄc
+			moĹźna je kompilowaÄ praktycznie dowolnym kompilatorem C++. Biblioteka wxWidgets jest darmowa
 			i open-source i crossplatformowa.
 		</p>
 		<h3> Pliki programu </h3>
@@ -66,53 +64,53 @@
 				<dd>
 					Skompilowany program (pod linuxa). Jesli podamy plik jako parametr (np. <kbd>przyklad1.in</kbd>)
 					to pobierze dane wejsciowe z podanego pliku. A jak nie podamy to pobierze dane ze
-					standartowego wejscia. Format danych wejsciowych jest podany wyżej.
+					standartowego wejscia. Format danych wejsciowych jest podany wyĹźej.
 				</dd>
 				<dt> <a href="komiwojazer.cpp"><kbd> komiwojazer.cpp </kbd></a> </dt>
 				<dd>
-					Główny plik źródłowy programu. Zawiera funkcję <kbd>main</kbd> i parę innych pomocniczych i
-					rekurencyjną funkcję <kbd>Komiwojazer</kbd> która to właśnie szuka drogi komiwojazera
-					od podanego wierzchołka. Szczegóły są w komentarzach w pliku <kbd>komiwojazer.h</kbd>.
+					GĹĂłwny plik ĹşrĂłdĹowy programu. Zawiera funkcjÄ <kbd>main</kbd> i parÄ innych pomocniczych i
+					rekurencyjnÄ funkcjÄ <kbd>Komiwojazer</kbd> ktĂłra to wĹaĹnie szuka drogi komiwojaĹźera
+					od podanego wierzchoĹka. SzczegĹy sÄ w komentarzach w pliku <kbd>komiwojazer.h</kbd>.
 				</dd>
 				<dt> <a href="komiwojazer.h"><kbd> komiwojazer.h </kbd></a> </dt>
 				<dd>
-					Plik nagłówkowy dla pliku <kbd> komiwojazer.cpp </kbd>. Zawiera komentarze.
+					Plik nagĹĂłwkowy dla pliku <kbd> komiwojazer.cpp </kbd>. Zawiera komentarze.
 				</dd>
 				<dt> <a href="Graph.cpp"><kbd> Graph.cpp </kbd></a> </dt>
 				<dd>
-					Plik źródłowy z definicjami metod klas <kbd>CGraph</kbd> i <kbd>CVertex</kbd>. Właściwie
-					w tej chwili zawiera tylko funkcję <kbd>CVertex::isolate</kbd> bo reszta jest inline
+					Plik ĹşrĂłdĹowy z definicjami metod klas <kbd>CGraph</kbd> i <kbd>CVertex</kbd>. WĹaĹciwie
+					w tej chwili zawiera tylko funkcjÄ <kbd>CVertex::isolate</kbd> bo reszta jest inline
 					w pliku <kbd>Graph.h</kbd>.
 				</dd>
 				<dt> <a href="Graph.h"><kbd> Graph.h </kbd></a> </dt>
 				<dd>
-					Plik definiujący klasy <kbd>CVertex</kbd> i <kbd>CGraph</kbd> reprezentujące odpowiednio
-					wierzchołek i graf. Szczegóły w komentarzach w pliku <kbd>Graph.h</kbd>.
+					Plik definiujÄcy klasy <kbd>CVertex</kbd> i <kbd>CGraph</kbd> reprezentujÄce odpowiednio
+					wierzchoĹek i graf. SzczegĹy w komentarzach w pliku <kbd>Graph.h</kbd>.
 				</dd>
 				<dt> <a href="Makefile"><kbd> Makefile </kbd></a> </dt>
 				<dd>
-					Plik dla programu GNU Make definiujący co ma być skompilowane i jak po wpisaniu polecenia
-					<kbd>make</kbd> będąc w katalogu programu.
+					Plik dla programu GNU Make definiujÄcy co ma byÄ skompilowane i jak po wpisaniu polecenia
+					<kbd>make</kbd> bÄdÄc w katalogu programu.
 				</dd>
 				<dt> <kbd> <a href="przyklad1.in">przyklad1.in</a> <a href="przyklad2.in">przyklad2.in</a> </kbd> </dt>
 				<dd>
-					Pliki zawierające przykładowe dane wejściowe dla programu. Zawierają grafy i na końcu
-					numery wierzchołków startowych. Ten przykładowe grafy narysowałem
-					sobie w programie Open Office Draw i można je zobaczyć otwierając pliki:
+					Pliki zawierajÄce przykĹadowe dane wejĹciowe dla programu. ZawierajÄ grafy i na koĹcu
+					numery wierzchoĹkĂłw startowych. Ten przykĹadowe grafy narysowaĹem
+					sobie w programie Open Office Draw i moĹźna je zobaczyÄ otwierajÄc pliki:
 					<kbd>przyklad1.sxd przyklad2.sxd</kbd>
 					albo pliki: <kbd>przyklad1.pdf przyklad2.pdf</kbd>.
 				</dd>
 				<dt> <kbd> <a href="przyklad1.pdf">przyklad1.pdf</a> <a href="przyklad2.pdf">przyklad2.pdf</a></kbd> </dt>
 				<dd>
-					Przykładowe grafy wyeksportowane do plików PDF.
+					PrzykĹadowe grafy wyeksportowane do plikĂłw PDF.
 				</dd>
 				<dt> <kbd> <a href="przyklad1.sxd">przyklad1.sxd</a> <a href="przyklad2.sxd">przyklad2.sxd</a></kbd> </dt>
 				<dd>
-					Przykładowe grafy narysowane w programie Open Office Draw.
+					PrzykĹadowe grafy narysowane w programie Open Office Draw.
 				</dd>
 				<dt> <kbd> <a href="przyklad1.out">przyklad1.out</a> <a href="przyklad2.out">przyklad2.out</a></kbd> </dt>
 				<dd>
-					Wyniki działania algorytmu dla danych wejściowych: <kbd> przyklad1.in przyklad2.in </kbd>
+					Wyniki dziaĹania algorytmu dla danych wejĹciowych: <kbd> przyklad1.in przyklad2.in </kbd>
 				</dd>
 				<dt> <kbd> README.html </kbd> </dt>
 				<dd>
