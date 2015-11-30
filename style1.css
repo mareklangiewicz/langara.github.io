@@ -11,11 +11,15 @@ dt {
 }
 
 h1, h2, h3, h4 {
-    text-shadow: rgba(64, 64, 64, 0.496094) 6px 7px 5px;
+    text-shadow: rgba(64, 64, 64, 0.2) 6px 7px 5px;
 }
 
 hr {
-    box-shadow: rgba(64, 64, 64, 0.496094) 6px 7px 5px;
+    box-shadow: rgba(64, 64, 64, 0.2) 6px 7px 5px;
+}
+
+div.rozdzial {
+	margin-top: 80px;
 }
 
 p.stopka {

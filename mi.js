@@ -210,7 +210,7 @@ function mi_body() {
        ),
        noh.h4('Special links'),
        noh.p(
-        'My Intent app is registered as a default app to open all links which start with the: "http://mareklangiewicz.pl/mi" prefix. ',
+        'My Intent app is registered as a default app to open all links which start with the: "http://mareklangiewicz.pl/mi#" prefix. ',
         'Anything after that "#" character is treated as a command (you can use semicolons in commands instead of spaces).'
       ),
       noh.p(

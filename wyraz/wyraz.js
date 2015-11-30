@@ -458,6 +458,7 @@ function verbose(logger) {
 
 
 function wyraz_body() {
+  var warning = size_warning();
   var cmdline = noh.cmdline(40).addclass("pretty");
   var logger = noh.log.reel(35, 240000).addclass("pretty");
   //logger = noh.log.limitlen(logger, 120);
@@ -475,7 +476,7 @@ function wyraz_body() {
     noh.p(
       noh.fancy(noh.h1("Wyraz")),
       "Small web app written with the ", noh.a({href:"https://github.com/langara/noh"}, "NOH"), " library", noh.br(),
-      noh.i("warning: this app was tested only on browser: Google Chrome 30.0.1599.114").css("font-size", "small")
+      noh.i(warning).css("font-size", "small")
     ).css("margin", 20),
     overlay
   ).addclass("smooth");
@@ -487,10 +488,17 @@ function wyraz_body() {
   ghost_background(body.dom);
   slow_log([
     'PL: Witamy w aplikacji Wyraz. Wpisz: pomoc() aby uzyskać więcej pomocy.',
-    'EN: Welcome to Wyraz app. Enter: help() to get some help.'
+    'EN: Welcome to Wyraz app. Enter: help() to get some help.',
+    warning
   ], 500);
   window.setTimeout(function() {cmdline[0].$.focus();}, 200);
   return body;
+}
+
+function size_warning() {
+  if ( ($(window).width() < 600) || ($(window).height() < 700) )
+    return "WARNING: this app is NOT optimized for small screens...";
+  return "";
 }
 
 
