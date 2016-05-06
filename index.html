@@ -20,6 +20,8 @@
 
 </head>
 
+
+
 <body>
 <p style="float:right">
     <span style="text-decoration:underline">language:</span>
@@ -27,11 +29,15 @@
     <a href="index_en.html"><img alt="english" src="en.png" style="border:none;margin-left:2px;margin-right:2px"/></a>
 </p>
 
+
+
 <h1>Marek Langiewicz</h1>
 
 
+
 <div class="rozdzial">
-    <h4>Strona domowa (wersja 0.12)</h4>
+
+    <h3>Strona domowa (wersja 0.14)</h3>
 
     <p><img style="max-width:100%;" alt="zdjęcie" src="face_slajd2.png"/></p>
 
@@ -71,61 +77,153 @@
             </ul>
         </dd>
     </dl>
+
 </div>
 
+
+
 <div class="rozdzial">
-    <h4>My Android playground</h4>
 
-    <p>
-        <a href="https://github.com/langara/MyHub">My Hub</a>
-    </p>
+    <h3>My Android playground</h3>
 
-    <p>
-        <a href="https://play.google.com/store/apps/details?id=pl.mareklangiewicz.myintent"><img alt="ubuntu"
-                                                                                                 src="myintent.png"/></a><br/>
-        <a href="https://github.com/langara/MyIntent">My Intent</a>
-        <a href="http://mareklangiewicz.pl/mi">(doc)</a>
-    </p>
+    <dl>
+        <dt>
+            <a href="https://github.com/langara/MyIntent/blob/myintent/myutils/src/main/java/pl/mareklangiewicz/myutils/MyMachines.kt">My Machines</a>
+        </dt>
+        <dd>
+            <p>
+                This is my "more-than-reactive" library :-)
+            </p>
+            <p>
+                It's an experiment.<br/>
+            </p>
+            <p>
+                I try to build a Kotlin library that contains core functionality of "Reactive" libraries like RxJava, but in more functional way.<br/>
+                (using Kotlin features like higher order funcitons, extension functions, inline functions, and more..)<br/>
+            </p>
+            <p>
+                It is divided into two dual flavors: push-based and pull-based, that can cooperate with each other.<br/>
+                Each flavor has two symmetric sides: active, and passive.<br/>
+                All these flavors/sides are "composable".<br/>
+                All base classes/interfaces are really small.<br/>
+                Most functionality is implemented as extension functions.
 
-    <p>
-        <a href="https://github.com/langara/MyIntentSample">My Intent Sample</a>
-    </p>
+            </p>
+            <p>
+                More information about its design is available in:
+                <a href="https://github.com/langara/MyIntent/blob/myintent/myutils/src/main/java/pl/mareklangiewicz/myutils/MyMachines.kt">
+                    the source code
+                </a>
+            </p>
+            <p>
+                It is in its early stage, and I don't plan to "finish" it any time soon. (but I use it in my app already, and it works) <br/>
+                For now its inside "myutils" module of "MyIntent" project. I will move it to separate library later.
+            </p>
+        </dd>
+        <dt>
+            <a href="https://github.com/langara/MyHub">My Hub</a>
+        </dt>
+        <dd>
+            <p>
+                A simple GitHub client - sample app with: Kotlin, Dagger 2, Retrofit 2, RxJava, Realm, Picasso, ...
+            </p>
+        </dd>
+        <dt>
+            <a href="https://github.com/langara/MyIntent">My Intent</a>
+        </dt>
+        <dd>
+            <p>
+                A Kotlin android library, and an <b>app</b> that allows the user to start <b>any</b> android <b>intent</b> easily.
+            </p>
+            <p>
+                A tutorial for app users is here: <a href="http://mareklangiewicz.pl/mi">mareklangiewicz.pl/mi</a>
+            </p>
+            <p>
+                <a href="https://play.google.com/store/apps/details?id=pl.mareklangiewicz.myintent"><img alt="ubuntu"
+                                                                                                         src="myintent.png"/></a><br/>
+            </p>
+        </dd>
+        <dt>
+            <a href="https://github.com/langara/MyIntentSample">My Intent Sample</a>
+        </dt>
+        <dt>
+            <a href="https://github.com/langara/MyBlocks">My Blocks</a>
+        </dt>
+        <dt>
+            <a href="https://github.com/langara/MyBlocksSample">My Blocks Sample</a>
+        </dt>
 
-    <p>
-        <a href="https://github.com/langara/MyBlocks">My Blocks</a>
-    </p>
+        <dt>
+            <a href="https://github.com/langara/MyTestApp">My Test App</a>
+        </dt>
+    </dl>
 
-    <p>
-        <a href="https://github.com/langara/MyBlocksSample">My Blocks Sample</a>
-    </p>
-
-    <p>
-        <a href="https://github.com/langara/MyTestApp">My Test App</a>
-    </p>
 </div>
 
+
+
 <div class="rozdzial">
-    <h4>My JavaScript playground</h4>
 
-    <p>
-        <a href="noh_insects/noh_insects_demo.html">noh_insects_demo</a>
-    </p>
+    <h3>My JavaScript playground</h3>
 
-    <p>
-        <a href="noh_insects/noh_doc.html">noh_doc</a>
-    </p>
+    <dl>
+        <dt>
+            <a href="noh_insects/noh_insects_demo.html">NOH Insects DEMO</a>
+        </dt>
+        <dd>
+            <p>
+                Just <b>click</b> on it, and <b>wait</b> for a while... :-) <br/>
+                (then you can click again to leave a <b>fly</b> on the screen)
+            </p>
+        </dd>
+        <dt>
+            <a href="https://github.com/langara/noh">NOH</a>
+        </dt>
+        <dd>
+            <p>
+                No HTML Library.
+            </p>
+            <p>
+                It's a small JavaScript library for generating DOM dynamically.
+            </p>
+            <p>
+                The basic idea is that for every HTML tag, we have special JavaScript function, that generates appropriate DOM element.
+            </p>
+            <p>
+                There are more advanced alternatives nowadays, but it can still be useful in some cases.<br/>
+                One use case can be: when you need to refactor some old html template based web app, and you need:<br/>
+                - compatibility with older browsers<br/>
+                - generate exactly the same DOM tree as before, so you can apply the same CSS files<br/>
+                (and users won't notice any difference)
+            </p>
+            <p>
+                Introduction is here: <a href="noh_insects/noh_doc.html">noh_doc.html</a>
+            </p>
+            <p>
+                Live tests are here: <a href="noh_insects/noh_tests.html">noh_tests.html</a>
+            </p>
+        </dd>
+        <dt>
+            <a href="wyraz/wyraz.html">Wyraz</a>
+        </dt>
+        <dd>
+            <p>
+                Small web app using NOH library.<br/>
+                It helps to create or solve crosswords, rebuses, or other words related puzzles.
+            </p>
+        </dd>
+    </dl>
 
-    <p>
-        <a href="noh_insects/noh_tests.html">noh_tests</a>
-    </p>
-
-    <p>
-        <a href="wyraz/wyraz.html">wyraz</a>
-    </p>
 </div>
+
+
+
 <div class="rozdzial">
 
-    <h4>My Google Drive API test</h4>
+    <h3>My Google Drive API test</h3>
+    <p>
+        It's just some old experiment with Google Drive API. Nothing terribly interesting...
+    </p>
 
     <button id="authorizeButton" disabled="disabled">Authorize</button>
     <br/>
@@ -137,8 +235,9 @@
 
 </div>
 
+
 <div class="rozdzial">
-    <h4>STRONA W BUDOWIE</h4>
+    <h3>STRONA W BUDOWIE</h3>
 
     <p>
         <img style="max-width: 100%" alt="under construction sign" src="website_under_construction.jpg"/>
@@ -149,6 +248,8 @@
         <a href="homepage_2007/index.html">homepage_2007/index.html</a>
     </p>
 </div>
+
+
 
 <div class="rozdzial">
 
@@ -165,8 +266,8 @@
         Źródła strony: <a href="https://github.com/langara/langara.github.io">github:langara</a><br/>
     </p>
 
-
 </div>
+
 
 </body>
 </html>
