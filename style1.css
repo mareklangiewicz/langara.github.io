@@ -1,5 +1,5 @@
 body {
-	font-family: "Verdana";
+	font-family: "Ubuntu", "Verdana", sans-serif;
 	font-size: 12pt;
 	background-image:url('kamienie1.png');
 	background-repeat:repeat-y;
