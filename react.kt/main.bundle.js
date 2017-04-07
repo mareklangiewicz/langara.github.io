@@ -70368,7 +70368,7 @@ module.exports = __webpack_require__(19);
   function TicTacToe() {
     TicTacToe$Companion_getInstance();
     ReactDOMComponent.call(this);
-    this.state = new TicTacToeState(Kotlin.newArrayF(9, TicTacToe_init$lambda(this)), 0, true);
+    this.state = new TicTacToeState(Kotlin.newArrayF(9, TicTacToe_init$lambda(this)), 0);
     subscribeToTicTacToeState(this.props.id.toString(), TicTacToe_init$lambda_0(this));
   }
   function TicTacToe$Companion() {
@@ -70394,10 +70394,33 @@ module.exports = __webpack_require__(19);
       return new History(Kotlin.newArrayF(9, TicTacToe$get_TicTacToe$initHistory$lambda));
     }
   });
+  Object.defineProperty(TicTacToe.prototype, 'xIsNext', {
+    get: function () {
+      var $receiver = last(this.state.history).squares;
+      var destination_0 = Kotlin.kotlin.collections.ArrayList_init_ww73n8$($receiver.length);
+      var tmp$_0;
+      for (tmp$_0 = 0; tmp$_0 !== $receiver.length; ++tmp$_0) {
+        var item_0 = $receiver[tmp$_0];
+        var tmp$_1 = destination_0.add_11rb$;
+        var transform$result;
+        var tmp$_2;
+        tmp$_2 = Kotlin.unboxChar(Kotlin.toBoxedChar(item_0));
+        if (tmp$_2 === 88) {
+          transform$result = -1;
+        } else if (tmp$_2 === 79) {
+          transform$result = 1;
+        } else {
+          transform$result = 0;
+        }
+        tmp$_1.call(destination_0, transform$result);
+      }
+      return sum(destination_0) > 0;
+    }
+  });
   Object.defineProperty(TicTacToe.prototype, 'details', {
     get: function () {
       if (Kotlin.unboxChar(this.winner) === 32) {
-        return 'Next player: ' + String.fromCharCode(this.state.xIsNext ? 88 : 79);
+        return 'Next player: ' + String.fromCharCode(this.xIsNext ? 88 : 79);
       } else return 'Winner: ' + String.fromCharCode(Kotlin.unboxChar(this.winner));
     }
   });
@@ -70479,14 +70502,13 @@ module.exports = __webpack_require__(19);
   TicTacToe.prototype.render_vhjzqq$ = function ($receiver) {
     div_0($receiver, 'game', TicTacToe$render$lambda(this, $receiver));
   };
-  function TicTacToe$handleClick$lambda(closure$newHistory, closure$squares, this$TicTacToe) {
+  function TicTacToe$handleClick$lambda(closure$newHistory, closure$squares) {
     return function ($receiver) {
       var $receiver_0 = closure$newHistory;
       var closure$squares_0 = closure$squares;
       last($receiver_0).squares = closure$squares_0;
       $receiver.history = $receiver_0;
       $receiver.stepNumber = closure$newHistory.length;
-      $receiver.xIsNext = !this$TicTacToe.state.xIsNext;
     };
   }
   TicTacToe.prototype.handleClick_0 = function (i) {
@@ -70495,8 +70517,8 @@ module.exports = __webpack_require__(19);
       var newHistory = sliceArray(this.state.history, new IntRange(0, this.state.stepNumber + 1 | 0));
       var current = last(newHistory);
       var squares = current.squares.slice();
-      squares[i] = Kotlin.unboxChar(this.state.xIsNext ? 88 : 79);
-      this.setState_hgm6vj$(TicTacToe$handleClick$lambda(newHistory, squares, this));
+      squares[i] = Kotlin.unboxChar(this.xIsNext ? 88 : 79);
+      this.setState_hgm6vj$(TicTacToe$handleClick$lambda(newHistory, squares));
       var tmp$_0 = this.props.id.toString();
       var destination_0 = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(squares.length);
       var tmp$_1;
@@ -70522,15 +70544,6 @@ module.exports = __webpack_require__(19);
       }
     }
     return 32;
-  };
-  function TicTacToe$jumpTo$lambda(closure$step) {
-    return function ($receiver) {
-      $receiver.stepNumber = closure$step;
-      $receiver.xIsNext = closure$step % 2 !== 0;
-    };
-  }
-  TicTacToe.prototype.jumpTo_0 = function (step) {
-    this.setState_hgm6vj$(TicTacToe$jumpTo$lambda(step));
   };
   function TicTacToe_init$lambda(this$TicTacToe) {
     return function (it) {
@@ -70568,10 +70581,9 @@ module.exports = __webpack_require__(19);
     simpleName: 'TicTacToeProps',
     interfaces: [RProps]
   };
-  function TicTacToeState(history, stepNumber, xIsNext) {
+  function TicTacToeState(history, stepNumber) {
     this.history = history;
     this.stepNumber = stepNumber;
-    this.xIsNext = xIsNext;
   }
   TicTacToeState.$metadata$ = {
     kind: Kotlin.Kind.CLASS,
