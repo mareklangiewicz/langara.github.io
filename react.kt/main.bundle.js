@@ -69869,6 +69869,7 @@ module.exports = __webpack_require__(19);
   var StringBuilder = Kotlin.kotlin.text.StringBuilder;
   var Unsafe = $module$kotlinx_html_js.kotlinx.html.Unsafe;
   var TagConsumer = $module$kotlinx_html_js.kotlinx.html.TagConsumer;
+  var lazy = Kotlin.kotlin.lazy_klfg04$;
   Maybe$None.prototype = Object.create(Maybe.prototype);
   Maybe$None.prototype.constructor = Maybe$None;
   Maybe$Just.prototype = Object.create(Maybe.prototype);
@@ -70729,8 +70730,8 @@ module.exports = __webpack_require__(19);
   };
   function TodoMVC_init$lambda$lambda(closure$it) {
     return function ($receiver) {
-      var tmp$_0, tmp$_1;
-      $receiver.todos = (tmp$_1 = (tmp$_0 = closure$it.val()) != null ? toList(tmp$_0) : null) != null ? tmp$_1 : listOf_0('');
+      var tmp$_0;
+      $receiver.todos = (tmp$_0 = closure$it != null ? toList(closure$it) : null) != null ? tmp$_0 : listOf_0('');
     };
   }
   function TodoMVC_init$lambda(this$TodoMVC) {
@@ -71064,8 +71065,7 @@ module.exports = __webpack_require__(19);
   };
   function TicTacToe_init$lambda$lambda(closure$it, this$TicTacToe) {
     return function ($receiver) {
-      var tmp$_0;
-      $receiver.squares = (tmp$_0 = closure$it.val()) != null ? tmp$_0 : this$TicTacToe.initSquares;
+      $receiver.squares = closure$it != null ? closure$it : this$TicTacToe.initSquares;
     };
   }
   function TicTacToe_init$lambda(this$TicTacToe) {
@@ -71911,17 +71911,89 @@ module.exports = __webpack_require__(19);
     simpleName: 'ReactComponentWrapper',
     interfaces: []
   };
+  function FirebaseConfig(apiKey, authDomain, databaseURL, projectId, storageBucket, messagingSenderId) {
+    this.apiKey = apiKey;
+    this.authDomain = authDomain;
+    this.databaseURL = databaseURL;
+    this.projectId = projectId;
+    this.storageBucket = storageBucket;
+    this.messagingSenderId = messagingSenderId;
+  }
+  FirebaseConfig.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'FirebaseConfig',
+    interfaces: []
+  };
+  FirebaseConfig.prototype.component1 = function () {
+    return this.apiKey;
+  };
+  FirebaseConfig.prototype.component2 = function () {
+    return this.authDomain;
+  };
+  FirebaseConfig.prototype.component3 = function () {
+    return this.databaseURL;
+  };
+  FirebaseConfig.prototype.component4 = function () {
+    return this.projectId;
+  };
+  FirebaseConfig.prototype.component5 = function () {
+    return this.storageBucket;
+  };
+  FirebaseConfig.prototype.component6 = function () {
+    return this.messagingSenderId;
+  };
+  FirebaseConfig.prototype.copy_r3y0ew$ = function (apiKey, authDomain, databaseURL, projectId, storageBucket, messagingSenderId) {
+    return new FirebaseConfig(apiKey === void 0 ? this.apiKey : apiKey, authDomain === void 0 ? this.authDomain : authDomain, databaseURL === void 0 ? this.databaseURL : databaseURL, projectId === void 0 ? this.projectId : projectId, storageBucket === void 0 ? this.storageBucket : storageBucket, messagingSenderId === void 0 ? this.messagingSenderId : messagingSenderId);
+  };
+  FirebaseConfig.prototype.toString = function () {
+    return 'FirebaseConfig(apiKey=' + Kotlin.toString(this.apiKey) + (', authDomain=' + Kotlin.toString(this.authDomain)) + (', databaseURL=' + Kotlin.toString(this.databaseURL)) + (', projectId=' + Kotlin.toString(this.projectId)) + (', storageBucket=' + Kotlin.toString(this.storageBucket)) + (', messagingSenderId=' + Kotlin.toString(this.messagingSenderId)) + ')';
+  };
+  FirebaseConfig.prototype.hashCode = function () {
+    var result = 0;
+    result = result * 31 + Kotlin.hashCode(this.apiKey) | 0;
+    result = result * 31 + Kotlin.hashCode(this.authDomain) | 0;
+    result = result * 31 + Kotlin.hashCode(this.databaseURL) | 0;
+    result = result * 31 + Kotlin.hashCode(this.projectId) | 0;
+    result = result * 31 + Kotlin.hashCode(this.storageBucket) | 0;
+    result = result * 31 + Kotlin.hashCode(this.messagingSenderId) | 0;
+    return result;
+  };
+  FirebaseConfig.prototype.equals = function (other) {
+    return this === other || other !== null && typeof other === 'object' && Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && Kotlin.equals(this.apiKey, other.apiKey) && Kotlin.equals(this.authDomain, other.authDomain) && Kotlin.equals(this.databaseURL, other.databaseURL) && Kotlin.equals(this.projectId, other.projectId) && Kotlin.equals(this.storageBucket, other.storageBucket) && Kotlin.equals(this.messagingSenderId, other.messagingSenderId);
+  };
+  var config;
+  function db$lambda() {
+    firebase.initializeApp(config);
+    return firebase.database().ref();
+  }
+  var db;
+  function get_db() {
+    new Kotlin.PropertyMetadata('db');
+    return db.value;
+  }
   function writeTodoListState(id, state) {
-    db.child('todo-list').child(id).set(state);
+    get_db().child('todo-list').child(id).set(state);
   }
   function writeTicTacToeState(id, state) {
-    db.child('tic-tac-toe').child(id).set(state);
+    get_db().child('tic-tac-toe').child(id).set(state);
+  }
+  function subscribeToTodoListState$lambda(closure$callback) {
+    return function (it) {
+      closure$callback(it.val());
+    };
   }
   function subscribeToTodoListState(id, callback) {
-    db.child('todo-list').child(id).on('value', callback);
+    var cb = subscribeToTodoListState$lambda(callback);
+    get_db().child('todo-list').child(id).on('value', cb);
+  }
+  function subscribeToTicTacToeState$lambda(closure$callback) {
+    return function (it) {
+      closure$callback(it.val());
+    };
   }
   function subscribeToTicTacToeState(id, callback) {
-    db.child('tic-tac-toe').child(id).on('value', callback);
+    var cb = subscribeToTicTacToeState$lambda(callback);
+    get_db().child('tic-tac-toe').child(id).on('value', cb);
   }
   ReactDOMBuilder$onTagContentUnsafe$ObjectLiteral.prototype.raw_3p81yu$ = Unsafe.prototype.raw_3p81yu$;
   ReactDOMBuilder$onTagContentUnsafe$ObjectLiteral.prototype.raw_61zpoe$ = Unsafe.prototype.raw_61zpoe$;
@@ -72073,10 +72145,11 @@ module.exports = __webpack_require__(19);
   package$react.ReactComponent = ReactComponent;
   package$react.ReactComponentWrapper = ReactComponentWrapper;
   var package$firebase = package$jetbrains.firebase || (package$jetbrains.firebase = {});
+  package$firebase.FirebaseConfig = FirebaseConfig;
   package$firebase.writeTodoListState_4w9ihe$ = writeTodoListState;
   package$firebase.writeTicTacToeState_4w9ihe$ = writeTicTacToeState;
-  package$firebase.subscribeToTodoListState_c2lk4q$ = subscribeToTodoListState;
-  package$firebase.subscribeToTicTacToeState_c2lk4q$ = subscribeToTicTacToeState;
+  package$firebase.subscribeToTodoListState_qfct96$ = subscribeToTodoListState;
+  package$firebase.subscribeToTicTacToeState_qfct96$ = subscribeToTicTacToeState;
   events = listOf(['onCopy', 'onCut', 'onPaste', 'onCompositionEnd', 'onCompositionStart', 'onCompositionUpdate', 'onKeyDown', 'onKeyPress', 'onKeyUp', 'onFocus', 'onBlur', 'onChange', 'onInput', 'onSubmit', 'onClick', 'onContextMenu', 'onDoubleClick', 'onDrag', 'onDragEnd', 'onDragEnter', 'onDragExit', 'onDragLeave', 'onDragOver', 'onDragStart', 'onDrop', 'onMouseDown', 'onMouseEnter', 'onMouseLeave', 'onMouseMove', 'onMouseOut', 'onMouseOver', 'onMouseUp', 'onSelect', 'onTouchCancel', 'onTouchEnd', 'onTouchMove', 'onTouchStart', 'onScroll', 'onWheel', 'onAbort', 'onCanPlay', 'onCanPlayThrough', 'onDurationChange', 'onEmptied', 'onEncrypted', 'onEnded', 'onError', 'onLoadedData', 'onLoadedMetadata', 'onLoadStart', 'onPause', 'onPlay', 'onPlaying', 'onProgress', 'onRateChange', 'onSeeked', 'onSeeking', 'onStalled', 'onSuspend', 'onTimeUpdate', 'onVolumeChange', 'onWaiting', 'onLoad', 'onError', 'onAnimationStart', 'onAnimationEnd', 'onAnimationIteration', 'onTransitionEnd', 'accept', 'acceptCharset', 'accessKey', 'action', 'allowFullScreen', 'allowTransparency', 'alt', 'async', 'autoComplete', 'autoFocus', 'autoPlay', 'capture', 'cellPadding', 'cellSpacing', 'challenge', 'charSet', 'checked', 'cite', 'classID', 'className', 'colSpan', 'cols', 'content', 'contentEditable', 'contextMenu', 'controls', 'coords', 'crossOrigin', 'data', 'dateTime', 'default', 'defer', 'dir', 'disabled', 'download', 'draggable', 'encType', 'form', 'formAction', 'formEncType', 'formMethod', 'formNoValidate', 'formTarget', 'frameBorder', 'headers', 'height', 'hidden', 'high', 'href', 'hrefLang', 'htmlFor', 'httpEquiv', 'icon', 'id', 'inputMode', 'integrity', 'is', 'keyParams', 'keyType', 'kind', 'label', 'lang', 'list', 'loop', 'low', 'manifest', 'marginHeight', 'marginWidth', 'max', 'maxLength', 'media', 'mediaGroup', 'method', 'min', 'minLength', 'multiple', 'muted', 'name', 'noValidate', 'nonce', 'open', 'optimum', 'pattern', 'placeholder', 'poster', 'preload', 'profile', 'radioGroup', 'readOnly', 'rel', 'required', 'reversed', 'role', 'rowSpan', 'rows', 'sandbox', 'scope', 'scoped', 'scrolling', 'seamless', 'selected', 'shape', 'size', 'sizes', 'span', 'spellCheck', 'src', 'srcDoc', 'srcLang', 'srcSet', 'start', 'step', 'style', 'summary', 'tabIndex', 'target', 'title', 'type', 'useMap', 'value', 'width', 'wmode', 'wrap']);
   var destination = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$(events, 10));
   var tmp$;
@@ -72088,6 +72161,8 @@ module.exports = __webpack_require__(19);
   eventMap = toMap(destination);
   attributeStringString = new StringAttribute();
   initWrapper = null;
+  config = new FirebaseConfig('AIzaSyAQ7ahyThm0izbbOWD83Hy1KbVsFC7X1pE', 'react-kt.firebaseapp.com', 'https://react-kt.firebaseio.com', 'react-kt', 'react-kt.appspot.com', '182183482939');
+  db = lazy(db$lambda);
   Kotlin.defineModule('frontend', _);
   main([]);
   return _;
