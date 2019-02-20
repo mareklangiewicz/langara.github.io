@@ -1,3 +1,6 @@
 [submodule "noh_insects"]
 	path = noh_insects
 	url = https://github.com/langara/noh_insects.git
+[submodule "wyraz"]
+	path = wyraz
+	url = git@github.com:langara/wyraz.git
