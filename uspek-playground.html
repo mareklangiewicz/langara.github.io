@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="pl" xmlns="http://www.w3.org/1999/xhtml" xml:lang="pl">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta content="Marek Langiewicz" name="author"/>
+    <script src="https://unpkg.com/kotlin-playground@1" data-selector="code.playground"></script>
+    <title>μSpek Playground</title>
+</head>
+
+<body>
+
+<h1>μSpek Playground</h1>
+
+<div>
+
+    <code class="playground">
+
+        class MicroCalc(var result: Int) {
+            fun add(x: Int) { result += x }
+            fun multiplyBy(x: Int) { result *= x }
+        }
+
+        fun main() {
+            val calc = MicroCalc(0)
+            println(calc.result)
+            calc.add(10)
+            println(calc.result)
+        }
+
+    </code>
+
+</div>
+
+</body>
+</html>
