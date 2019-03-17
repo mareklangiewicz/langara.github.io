@@ -36,15 +36,23 @@ fun main(args: Array&#60;String&#62;) {
     val canvas = document.createElement("canvas").l as HTMLCanvasElement
     val context = canvas.getContext("2d").l as CanvasRenderingContext2D
     document.body!!.appendChild(canvas)
-    context.fillStyle = "rgb(200, 0, 0)"
-    context.fillRect(10.0, 10.0, 50.0, 50.0)
-    context.fillStyle = "rgb(0, 0, 200, 0.5)"
-    context.fillRect(30.0, 30.0, 50.0, 50.0)
+    context.drawRectangles()
+    context.drawRectangles()
+    window.setInterval({ context.drawRectangles() }, 600)
+}
+
+val random = Random(666)
+fun around(value: Int) = value + random.nextInt(value / 3) - value / 6 + 1
+fun around(value: Double) = value + random.nextDouble(value / 3) - value / 6 + 1
+
+fun CanvasRenderingContext2D.drawRectangles() {
+    fillStyle = "rgb(200, 0, 0, 0.2)"
+    fillRect(around(10.0), around(10.0), around(50.0), around(50.0))
+    fillStyle = "rgb(0, 0, 200, 0.3)"
+    fillRect(around(30.0), around(30.0), around(50.0), around(50.0))
 }
 
 </code></pre>
-
-<p> FIXME: THIS CODE BELOW IS NOT WORKING </p>
 
 <pre><code class="playground" data-target-platform="canvas">
 
@@ -64,9 +72,7 @@ import kotlin.browser.window
 import kotlin.random.*
 
 fun main(args: Array&#60;String&#62;) {
-    jq {
-        FancyLines().run()
-    }
+    FancyLines().run()
 }
 
 val canvas = initalizeCanvas()
