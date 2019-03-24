@@ -6,4 +6,4 @@
 	url = https://github.com/langara/wyraz.git
 [submodule "uspek-js-playground"]
 	path = uspek-js-playground
-	url = git@github.com:langara/uspek-js-playground.git
+	url = https://github.com/langara/uspek-js-playground.git
