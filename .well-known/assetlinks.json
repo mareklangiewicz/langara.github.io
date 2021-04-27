@@ -1,9 +1,27 @@
-[{
-  "relation": ["delegate_permission/common.handle_all_urls"],
-  "target": {
-    "namespace": "android_app",
-    "package_name": "pl.mareklangiewicz.myintent",
-    "sha256_cert_fingerprints":
-    ["BC:FA:B6:42:7E:BB:F5:80:56:2B:B0:F6:74:D3:55:ED:67:50:4A:5F:A6:E4:F5:3C:97:33:00:D4:8F:5E:AB:DF"]
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "pl.mareklangiewicz.myintent",
+      "sha256_cert_fingerprints": [
+        "BC:FA:B6:42:7E:BB:F5:80:56:2B:B0:F6:74:D3:55:ED:67:50:4A:5F:A6:E4:F5:3C:97:33:00:D4:8F:5E:AB:DF"
+      ]
+    }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "pl.mareklangiewicz.kokpit667",
+      "sha256_cert_fingerprints": [
+        "8F:AA:40:F5:2C:C1:5F:A5:30:27:37:E7:B4:87:A3:71:A1:2B:F7:0D:03:A5:27:D2:2F:06:ED:98:3F:50:8D:A5",
+        "42:51:DF:AB:78:4A:10:48:85:E9:BE:06:9C:73:4A:96:46:45:C4:B9:25:25:F2:20:30:84:4A:03:61:4A:FB:03"
+      ]
+    }
   }
-}]
+]
