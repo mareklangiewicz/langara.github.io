@@ -23,6 +23,8 @@
 
 package pl.mareklangiewicz.lib
 
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 import kotlinx.browser.document
 import kotlinx.browser.window
 import org.w3c.dom.HTMLCanvasElement
@@ -33,12 +35,6 @@ import org.w3c.dom.CanvasRenderingContext2D as Ctx
 
 const val WIDTH = 800.0
 const val HEIGHT = 800.0
-
-
-fun main(args: Array&lt;String&gt;) {
-    jsTempPaint2()
-}
-
 
 val ctx by lazy {
     val canvas = document.createElement("canvas") as HTMLCanvasElement
@@ -52,15 +48,30 @@ val ctx by lazy {
 val Double.int get() = toInt()
 val Int.dbl get() = toDouble()
 
-
 infix fun Int.rnd(to: Int) = Random.nextInt(this, to + 1)
 infix fun Double.rnd(to: Double) = Random.nextDouble(this, to)
-
-val Int.near get() = near()
-val Double.near get() = near()
+val Double.max get() = Random.nextDouble(0.0, this)
 
 fun Int.near(divisor: Int = 6) = this - this / divisor rnd this + this / divisor
 fun Double.near(divisor: Double = 6.0) = this - this / divisor rnd this + this / divisor
+
+data class P(val x: Double, val y: Double)
+
+operator fun P.plus(that: P) = P(x + that.x, y + that.y)
+operator fun P.minus(that: P) = P(x - that.x, y - that.y)
+operator fun P.times(that: Double) = P(x * that, y * that)
+operator fun P.div(that: Double) = P(x / that, y / that)
+
+fun lerp(v1: Double, v2: Double, fraction: Double = 0.5) = v1 + (v2 - v1) * fraction
+fun lerp(p1: P, p2: P, fraction: Double = 0.5) = p1 + (p2 - p1) * fraction
+
+infix fun P.avg(that: P) = lerp(this, that)
+
+infix fun P.rnd(to: P) = P(x rnd to.x, y rnd to.y)
+
+fun P.near(divisor: Double = 6.0) = this - this / divisor rnd this + this / divisor
+
+fun P.around(spread: Double = 6.0) = this + (P(-spread, -spread) rnd P(spread, spread))
 
 val rndx get() = 0.0 rnd WIDTH
 val rndy get() = 0.0 rnd HEIGHT
@@ -102,58 +113,74 @@ fun Ctx.randomPolyline(
     strokeStyle = "hsl(${minHue rnd maxHue}, 60%, 50%, $opacity%)"
 }
 
-fun Ctx.strokePath(block: Ctx.() -&gt; Unit) {
+inline fun Ctx.strokePath(block: Ctx.() -&gt; Unit) {
     beginPath()
     block()
     stroke()
 }
 
+suspend fun mydelay(timeMillis: Int) = suspendCoroutine&lt;Unit&gt; { cont -&gt;
+    val handler = { cont.resume(Unit) }
+    window.setTimeout(handler, timeMillis)
+}
 
-fun jsTempPaint1() {
-    for (i in 1..10000) {
-        val radius = 40.0 rnd 50.0 - (i rnd i*2) / 200
-        val x = 400.0 + (4.0 rnd 48.0) + i/20
-        val y = 400.0 + (4.0 rnd 14.0)
-        ctx.strokePath {
-            arc(x, y, radius, 0.0, 2 * PI)
-            lineWidth = 2.0
-            strokeStyle = "rgba(0, 0, 255, 0.1)"
+fun Ctx.fancyPathA(apoints: List&lt;P&gt;, hue: Int) {
+    val startP = apoints[0]
+    val startCurP = P(startP.x-60, startP.y).around(90.0.max.max)
+    repeat(50 + startP.y.int * 2) {
+        strokePath {
+            moveTo(startP.x, startP.y)
+            var curP = startCurP
+            for (inP in apoints) {
+                val p = inP.around(16.0.max.max.max)
+                quadraticCurveTo(curP.x, curP.y, p.x, p.y)
+                curP = lerp(curP, p, 1.5.near())
+            }
+            lineWidth = 0.1
+            strokeStyle = "hsla($hue, 100%, 30%, 0.2)"
         }
     }
 }
 
-@OptIn(ExperimentalStdlibApi::class)
-fun jsTempPaint2() {
+suspend fun Ctx.paintSomeLines() {
+    val DELAY = 1
     val LINES = 10
     val MARGIN = WIDTH / LINES
 
     for (nr in 1 until LINES) {
         val y = nr * MARGIN
-        for (z in 1..5) {
-            val path = buildList&lt;Pair&lt;Double, Double&gt;&gt; {
-                add(MARGIN to y)
-                for (x in MARGIN.int .. WIDTH.int-MARGIN.int*2 step 40.near)
-                    add(x.dbl.near(12.0) to y.near(100.0 * x / WIDTH))
+        for (z in 1..3) {
+            val path = buildList {
+                add(P(MARGIN, y))
+                for (x in MARGIN.int .. WIDTH.int-MARGIN.int step 40.near()) {
+                    mydelay(DELAY)
+                    val nearX = x.dbl.near(12.0)
+                    val nearYVar = if (nr % 2 == 0) 100 / WIDTH * x else 100 / WIDTH * (WIDTH-x)
+                    val nearY = y.near(nearYVar)
+                    add(P(nearX, nearY))
+                }
             }
-            ctx.fancyPathA(path, z * 80)
+            fancyPathA(path, 0 rnd 360)
         }
     }
 }
 
-fun Ctx.fancyPathA(points: List&lt;Pair&lt;Double, Double&gt;&gt;, hue: Int) {
-    val (startx, starty) = points[0]
-    moveTo(startx, starty)
-    repeat(150 + starty.int/2) {
 
-        strokePath {
-            for ((x, y) in points) {
-                lineTo(x.near((WIDTH - x) / 7), y.near((0.0 + x + y) / 10))
-            }
-            lineWidth = 1.0
-            strokeStyle = "hsla(${hue.near(10)}, 100%, 40%, 0.01)"
-        }
+suspend fun Ctx.paintALotOfLines() {
+    scale(0.5, 0.5)
+    translate(WIDTH, HEIGHT)
+//    scale(3.5, 3.5)
+    repeat(4) {
+        paintSomeLines()
+        rotate(PI/2)
     }
 }
+
+
+suspend fun main() {
+    ctx.paintALotOfLines()
+}
+
 
 </code></pre>
 
