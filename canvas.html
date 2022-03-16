@@ -33,8 +33,6 @@ import kotlin.math.*
 import kotlin.random.Random
 import org.w3c.dom.CanvasRenderingContext2D as Ctx
 
-external fun tryToInstallAppIn(rootElement: Element?)
-
 const val WIDTH = 800.0
 const val HEIGHT = 800.0
 
@@ -220,7 +218,8 @@ suspend fun main() {
     val r = document.createElement("div")
     r.setAttribute("id", "rootForAppJs")
     document.body!!.appendChild(r)
-    tryToInstallAppIn(r)
+    val kth: dynamic = js("kthreelhu.pl.mareklangiewicz.kthreelhu")
+    kth.tryToInstallAppIn(r)
 }
 
 
