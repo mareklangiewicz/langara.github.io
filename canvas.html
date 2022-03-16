@@ -19,7 +19,7 @@
     TODO: add some other cool examples to play with
 </p>
 
-<pre><code class="playground" data-target-platform="canvas" data-output-height="1080">
+<pre><code class="playground" data-target-platform="canvas" data-output-height="2048" data-js-libs="https://mareklangiewicz.pl/kthreelhu/kthreelhu.js">
 
 package pl.mareklangiewicz.lib
 
@@ -28,7 +28,7 @@ import kotlin.coroutines.suspendCoroutine
 import kotlinx.browser.document
 import kotlinx.browser.window
 import org.w3c.dom.HTMLCanvasElement
-import org.w3c.dom.get
+import org.w3c.dom.*
 import kotlin.math.*
 import kotlin.random.Random
 import org.w3c.dom.CanvasRenderingContext2D as Ctx
@@ -213,8 +213,11 @@ suspend fun Ctx.paintSomeRects(scrupulosity: Int = 3) {
 
 
 suspend fun main() {
-//    ctx.paintSomeRects()
+    ctx.paintSomeRects()
     ctx.paintALotOfLines()
+    val r = document.createElement("div")
+    r.setAttribute("id", "rootForAppJs")
+    document.body!!.appendChild(r)
 }
 
 
