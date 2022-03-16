@@ -216,11 +216,9 @@ suspend fun Ctx.paintSomeRects(scrupulosity: Int = 3) {
 suspend fun main() {
     ctx.paintSomeRects(9)
     ctx.paintALotOfLines()
-    val r = document.createElement("div")
-    r.setAttribute("id", "rootForAppJs")
-    document.body!!.appendChild(r)
     val kth: dynamic = js("kthreelhu.pl.mareklangiewicz.kthreelhu")
-    kth.tryToInstallAppIn(r)
+    document.body!!.run { getElementsByClassName("canvas")[0]?.remove() }
+    kth.tryToInstallAppIn(document.body!!)
 }
 //sampleEnd
 
