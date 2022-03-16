@@ -212,8 +212,9 @@ suspend fun Ctx.paintSomeRects(scrupulosity: Int = 3) {
 }
 
 
+//sampleStart
 suspend fun main() {
-    ctx.paintSomeRects()
+    ctx.paintSomeRects(9)
     ctx.paintALotOfLines()
     val r = document.createElement("div")
     r.setAttribute("id", "rootForAppJs")
@@ -221,7 +222,7 @@ suspend fun main() {
     val kth: dynamic = js("kthreelhu.pl.mareklangiewicz.kthreelhu")
     kth.tryToInstallAppIn(r)
 }
-
+//sampleEnd
 
 </code></pre>
 
@@ -570,12 +571,14 @@ class Vector(val x: Double = 0.0, val y: Double = 0.0) {
         get() = this * (1.0 / sqrt(sqr))
 }
 
+//sampleStart
 fun main(args: Array&lt;String&gt;) {
     CanvasState(canvas).apply {
         addShape(Kotlin)
         addShape(Creature(size * 0.25, this))
         addShape(Creature(size * 0.75, this))
     }
+//sampleEnd
 }
 
 </code></pre>
