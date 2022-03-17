@@ -231,17 +231,44 @@ suspend fun Ctx.paintSomeRects(scrupulosity: Int = 3) {
 
 //sampleStart
 
-private fun cube(size: XYZ) = js("Mesh(BoxGeometry(size.x, size.y, size.z), MeshPhongMaterial())")
+external class UObject3D {
+    val x: Double
+    val y: Double
+    val z: Double
+    fun pos(x: Double, y: Double, z: Double): UObject3D
+    fun add(vararg objs: UObject3D)
+    fun del(vararg objs: UObject3D)
+}
+
+external class USchool {
+
+    val scene: UObject3D
+
+    fun tryToInstallSchoolIn(rootElement: Element?)
+    fun tryToInstallSchoolInBody(clearBody: Boolean = definedExternally)
+
+    fun ucube(sizeX: Double, sizeY: Double, sizeZ: Double, color: Int = definedExternally): UObject3D
+    fun uline2D(color: Int, vararg xys: Double): UObject3D
+    fun uline3D(color: Int, vararg xyzs: Double): UObject3D
+    fun school1example()
+}
+
+external val uschool: USchool
 
 suspend fun main() {
+
+    js("window.uschool = kthreelhu.uschool")
+
     ctx.paintSomeRects(9)
     ctx.paintALotOfLines()
-    val kth: dynamic = js("kthreelhu.pl.mareklangiewicz.kthreelhu")
-    document.body!!.run {
-        getElementsByTagName("canvas")[0]?.remove()
-        kth.tryToInstallAppIn(this)
+
+    uschool.run {
+        tryToInstallSchoolInBody(true)
+        school1example()
+        for (i in 1..16) scene.add(ucube(1.0, 0.2, 4.0, 0x00ff00 + i*0x000020).pos(-4.0, -2.0-i/2, -5.0))
     }
 }
+
 //sampleEnd
 
 </code></pre>
