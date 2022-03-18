@@ -39,6 +39,7 @@ const val HEIGHT = 800.0
 val ctx by lazy {
     val canvas = document.createElement("canvas") as HTMLCanvasElement
     val ctx = canvas.getContext("2d") as Ctx
+    canvas.id = "canvasForSchool"
     canvas.width = WIDTH.toInt()
     canvas.height = HEIGHT.toInt()
     document.body!!.appendChild(canvas)
