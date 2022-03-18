@@ -250,7 +250,8 @@ external class USchool {
     fun ucube(sizeX: Double, sizeY: Double, sizeZ: Double, color: Int = definedExternally): UObject3D
     fun uline2D(color: Int, vararg xys: Double): UObject3D
     fun uline3D(color: Int, vararg xyzs: Double): UObject3D
-    fun school1example()
+    fun example1AddSpiral()
+    fun niceColorInt(idx: Int, offset: Int = definedExternally, factor: Int = definedExternally): Int
 }
 
 external val uschool: USchool
@@ -263,8 +264,8 @@ suspend fun main() {
     ctx.paintALotOfLines()
 
     uschool.run {
-        tryToInstallSchoolInBody(true)
-        school1example()
+        tryToInstallSchoolInBody()
+        example1AddSpiral()
         for (i in 1..16) scene.add(ucube(1.0, 0.2, 4.0, 0x00ff00 + i*0x000020).pos(-4.0, -2.0-i/2, -5.0))
     }
 }
